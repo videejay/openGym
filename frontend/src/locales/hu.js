@@ -2316,4 +2316,10 @@ export default {
   'openGym code': 'openGym-kód',
   '{0} no longer has it': '{0} már nem fogja tartalmazni',
   '“{0}” isn’t in this workout': '„{0}” nincs ebben az edzésben',
+  "Normal": "Normál",
+  "Routine type": "Edzésterv típusa",
+  "Interval Training": "Intervallumos edzés",
+  "Interval configuration": "Intervallumok beállítása",
+  "Rounds": "Körök",
+  "Work": "Munka",
 }

@@ -1441,6 +1441,13 @@ export const PT_BR_OVERRIDES = {
   'Which exercise is this code for?': 'Para qual exercício é este código?',
   'Which exercise?': 'Qual exercício?',
   '{0} no longer has it': '{0} deixa de tê-lo',
+  'Normal': 'Normal',
+  'Routine type': 'Tipo de rotina',
+  'Interval Training': 'Treinamento intervalado',
+  'Interval configuration': 'Configuração de intervalos',
+  'Rounds': 'Rodadas',
+  'Work': 'Trabalho',
+  'sec': 's',
 }
 
 export default { ...pt, ...PT_BR_OVERRIDES }

@@ -2313,4 +2313,10 @@ export default {
   'openGym code': 'openGym 代码',
   '{0} no longer has it': '{0} 将不再关联它',
   '“{0}” isn’t in this workout': '“{0}”不在本次训练中',
+  "Normal": "普通",
+  "Routine type": "训练计划类型",
+  "Interval Training": "间歇训练",
+  "Interval configuration": "间歇设置",
+  "Rounds": "轮次",
+  "Work": "训练",
 }

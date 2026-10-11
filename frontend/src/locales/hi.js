@@ -2313,4 +2313,10 @@ export default {
   'openGym code': 'openGym कोड',
   '{0} no longer has it': '{0} के पास अब यह नहीं रहेगा',
   '“{0}” isn’t in this workout': '"{0}" इस वर्कआउट में नहीं है',
+  "Normal": "सामान्य",
+  "Routine type": "रूटीन का प्रकार",
+  "Interval Training": "इंटरवल ट्रेनिंग",
+  "Interval configuration": "इंटरवल कॉन्फ़िगरेशन",
+  "Rounds": "राउंड",
+  "Work": "कार्य",
 }

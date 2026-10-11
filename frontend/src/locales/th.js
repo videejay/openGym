@@ -2324,4 +2324,10 @@ export default {
   'openGym code': 'โค้ด openGym',
   '{0} no longer has it': '{0} จะไม่มีโค้ดนี้อีก',
   '“{0}” isn’t in this workout': '“{0}” ไม่อยู่ในการฝึกนี้',
+  "Normal": "ปกติ",
+  "Routine type": "ประเภทกิจวัตร",
+  "Interval Training": "การฝึกแบบอินเทอร์วัล",
+  "Interval configuration": "การตั้งค่าอินเทอร์วัล",
+  "Rounds": "รอบ",
+  "Work": "ช่วงออกกำลัง",
 }

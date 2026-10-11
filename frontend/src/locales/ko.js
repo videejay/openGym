@@ -2313,4 +2313,10 @@ export default {
   'openGym code': 'openGym 코드',
   '{0} no longer has it': '{0}에서 빠집니다',
   '“{0}” isn’t in this workout': '"{0}"은(는) 이번 운동에 없습니다',
+  "Normal": "일반",
+  "Routine type": "루틴 유형",
+  "Interval Training": "인터벌 트레이닝",
+  "Interval configuration": "인터벌 설정",
+  "Rounds": "라운드",
+  "Work": "운동",
 }

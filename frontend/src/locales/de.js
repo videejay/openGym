@@ -2333,4 +2333,10 @@ export default {
   'openGym code': 'openGym-Code',
   '{0} no longer has it': '{0} hat ihn dann nicht mehr',
   '“{0}” isn’t in this workout': '„{0}“ ist nicht in diesem Training',
+  "Normal": "Normal",
+  "Routine type": "Routinentyp",
+  "Interval Training": "Intervalltraining",
+  "Interval configuration": "Intervalleinstellungen",
+  "Rounds": "Runden",
+  "Work": "Belastung",
 }

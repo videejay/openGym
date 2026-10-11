@@ -2310,4 +2310,10 @@ export default {
   'openGym code': 'Код openGym',
   '{0} no longer has it': 'У {0} його більше не буде',
   '“{0}” isn’t in this workout': '«{0}» немає в цьому тренуванні',
+  "Normal": "Звичайний",
+  "Routine type": "Тип програми",
+  "Interval Training": "Інтервальне тренування",
+  "Interval configuration": "Налаштування інтервалів",
+  "Rounds": "Раунди",
+  "Work": "Робота",
 }

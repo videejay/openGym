@@ -2313,4 +2313,10 @@ export default {
   'openGym code': 'openGym kodu',
   '{0} no longer has it': '{0} artık buna sahip olmaz',
   '“{0}” isn’t in this workout': '“{0}” bu antrenmanda yok',
+  "Normal": "Normal",
+  "Routine type": "Rutin türü",
+  "Interval Training": "Aralıklı antrenman",
+  "Interval configuration": "Aralık ayarları",
+  "Rounds": "Turlar",
+  "Work": "Çalışma",
 }

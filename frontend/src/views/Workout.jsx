@@ -50,6 +50,7 @@ import FocusView from './FocusView.jsx'
 import { scanOnce } from '../components/CameraScan.jsx'
 import { normalizeQr, resolveScan, scanTargetRoutineId, withExQr, currentExerciseFor, qrCodesFor } from '../lib/exercise-qr.js'
 import { withMeaning, historyAs, dbLoadFor, entryDbLoad, bellsIn, ownedWeightsFor, stepOwned } from '../lib/dumbbells.js'
+import IntervalWorkout from './IntervalWorkout.jsx'
 
 // How long after a key starts a hold the same key is not yet its "Done" (#133). A USB button
 // that bounces, or a double press, sends two presses a moment apart: the first starts the hold,
@@ -2186,5 +2187,9 @@ function ActiveWorkout() {
 
 export default function Workout() {
   const active = useStore(s => s.S.active)
-  return active ? <ActiveWorkout /> : <StartChooser />
+
+  if (!active) return <StartChooser />
+  if (active.interval) return <IntervalWorkout />
+
+  return <ActiveWorkout />
 }

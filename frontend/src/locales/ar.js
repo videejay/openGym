@@ -2368,4 +2368,10 @@ export default {
   'openGym code': 'رمز openGym',
   '{0} no longer has it': 'لن يعود لدى {0}',
   '“{0}” isn’t in this workout': '«{0}» ليس في هذا التمرين',
+  "Normal": "عادي",
+  "Routine type": "نوع الروتين",
+  "Interval Training": "التدريب المتقطع",
+  "Interval configuration": "إعدادات الفترات",
+  "Rounds": "الجولات",
+  "Work": "العمل",
 }

@@ -1677,6 +1677,7 @@ export default {
   'Clear': 'Очистити',
   'QR code': 'QR-код',
   'Delete weigh-in': 'Видалити зважування',
+  'Monochrome': 'Монохромний',
   'Green': 'Зелений',
   'Blue': 'Синій',
   'Orange': 'Помаранчевий',

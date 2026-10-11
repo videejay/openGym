@@ -1735,6 +1735,7 @@ export default {
   'Clear': 'مسح',
   'QR code': 'رمز QR',
   'Delete weigh-in': 'حذف الوزن المسجّل',
+  'Monochrome': 'أحادي اللون',
   'Green': 'أخضر',
   'Blue': 'أزرق',
   'Orange': 'برتقالي',

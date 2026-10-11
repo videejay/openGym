@@ -1690,6 +1690,7 @@ export default {
   'Clear': 'Temizle',
   'QR code': 'QR kodu',
   'Delete weigh-in': 'Tartıyı sil',
+  'Monochrome': 'Monokrom',
   'Green': 'Yeşil',
   'Blue': 'Mavi',
   'Orange': 'Turuncu',

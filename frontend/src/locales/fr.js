@@ -1690,6 +1690,7 @@ export default {
   'Clear': 'Effacer',
   'QR code': 'Code QR',
   'Delete weigh-in': 'Supprimer la pesée',
+  'Monochrome': 'Monochrome',
   'Green': 'Vert',
   'Blue': 'Bleu',
   'Orange': 'Orange',

@@ -1737,6 +1737,7 @@ export default {
   'Clear': 'মুছুন',
   'QR code': 'QR কোড',
   'Delete weigh-in': 'ওজন মাপা মুছুন',
+  'Monochrome': 'মনোক্রোম',
   'Green': 'সবুজ',
   'Blue': 'নীল',
   'Orange': 'কমলা',

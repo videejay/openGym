@@ -3024,6 +3024,138 @@ paths:
         '401': { $ref: '#/components/responses/Unauthorized' }
         '403': { $ref: '#/components/responses/Forbidden' }
 
+  /api/admin/coach/connect/orcarouter/start:
+    post:
+      tags: [admin, coach]
+      operationId: postAdminCoachConnectOrcaRouterStart
+      summary: 'Admin: start the OrcaRouter OAuth 2.0 + PKCE sign-in'
+      description: |
+        Returns the consent URL for the admin to open in their own browser, and the
+        `generation` the browser quotes back on complete/cancel. The verifier stays on the server.
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                scope: { type: string, enum: [api] }
+                loginHint: { type: string, maxLength: 200 }
+      responses:
+        '200':
+          description: Sign-in started.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+                  url: { type: string }
+                  scope: { type: string }
+                  generation: { type: integer }
+                  expiresAt: { type: integer }
+                  appName: { type: string }
+                  consoleUrl: { type: string }
+        '400':
+          description: The provider is not registered, or an unsupported scope.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  /api/admin/coach/connect/orcarouter/complete:
+    post:
+      tags: [admin, coach]
+      operationId: postAdminCoachConnectOrcaRouterComplete
+      summary: 'Admin: finish the OrcaRouter sign-in with the code from the consent page'
+      description: |
+        Exchanges the code for a key and files it in the same encrypted slot a pasted key uses.
+        The attempt is spent either way.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [code]
+              properties:
+                code: { type: string }
+                generation: { type: integer }
+                account: { type: string, maxLength: 120 }
+      responses:
+        '200':
+          description: Connected.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+                  via: { type: string }
+                  account: { type: string, nullable: true }
+                  scope: { type: string }
+        '400':
+          description: No code, or the exchange failed (`code` names the reason).
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '409':
+          description: That sign-in is no longer pending (expired, cancelled or superseded).
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+        '429':
+          description: OrcaRouter rate-limited the exchange.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /api/admin/coach/connect/orcarouter/cancel:
+    post:
+      tags: [admin, coach]
+      operationId: postAdminCoachConnectOrcaRouterCancel
+      summary: 'Admin: cancel a pending OrcaRouter sign-in'
+      description: Idempotent; safe when the attempt already completed or expired.
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                generation: { type: integer }
+      responses:
+        '200':
+          description: Cancelled (or nothing was pending).
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Ok' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  /api/admin/coach/connect/orcarouter/denied:
+    post:
+      tags: [admin, coach]
+      operationId: postAdminCoachConnectOrcaRouterDenied
+      summary: 'Admin: record that the OrcaRouter consent was declined'
+      description: Ends the pending attempt. Nothing is saved.
+      responses:
+        '200':
+          description: Declined.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+                  reason: { type: string, enum: [denied] }
+                  message: { type: string }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
 components:
   securitySchemes:
     cookieAuth:

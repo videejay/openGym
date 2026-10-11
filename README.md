@@ -66,7 +66,8 @@ None of them is on upstream `main` yet, and they are not part of an upstream rel
 - Works in the browser/PWA (`BarcodeDetector`, falling back to jsQR), on Android (ML Kit) and on
   iPhone. It uses the scanner the gym check-in already has, so there is no new dependency and no new
   native plugin. On a Pro iPhone the browser camera stays on the plain wide lens instead of zooming
-  between lenses, and printing works from the app installed on the home screen as well.
+  between lenses. In the app on an iPhone's home screen, where a web page cannot print, the code
+  page comes as an A4 PDF through the share sheet.
 - Codes are stored in `S.exQr` (`{ [exerciseId]: [code, …] }`) and sync per exercise, the same way
   exercise notes do (`lib/sync-merge.js`, `api/sync-stamps.js`). The logic lives in
   `frontend/src/lib/exercise-qr.js` and has unit tests.

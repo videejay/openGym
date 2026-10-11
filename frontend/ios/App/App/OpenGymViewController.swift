@@ -10,5 +10,6 @@ class OpenGymViewController: CAPBridgeViewController {
         bridge?.registerPluginInstance(PrintPlugin())
         bridge?.registerPluginInstance(AppleHealthPlugin())
         bridge?.registerPluginInstance(WatchPlugin())
+        bridge?.registerPluginInstance(HealthKitPlugin())
     }
 }

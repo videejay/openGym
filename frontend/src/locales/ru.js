@@ -2358,4 +2358,9 @@ export default {
   'Uploaded to Strava': 'Загружено в Strava',
   'Uploading…': 'Загрузка…',
   '{0} workouts uploaded. Disconnecting only forgets the connection here; it does not touch other apps on your Strava account.': 'Загружено тренировок: {0}. Отключение лишь забывает подключение здесь; другие приложения в вашем аккаунте Strava не затрагиваются.',
+  'Manual': 'Вручную',
+  'Apple Health is still checking for a weight. Enter your weight to start.': 'Apple Health всё ещё ищет вес. Введите свой вес, чтобы начать.',
+  'Apple Health is unavailable on this device. Enter your weight to start.': 'Apple Health недоступно на этом устройстве. Введите свой вес, чтобы начать.',
+  'Apple Health has no readable weight. You can check Health access in Settings or enter your weight here.': 'В Apple Health нет веса, который можно прочитать. Проверьте доступ к Health в Настройках или введите вес здесь.',
+  'Apple Health could not load your weight. Enter your weight to start.': 'Apple Health не удалось загрузить ваш вес. Введите свой вес, чтобы начать.',
 }

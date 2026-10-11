@@ -2427,4 +2427,9 @@ export default {
   'Uploaded to Strava': 'Strava-তে আপলোড হয়েছে',
   'Uploading…': 'আপলোড হচ্ছে…',
   '{0} workouts uploaded. Disconnecting only forgets the connection here; it does not touch other apps on your Strava account.': '{0}টি ওয়ার্কআউট আপলোড হয়েছে। সংযোগ বিচ্ছিন্ন করলে শুধু এখানকার সংযোগটি মুছে যায়; আপনার Strava অ্যাকাউন্টের অন্য অ্যাপে এর কোনো প্রভাব পড়ে না।',
+  'Manual': 'ম্যানুয়াল',
+  'Apple Health is still checking for a weight. Enter your weight to start.': 'Apple Health এখনও ওজন খুঁজছে। শুরু করতে আপনার ওজন লিখুন।',
+  'Apple Health is unavailable on this device. Enter your weight to start.': 'এই ডিভাইসে Apple Health উপলব্ধ নয়। শুরু করতে আপনার ওজন লিখুন।',
+  'Apple Health has no readable weight. You can check Health access in Settings or enter your weight here.': 'Apple Health-এ পড়ার মতো কোনো ওজন নেই। আপনি সেটিংসে Health-এর অনুমতি দেখে নিতে পারেন, অথবা এখানে আপনার ওজন লিখতে পারেন।',
+  'Apple Health could not load your weight. Enter your weight to start.': 'Apple Health আপনার ওজন লোড করতে পারেনি। শুরু করতে আপনার ওজন লিখুন।',
 }

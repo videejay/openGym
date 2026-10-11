@@ -2354,4 +2354,9 @@ export default {
   'Uploaded to Strava': 'Strava에 업로드됨',
   'Uploading…': '업로드 중…',
   '{0} workouts uploaded. Disconnecting only forgets the connection here; it does not touch other apps on your Strava account.': '운동 {0}개 업로드됨. 연결을 해제하면 여기의 연결만 지워지며, Strava 계정의 다른 앱에는 영향이 없습니다.',
+  'Manual': '직접 입력',
+  'Apple Health is still checking for a weight. Enter your weight to start.': 'Apple 건강에서 아직 체중을 확인하는 중입니다. 시작하려면 체중을 입력하세요.',
+  'Apple Health is unavailable on this device. Enter your weight to start.': '이 기기에서는 Apple 건강을 사용할 수 없습니다. 시작하려면 체중을 입력하세요.',
+  'Apple Health has no readable weight. You can check Health access in Settings or enter your weight here.': 'Apple 건강에 읽을 수 있는 체중이 없습니다. 설정에서 건강 접근 권한을 확인하거나 여기에 체중을 입력하세요.',
+  'Apple Health could not load your weight. Enter your weight to start.': 'Apple 건강에서 체중을 불러오지 못했습니다. 시작하려면 체중을 입력하세요.',
 }

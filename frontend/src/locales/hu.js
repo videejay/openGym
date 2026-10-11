@@ -2357,4 +2357,9 @@ export default {
   'Uploaded to Strava': 'Feltöltve a Stravára',
   'Uploading…': 'Feltöltés…',
   '{0} workouts uploaded. Disconnecting only forgets the connection here; it does not touch other apps on your Strava account.': '{0} edzés feltöltve. A leválasztás csak itt felejti el a kapcsolatot; a Strava-fiókod többi alkalmazását nem érinti.',
+  'Manual': 'Kézi',
+  'Apple Health is still checking for a weight. Enter your weight to start.': 'Az Apple Health még keresi a testsúlyt. Add meg a súlyodat a kezdéshez.',
+  'Apple Health is unavailable on this device. Enter your weight to start.': 'Az Apple Health ezen az eszközön nem érhető el. Add meg a súlyodat a kezdéshez.',
+  'Apple Health has no readable weight. You can check Health access in Settings or enter your weight here.': 'Az Apple Healthben nincs olvasható testsúly. A Health-hozzáférést a Beállításokban ellenőrizheted, vagy itt megadhatod a súlyodat.',
+  'Apple Health could not load your weight. Enter your weight to start.': 'Az Apple Health nem tudta betölteni a súlyodat. Add meg a súlyodat a kezdéshez.',
 }

@@ -2354,4 +2354,9 @@ export default {
   'Uploaded to Strava': 'Enviado para o Strava',
   'Uploading…': 'A enviar…',
   '{0} workouts uploaded. Disconnecting only forgets the connection here; it does not touch other apps on your Strava account.': '{0} treinos enviados. Desligar só esquece a ligação aqui; as outras apps da tua conta Strava não são afetadas.',
+  'Manual': 'Manual',
+  'Apple Health is still checking for a weight. Enter your weight to start.': 'A Apple Saúde ainda está à procura de um peso. Introduz o teu peso para começar.',
+  'Apple Health is unavailable on this device. Enter your weight to start.': 'A Apple Saúde não está disponível neste dispositivo. Introduz o teu peso para começar.',
+  'Apple Health has no readable weight. You can check Health access in Settings or enter your weight here.': 'A Apple Saúde não tem nenhum peso legível. Podes verificar o acesso à Saúde nas Definições ou introduzir o teu peso aqui.',
+  'Apple Health could not load your weight. Enter your weight to start.': 'A Apple Saúde não conseguiu carregar o teu peso. Introduz o teu peso para começar.',
 }

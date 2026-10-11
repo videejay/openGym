@@ -2354,4 +2354,9 @@ export default {
   'Uploaded to Strava': 'Strava\'ya yüklendi',
   'Uploading…': 'Yükleniyor…',
   '{0} workouts uploaded. Disconnecting only forgets the connection here; it does not touch other apps on your Strava account.': '{0} antrenman yüklendi. Bağlantıyı kesmek yalnızca buradaki bağlantıyı unutur; Strava hesabındaki diğer uygulamaları etkilemez.',
+  'Manual': 'Manuel',
+  'Apple Health is still checking for a weight. Enter your weight to start.': 'Apple Health hâlâ bir ağırlık arıyor. Başlamak için ağırlığını gir.',
+  'Apple Health is unavailable on this device. Enter your weight to start.': 'Apple Health bu cihazda kullanılamıyor. Başlamak için ağırlığını gir.',
+  'Apple Health has no readable weight. You can check Health access in Settings or enter your weight here.': 'Apple Health\'te okunabilir bir ağırlık yok. Ayarlar\'dan Health erişimini kontrol edebilir veya ağırlığını buraya girebilirsin.',
+  'Apple Health could not load your weight. Enter your weight to start.': 'Apple Health ağırlığını yükleyemedi. Başlamak için ağırlığını gir.',
 }

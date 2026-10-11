@@ -2354,4 +2354,9 @@ export default {
   'Uploaded to Strava': '已上传到 Strava',
   'Uploading…': '正在上传…',
   '{0} workouts uploaded. Disconnecting only forgets the connection here; it does not touch other apps on your Strava account.': '已上传 {0} 次训练。断开连接只会忘记此处的连接，不会影响你 Strava 账户中的其他应用。',
+  'Manual': '手动',
+  'Apple Health is still checking for a weight. Enter your weight to start.': 'Apple 健康仍在查找体重。请输入体重以开始。',
+  'Apple Health is unavailable on this device. Enter your weight to start.': '此设备上无法使用 Apple 健康。请输入体重以开始。',
+  'Apple Health has no readable weight. You can check Health access in Settings or enter your weight here.': 'Apple 健康中没有可读取的体重。你可以在“设置”中检查健康访问权限，或在此输入体重。',
+  'Apple Health could not load your weight. Enter your weight to start.': 'Apple 健康无法载入你的体重。请输入体重以开始。',
 }

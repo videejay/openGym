@@ -10,6 +10,30 @@
   given to an exercise on the spot. A code may stand for several exercises; **Unassociate** takes
   it off one, and the last one deletes it. Codes sync per exercise like notes. Browser, Android
   and iPhone, with the scanner the gym check-in already uses: no new dependency.
+- **Several codes per exercise**, and an unknown code scanned in a workout is offered to the
+  exercise you are on first. Printing (the code page, a plan, a routine) now opens the print
+  dialog in the app installed on an iPhone's home screen too, and the camera on a Pro iPhone
+  stays on one lens instead of zooming between them.
+
+## v1.4.1 (2026-10-10)
+
+Bug fixes for v1.4.0, mostly the things you told us about on Discord and GitHub.
+
+- **Smooth animations in the app.** They lagged and stuttered on real phones (the phone's video
+  player stalled at every loop). The app now shows them as animated images, the way the old GIFs
+  worked, with the original timing. The web and self-hosted servers keep their clips.
+- **The update check finds new versions again.** It asked the GitLab mirror, which never got
+  v1.4.0. It asks GitHub now, and the 300 MB download goes straight to storage instead of into
+  memory, checked against its checksum before the installer opens.
+- **The rest bell rings over music.** With the app open, the end tone now plays like the
+  screen-off alarm does: your music turns down for a moment instead of drowning it.
+- **The Coach has its own button** on the Plan page, no more hunting in the share menu.
+- **Search**: the exercises you have done come right after your favourites, and "leg press"
+  finds the plain 45° leg press first.
+- **Add exercise** gets the Type row the library has (#521).
+- **Exercise progress** gets 1M / 3M / 1Y / All, like the body weight chart (#511).
+- **Imports**: two workouts on the same day stay two (#505).
+- **Coach**: an OpenAI-compatible server without /v1 in its address works, e.g. Open WebUI (#508).
 
 ## v1.4.0 (2026-10-09)
 

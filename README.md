@@ -44,10 +44,10 @@ on your phone, synced across your devices, behind your own passkey login.
 <details>
 <summary><b>What this fork adds</b> (<code>videejay/openGym</code>, compared with <a href="https://github.com/DuarteSantos8/openGym">DuarteSantos8/openGym</a>)</summary>
 
-This fork follows the upstream project and adds the features below. None of them is on upstream
-`main` yet, and they are not part of an upstream release.
+This fork follows the upstream project (currently synced with v1.4.1) and adds the features below.
+None of them is on upstream `main` yet, and they are not part of an upstream release.
 
-**QR codes on the machines** (branch `claude/exercise-qr-codes`)
+**QR codes on the machines** (branch `claude/exercise-qr-codes-upstream`, offered upstream on its own)
 
 - An exercise's page has a **QR codes** section. You can scan the code your gym put on the machine,
   or print a new code. The new code belongs to the exercise straight away and prints on an A4 page
@@ -57,13 +57,16 @@ This fork follows the upstream project and adds the features below. None of them
     the copy with sets left to do opens.
   - If it isn't in the workout, the app asks whether to add it to the routine *and* this workout,
     or to this workout only.
-  - A code that belongs to no exercise yet can be given to one right there.
+  - A code that belongs to no exercise yet is offered to the exercise you are on first, or to any
+    other one you pick.
+- An exercise can have **several codes** (two identical racks, the gym's sticker next to your own).
 - One code can stand for several exercises, such as a cable tower; scanning it then asks which one
   you mean. **Unassociate** takes a code off one exercise only: the other exercises keep it, and the
   code is deleted when the last one lets it go.
 - Works in the browser/PWA (`BarcodeDetector`, falling back to jsQR), on Android (ML Kit) and on
   iPhone. It uses the scanner the gym check-in already has, so there is no new dependency and no new
-  native plugin.
+  native plugin. On a Pro iPhone the browser camera stays on the plain wide lens instead of zooming
+  between lenses, and printing works from the app installed on the home screen as well.
 - Codes are stored in `S.exQr` (`{ [exerciseId]: [code, …] }`) and sync per exercise, the same way
   exercise notes do (`lib/sync-merge.js`, `api/sync-stamps.js`). The logic lives in
   `frontend/src/lib/exercise-qr.js` and has unit tests.

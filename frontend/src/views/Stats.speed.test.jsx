@@ -11,7 +11,7 @@ vi.mock('../store/useStore.js', () => ({ useStore: selector => selector({ S: moc
 vi.mock('react-router-dom', () => ({ useNavigate: () => () => {} }))
 vi.mock('../sheets.jsx', () => ({
   bwSheet: () => {}, goalSheet: () => {}, calendarSheet: () => {}, workoutDetailSheet: () => {}, exerciseHistorySheet: () => {},
-  WorkoutRow: () => null, bwDeltaColor: () => 'inherit',
+  WorkoutRow: () => null, bwDeltaColor: () => 'inherit', bfSheet: vi.fn(), bfGoalSheet: vi.fn(), bfDeltaColor: () => '',
 }))
 vi.mock('../components/LineChart.jsx', () => ({ default: props => { mocks.charts.push(props); return null } }))
 vi.mock('../components/Heatmap.jsx', () => ({ default: () => null }))

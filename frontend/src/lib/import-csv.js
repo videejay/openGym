@@ -574,17 +574,25 @@ export function parseWorkoutCSV(text, { unit = 'kg', customEx = [] } = {}) {
     const nameBp = bpFromName(name.toLowerCase())
     const exCardio = isCardioEx(id) || (created.get(key) || prior.get(key))?.bp === 'cardio' || nameBp === 'cardio'
     const timed = secs > 0 && !km && !reps && !exCardio && (source === 'Strong' || !!nameBp)
-    const isCardio = !timed && (km > 0 || mins > 0) && !reps
+    // A distance row with a duration but no reps is a capped distance set ({ sec, m }), not a
+    // cardio row: an unknown-pace carry is not the same kind of work as a treadmill interval,
+    // and forcing it through min@speed would invent a speed the exporter never logged. Above
+    // ~5 km, or on a cardio exercise (a run, a row), it stays cardio with its pace.
+    const kmC = Number(km) || 0
+    const isDistance = !timed && !exCardio && secs > 0 && kmC > 0 && kmC < 5 && !reps
+    const isCardio = !timed && !isDistance && (km > 0 || mins > 0) && !reps
     // `u` carries the row's own unit into the conversion pass below and is dropped there —
     // it never reaches the stored set.
     const set = timed
       ? { sec: Math.round(secs), w, done: true, u: rowUnit, ...(warmup ? { phase: 'warmup' } : {}) }
+      : isDistance
+        ? { sec: Math.round(secs), m: Math.round(kmC * 1000), done: true, ...(warmup ? { phase: 'warmup' } : {}) }
       : isCardio
         ? { min: mins || 0, speed: mins > 0 ? Math.round(km / (mins / 60) * 10) / 10 : 0, ...inclineFrom({ incline: clampIncline(num(cell(r, 'incline'))) }), done: true, ...(warmup ? { phase: 'warmup' } : {}) }
         : { w, r: reps || 0, done: true, u: rowUnit, ...(warmup ? { phase: 'warmup' } : {}) }
     // A "failure" set type (Hevy's CSV writes one) is the app's set taken to failure; not on
     // cardio, which has no effort to read it as.
-    if (!warmup && !isCardio && /^(f|fail|failure)$/i.test(String(cell(r, 'setType') || '').trim())) set.failure = true
+    if (!warmup && !isCardio && !isDistance && /^(f|fail|failure)$/i.test(String(cell(r, 'setType') || '').trim())) set.failure = true
     // Effort rides along only where the app can show it again: a weighted rep set. A treadmill
     // row with an RPE would have nowhere to put it. A set is kept on one scale, so a file
     // carrying both columns is read as RIR — the same precedence setLabel reads them back with.

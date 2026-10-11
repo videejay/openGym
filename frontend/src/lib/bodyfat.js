@@ -132,7 +132,7 @@ export function estimateBodyFatAtWeight(weight, leanMass) {
 
 export function formatFtIn(totalInches) {
   const n = Math.round(Number(totalInches))
-  if (!Number.isFinite(n) || n <= 0) return '—'
+  if (!Number.isFinite(n) || n <= 0) return '–'
   const ft = Math.floor(n / 12)
   const inch = ((n % 12) + 12) % 12
   return ft + "'" + inch + '"'

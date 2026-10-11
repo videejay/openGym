@@ -13,7 +13,7 @@ vi.mock('../store/useStore.js', () => ({ useStore: selector => selector({ S: moc
 vi.mock('react-router-dom', () => ({ useNavigate: () => vi.fn() }))
 vi.mock('../sheets.jsx', () => ({
   bwSheet: vi.fn(), goalSheet: vi.fn(), calendarSheet: vi.fn(), workoutDetailSheet: vi.fn(),
-  exerciseHistorySheet: vi.fn(), WorkoutRow: () => React.createElement('div'), bwDeltaColor: () => '', weighInsSheet: vi.fn(),
+  exerciseHistorySheet: vi.fn(), WorkoutRow: () => React.createElement('div'), bwDeltaColor: () => '', bfSheet: vi.fn(), bfGoalSheet: vi.fn(), bfDeltaColor: () => '', weighInsSheet: vi.fn(),
 }))
 vi.mock('../components/Heatmap.jsx', () => ({ default: () => React.createElement('div') }))
 vi.mock('../components/LineChart.jsx', () => ({ default: () => React.createElement('div') }))

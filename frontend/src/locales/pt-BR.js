@@ -1482,6 +1482,27 @@ export const PT_BR_OVERRIDES = {
   'Uploaded to Strava': 'Enviado para o Strava',
   'Uploading…': 'Enviando…',
   '{0} workouts uploaded. Disconnecting only forgets the connection here; it does not touch other apps on your Strava account.': '{0} treinos enviados. Desconectar só esquece a conexão aqui; os outros apps da sua conta do Strava não são afetados.',
+  // distance logging mode
+  'Distance': 'Distância',
+  'Time cap': 'Limite de tempo',
+  'Distance (m)': 'Distância (m)',
+  'Farthest distance per workout': 'Maior distância por treino',
+  'Step (m)': 'Passo (m)',
+  'Distance ({0})': 'Distância ({0})',
+  'Add distance': 'Aumentar distância',
+  'Cover the target distance inside the cap in every set and the distance goes up — the cap stays where it is.': 'Cubra a distância alvo dentro do limite em cada série e a distância sobe — o limite fica.',
+  'Covered the distance in every set — go for {0} this time.': 'Distância coberta em cada série — desta vez {0}.',
+  'Fell short {0} sessions in a row — back off to {1} and build up again.': 'Falhou {0} sessões seguidas — volte a {1} e suba de novo.',
+  'Last time came up short — same distance again inside the cap.': 'Da última vez faltou — mesma distância no limite.',
+  'Log body fat': 'Registrar gordura corporal',
+  'Body fat 30d': 'Gordura 30 d',
+  'Target body fat': 'Meta de gordura corporal',
+  'Calipers (JP3)': 'Adipômetro (JP3)',
+  'Manual %': '% manual',
+  'Estimated body fat': 'Gordura corporal estimada',
+  'Recent body-fat logs': 'Registros recentes de gordura',
+  'Age': 'Idade',
+  'Height': 'Altura',
 }
 
 export default { ...pt, ...PT_BR_OVERRIDES }

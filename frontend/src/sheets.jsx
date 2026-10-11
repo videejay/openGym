@@ -5,7 +5,7 @@ import { useUI } from './store/useUI.js'
 import { EXDB, EXIDX, BODYPARTS, isCardio, isBodyweightEq, allExercises, equipmentOf, byCategory, smOf, searchExercises, similarExercises, exOr, isAssisted, betterWeight, beatsWeight, isCustomEx, imgSrc, figureOf } from './lib/exercises.js'
 import { activeProfile, exAvailable, ALL_EQUIPMENT, newProfile, profileEquipment, ACC_V } from './lib/equipment.js'
 import { fmtAgo, fmtDate, fmtDateRange, fmtNum, fmtPlate, exerciseNameText, fmtVol, fmtDur, durPart, todayISO, isoOf, uid, exCount, routineCount, setsWorkCount, DAYN, DAYS, weekOrder, weekStartOf, weekDayOffset, MONTHS_LONG, ACCENTS } from './lib/format.js'
-import { lastEntryFor, bestWeightFor, bestWeightForEntry, buildSets, effectiveRoutineIds, workoutDay, workoutVolume, setsDone, setsDoneActive, setUnitsTotal, lastBW, lastBF, sessionSections, setLabel, defaultConfig, cleanupSg, modeOf, effortOf, EFFORT, capEffort, stepEffort, isBw, isPerSide, sideReps, workSetsDone, applyIntensifierPlan, MAX_PLANNED_WARMUPS, NOTE_MAX } from './lib/history.js'
+import { lastEntryFor, bestWeightFor, bestWeightForEntry, buildSets, effectiveRoutineIds, workoutDay, workoutVolume, setsDone, setsDoneActive, setUnitsTotal, lastBW, lastBF, sessionSections, setLabel, defaultConfig, cleanupSg, modeOf, effortOf, EFFORT, capEffort, stepEffort, isBw, isPerSide, sideReps, workSetsDone, applyIntensifierPlan, MAX_PLANNED_WARMUPS, NOTE_MAX, metresToDisplay, displayToMetres, distanceUnitLabel } from './lib/history.js'
 import { usesBar, defaultBarWeight, hasBarOverride, isNoBar } from './lib/bar.js'
 import { jp3BodyFatPct, jp3SitesFor, navyCircKeysFor, navyBodyFatPct, clampBodyFatPct, lengthUnitFor, bodyFatMethodLabel, clampHeightInches } from './lib/bodyfat.js'
 import { PLATE_SIZES, pairsOf, ownsPlates, withPlatePairs, withStandardPlates, withLoadKind, loadKindFor, baseWeightFor, dropGrid } from './lib/plates.js'
@@ -870,7 +870,8 @@ function BfSheet({ close }) {
   const goAddHeight = () => {
     close()
     useUI.getState().closeAll()
-    nav('/settings#height')
+    // The Height row, found and flashed the way a Settings search hit is (Settings.jsx `find`).
+    nav('/settings/look', { state: { find: 'Height' } })
   }
 
   const recent = [...(st.bodyfat || [])].reverse().slice(0, 3)
@@ -925,7 +926,7 @@ function BfSheet({ close }) {
     </div>
     <div className="bf-estimate">
       <span className="muted small">{t('Estimated body fat')}</span>
-      <b className="bf-estimate-pct">{preview == null ? '—' : fmtNum(preview) + '%'}</b>
+      <b className="bf-estimate-pct">{preview == null ? '–' : fmtNum(preview) + '%'}</b>
     </div>
     <div style={{ height: 14 }} />
     <Button variant="primary" onClick={save} disabled={preview == null || tapeNeedsHeight}>{t('Save')}</Button>
@@ -1270,7 +1271,7 @@ function ExerciseDetail({ ex, close }) {
       {detailTags(ex).map(tg => <span key={tg.key} className={'tag' + (tg.acc ? ' acc' : '')}>{tg.icon && <Icon name={tg.icon} />}{tg.label}</span>)}
     </div>
     {descFor(ex) && <div className="exnote">{descFor(ex)}</div>}
-    {best > 0 && <div className="small row" style={{ marginBottom: 6, gap: 5 }}><Icon name="trophy" style={{ fontSize: 14, color: 'var(--yellow)' }} />{t('Best:')} <b className="accent" style={{ whiteSpace: 'nowrap' }}>{fmtNum(best)} {st.unit}</b>{last ? ` · ${t('last')} ${fmtDate(last.d)}: ${last.sets.map(s => setLabel(ex.id, s, last.target, speedUnitOf(st))).join(', ')}` : ''}</div>}
+    {best > 0 && <div className="small row" style={{ marginBottom: 6, gap: 5 }}><Icon name="trophy" style={{ fontSize: 14, color: 'var(--yellow)' }} />{t('Best:')} <b className="accent" style={{ whiteSpace: 'nowrap' }}>{fmtNum(best)} {st.unit}</b>{last ? ` · ${t('last')} ${fmtDate(last.d)}: ${last.sets.map(s => setLabel(ex.id, s, last.target, speedUnitOf(st), st.unit)).join(', ')}` : ''}</div>}
     <Button variant="primary" icon="plus" style={{ margin: '10px 0 4px' }} onClick={() => addToRoutineSheet(ex)}>{t('Add to my plan')}</Button>
     {last && <Button icon="history" style={{ marginTop: 4 }} onClick={() => exerciseHistorySheet(ex.id)}>{t('History')}</Button>}
     {isCustomEx(ex) && <div className="row" style={{ gap: 8, marginTop: 8 }}>
@@ -1526,7 +1527,7 @@ function ExerciseHistory({ exId }) {
       {h.sessions.map(s => <div key={s.id} className="item" style={{ alignItems: 'flex-start' }}>
         <div className="grow">
           <div className="tt">{fmtDate(s.d, true)} {s.pr && <span className="pr"><Icon name="trophy" />PR</span>}</div>
-          <div className="ss">{s.sets.map(x => setLabel(exId, x, s.target, speedUnitOf(st))).join('  ·  ')}</div>
+          <div className="ss">{s.sets.map(x => setLabel(exId, x, s.target, speedUnitOf(st), st.unit)).join('  ·  ')}</div>
           {tail(s) && <div className="small dim" style={{ marginTop: 3 }}>{tail(s)}</div>}
         </div>
         {s.value != null && s.value > 0 && <b className="accent nocap" style={{ whiteSpace: 'nowrap' }}>{fmtNum(s.value)} {unit}</b>}
@@ -1995,7 +1996,7 @@ export const equipmentProfileSheet = profile => ui().openSheet(close => <Equipme
 // "how does this lift go up" belongs next to sets and reps, not in a separate screen. Left
 // on "follow the routine" it inherits, so most people never touch it.
 const progressionStepOf = (c, mode, ex, unit) =>
-  c.inc >= 0 ? c.inc : (mode === 'time' ? 5 : defaultIncrement(ex.id, unit))
+  c.inc >= 0 ? c.inc : (mode === 'time' ? 5 : mode === 'distance' ? 10 : defaultIncrement(ex.id, unit))
 // Back-off sets step down by the same Step, so a plan using them needs one even with no rule.
 const progressionStepIsValid = (step, policy, backoff = false) =>
   (policy === 'off' && !backoff) || (Number.isFinite(step) && step > 0)
@@ -2057,9 +2058,9 @@ function ProgressionFields({ ex, mode, c, setC, routine, unit, perSide, bw }) {
     {/* Double progression on a weighted exercise fills this row with four steppers; `cfgrow-4`
         lets it wrap into two pairs on phones, where four abreast left the inputs a few px wide. */}
     {(active !== 'off' || backoff) && <div className={'row cfgrow' + ((active === 'double' && epleyEligible) || active === 'triple' ? ' cfgrow-4' : '')} style={{ marginBottom: 18 }}>
-      <Stepper label={mode === 'time' ? t('Step (seconds)') : t('Step ({0})', unit)} value={inc}
-        step={mode === 'time' ? 5 : 1.25} decimal={mode !== 'time'} invalid={invalid} className={invalid ? 'invalid' : ''}
-        onChange={v => setC(x => ({ ...x, inc: v }))} />
+      <Stepper label={mode === 'time' ? t('Step (seconds)') : mode === 'distance' ? t('Step ({0})', distanceUnitLabel(unit)) : t('Step ({0})', unit)} value={mode === 'distance' ? metresToDisplay(inc, unit) : inc}
+        step={mode === 'time' ? 5 : mode === 'distance' ? 10 : 1.25} decimal={mode !== 'time'} invalid={invalid} className={invalid ? 'invalid' : ''}
+        onChange={v => setC(x => ({ ...x, inc: mode === 'distance' ? displayToMetres(v, unit) : v }))} />
       {climbsRange(active) && <>
         {/* The draft stays as typed: normalising on every keystroke turned "12" into 92 (the
             "1" was pulled above the lower bound first). Save and the engine normalise anyway. */}
@@ -2184,6 +2185,7 @@ function ExConfig({ ex, existing, onSave, onDelete, onReplace, close, routine, i
     // "Last set to failure": written only when on, so a plan that never asked keeps its shape.
     const withFailure = c.lastToFailure === true ? { lastToFailure: true } : {}
     if (cardio) onSave({ sets, min: Math.max(1, Math.round(c.min) || 20), speed: Math.max(0, c.speed || 8), ...withNote, ...withRest })
+    else if (mode === 'distance') onSave({ sets, mode: 'distance', sec: Math.max(1, Math.round(c.sec) || 600), m: Math.max(1, Math.round(c.m) || 400), ...flags, ...prog, ...withNote, ...withRest })
     else if (mode === 'time') onSave({ sets, mode: 'time', sec: Math.max(1, Math.round(c.sec) || 45), weight: Math.max(0, c.weight || 0), ...flags, ...(perSide ? { side: true } : {}), ...prog, ...withNote, ...withWarmups, ...withRest, ...withMeant, ...withFailure })
     else {
       // A unilateral target is stored even: the split has to divide, and a typed 15 would
@@ -2238,7 +2240,11 @@ function ExConfig({ ex, existing, onSave, onDelete, onReplace, close, routine, i
     {descFor(ex) && <div className="exnote">{descFor(ex)}</div>}
     {!cardio && <div style={{ marginBottom: 14 }}>
       <Segmented className="seg-range" value={mode} onChange={setMode}
-        options={[{ value: 'reps', label: t('Reps') }, { value: 'time', label: t('Time') }]} />
+        options={[
+          { value: 'reps', label: t('Reps') },
+          { value: 'time', label: t('Time') },
+          { value: 'distance', label: t('Distance') },
+        ]} />
     </div>}
     <div className="row cfgrow" style={{ marginBottom: mode === 'time' ? 8 : 18 }}>
       {cardio ? <>
@@ -2247,6 +2253,10 @@ function ExConfig({ ex, existing, onSave, onDelete, onReplace, close, routine, i
         {/* Typed and stepped in the profile's unit, kept in km/h (lib/speed.js). */}
         <Stepper label={speedUnit === 'mph' ? t('Speed (mph)') : t('Speed (km/h)')} value={toSpeed(c.speed, speedUnit)} step={0.5}
           onChange={v => setC(x => ({ ...x, speed: fromSpeed(v, speedUnit) }))} />
+      </> : mode === 'distance' ? <>
+        <Stepper label={t('Sets')} value={c.sets} step={1} decimal={false} onChange={v => setC(x => ({ ...x, sets: v }))} />
+        <Stepper label={t('Time cap')} value={c.sec} step={5} decimal={false} onChange={v => setC(x => ({ ...x, sec: v }))} />
+        <Stepper label={t('Distance ({0})', distanceUnitLabel(st.unit))} value={metresToDisplay(c.m, st.unit)} step={st.unit === 'lb' ? 10 : 5} decimal={st.unit === 'lb'} onChange={v => setC(x => ({ ...x, m: displayToMetres(v, st.unit) }))} />
       </> : mode === 'time' ? <>
         <Stepper label={t('Sets')} value={c.sets} step={1} decimal={false} onChange={v => setC(x => ({ ...x, sets: v }))} />
         <Stepper label={t('Seconds')} value={c.sec} step={5} decimal={false} onChange={v => setC(x => ({ ...x, sec: v }))} />
@@ -2935,7 +2945,7 @@ function WorkoutDetail({ w, close }) {
     return <div key={i} className="row wd-ex" style={{ alignItems: 'flex-start' }} {...tappable(() => exerciseHistorySheet(e.id))}>
       {ex && <Thumb ex={ex} />}
       <div className="grow"><div className={`tt ${exerciseNameClass(ex)}`} style={{ fontWeight: 600 }}>{nameOf(e)} {w.prs && w.prs.includes(e.id) && <span className="pr"><Icon name="trophy" />PR</span>}</div>
-        <div className="ss">{e.sets.filter(hasCompletedWork).map(s => setLabel(e.id, s, e.target, speedUnitOf(st))).join('  ·  ') || t('no sets')}</div>
+        <div className="ss">{e.sets.filter(hasCompletedWork).map(s => setLabel(e.id, s, e.target, speedUnitOf(st), st.unit)).join('  ·  ') || t('no sets')}</div>
         {e.note && <div className="small dim" style={{ marginTop: 3 }}>
           {e.notePin && <Icon name="pin" style={{ fontSize: 12, marginInlineEnd: 4, verticalAlign: '-1px', color: 'var(--yellow)' }} />}{e.note}
         </div>}</div>
@@ -3791,7 +3801,7 @@ function CardioDone({ st, w }) {
       const ex = EXIDX[row.id]
       return <div key={i} className="item" style={{ display: 'block' }}>
         <span className={'tt ' + exerciseNameClass(ex)} style={{ fontWeight: 600 }}>{ex ? exerciseNameFor(ex) : row.id}</span>
-        <div className="small">{row.sets.map(x => setLabel(row.id, x, row.target, speedUnitOf(st))).join('  ·  ')}</div>
+        <div className="small">{row.sets.map(x => setLabel(row.id, x, row.target, speedUnitOf(st), st.unit)).join('  ·  ')}</div>
       </div>
     })}</div>
   </div>
@@ -3902,6 +3912,7 @@ function doFinishWorkout() {
       })
       s.workouts.push(w)
     }
+
     s.active = null
     // A rotation pass this app manages starts its next pass the moment the last session lands
     // (lib/rotation.js). A planner's queue is left alone: it completes and waits for its writer.

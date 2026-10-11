@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- 🏃 **Distance logging mode** for carries and loaded walks: sets are `{ sec, m }` (time cap + farthest metres). Storage stays metric; lb profiles enter/show **feet**. Progression gets **Add distance** (+10 m) with deload after repeated misses. CSV import, Stats farthest-distance, mode registry (`MODES` / `METRIC_MODES`), and all 14 locale packs included.
+
 - 📊 **Body fat tracker** (Home + Stats): log body-fat % with the same curve/goal pattern as body weight.
   - **Caliper** — Jackson–Pollock 3-site (sex-specific sites + age from Settings / body diagram).
   - **Tape Measure** — U.S. Navy / Hodgdon–Beckett (neck/waist[/hip] + height from Settings; hip for women).

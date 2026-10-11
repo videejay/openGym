@@ -82,32 +82,6 @@ const standalone = () => {
 
 export default function Settings({ page = null, find = null, via = null }) {
   const nav = useNavigate()
-  const location = useLocation()
-  useEffect(() => {
-    if (location.hash !== '#height') return
-    let cancelled = false
-    const timers = []
-    // Wait past Modals' post-close scroll restore (0ms + 350ms) before scrolling/flashing.
-    timers.push(window.setTimeout(() => {
-      if (cancelled) return
-      const el = document.getElementById('settings-height')
-      if (!el || typeof el.scrollIntoView !== 'function') return
-      el.scrollIntoView({ behavior: 'smooth', block: 'center' })
-      timers.push(window.setTimeout(() => {
-        if (cancelled) return
-        el.classList.remove('settings-row-flash')
-        void el.offsetWidth
-        el.classList.add('settings-row-flash')
-        const done = () => el.classList.remove('settings-row-flash')
-        el.addEventListener('animationend', done, { once: true })
-      }, 550))
-    }, 400))
-    return () => {
-      cancelled = true
-      timers.forEach(id => window.clearTimeout(id))
-      document.getElementById('settings-height')?.classList.remove('settings-row-flash')
-    }
-  }, [location.hash])
   const S = useStore(s => s.S)
   const user = useStore(s => s.user)
   const sync = useStore(s => s.sync)
@@ -764,11 +738,11 @@ export default function Settings({ page = null, find = null, via = null }) {
         <Row icon="timer" iconTint="var(--purple)" title={t('Age')}>
           <div className="row" style={{ gap: 8, alignItems: 'center' }}>
             <button className="bw-pm sm" onClick={() => update(s => { s.age = Math.max(10, (s.age || 30) - 1) })} aria-label={t('Decrease age')}><Icon name="minus" /></button>
-            <b style={{ minWidth: 36, textAlign: 'center' }}>{S.age || '—'}</b>
+            <b style={{ minWidth: 36, textAlign: 'center' }}>{S.age || '–'}</b>
             <button className="bw-pm sm" onClick={() => update(s => { s.age = Math.min(100, (s.age || 30) + 1) })} aria-label={t('Increase age')}><Icon name="plus" /></button>
           </div>
         </Row>
-        <Row id="settings-height" icon="figureRun" iconTint="var(--blue)" title={t('Height')}>
+        <Row icon="figureRun" iconTint="var(--blue)" title={t('Height')}>
           <div className="row" style={{ gap: 8, alignItems: 'center' }}>
             <button className="bw-pm sm" onClick={() => update(s => {
               if (s.unit === 'lb') {
@@ -782,7 +756,7 @@ export default function Settings({ page = null, find = null, via = null }) {
               ? (S.unit === 'lb'
                 ? formatFtIn(S.height / 2.54)
                 : fmtNum(S.height) + ' cm')
-              : '—'}</b>
+              : '–'}</b>
             <button className="bw-pm sm" onClick={() => update(s => {
               if (s.unit === 'lb') {
                 const inches = clampHeightInches((s.height || 170) / 2.54 + 1)

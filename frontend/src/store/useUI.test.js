@@ -363,7 +363,8 @@ describe('the sound a rest ends with, by its kind', () => {
     pick({ sound: false, restSoundByKind: { set: 'beep' } })
     useUI.getState().startRest(1, 0, { kind: 'set' })
     vi.advanceTimersByTime(1000)
-    expect(chime).toHaveBeenCalledWith(false, 'beep')
+    // Off never reaches the speaker: endTone (useUI.js) stops before the chime or the native tone.
+    expect(chime.mock.calls.filter(([on]) => on)).toEqual([])
   })
 
   it('keeps the kind and phase when the rest is extended, started again from Ready, or followed from the Android notification', () => {

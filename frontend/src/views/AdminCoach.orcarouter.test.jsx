@@ -226,10 +226,9 @@ describe('the connect sheet', () => {
 })
 
 describe('the model picker follows the catalog', () => {
-  it('replaces the free-text field with a list once the provider has one, and keeps the previous value out of the selection when it is gone', async () => {
-    // The stored model is one the endpoint no longer serves. The select must not keep selecting
-    // it — a silent wrong value is a job that fails later with a confusing error. It falls back
-    // to Default, and the stale name is still shown but explicitly labelled.
+  it('replaces the free-text field with a list once the provider has one, and labels a stored model that is gone', async () => {
+    // The stored model is one the endpoint no longer serves. It stays the selected one, labelled
+    // as not in the list: showing Default would claim a model that is not in use (AdminCoach.test.jsx).
     mocks.api = fakeApi({
       status: {
         model: 'vendor/retired-model',
@@ -240,7 +239,7 @@ describe('the model picker follows the catalog', () => {
     await mount()
     const sel = container.querySelector('select.adm-select')
     expect(sel, 'the picker is a list, not a text field').toBeTruthy()
-    expect(sel.value, 'an incompatible stored model is not silently kept selected').toBe('')
+    expect(sel.value, 'the configured model is shown as chosen, not as the default').toBe('vendor/retired-model')
     const labels = [...sel.querySelectorAll('option')].map(o => o.textContent)
     expect(labels.some(l => /retired-model.*not in the list/i.test(l)), 'and the admin can see what was there').toBe(true)
     expect(labels).toContain('vendor/kept-a')

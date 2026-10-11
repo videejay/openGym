@@ -227,19 +227,6 @@ h4.sec{
 }
 .lrow:has(.lrow-i)+.lrow:has(.lrow-i)::before{inset-inline-start:55px}
 .lrow.tap:active{background:var(--surface-2)}
-/* Height-row flash after Add now scroll (two soft pulses). */
-@keyframes settings-row-flash{
-  0%{background:transparent}
-  12%{background:var(--surface-2)}
-  22%{background:var(--surface-2)}
-  34%{background:transparent}
-  50%{background:transparent}
-  62%{background:var(--surface-2)}
-  72%{background:var(--surface-2)}
-  84%{background:transparent}
-  100%{background:transparent}
-}
-.lrow.settings-row-flash{animation:settings-row-flash 1.6s ease-in-out}
 .lrow-i{
   width:29px;height:29px;border-radius:7px;flex:none;font-size:18px;
   display:flex;align-items:center;justify-content:center;

@@ -73,6 +73,12 @@ function cleanEx(e) {
   if (mode === 'cardio') {
     if (e.min != null) o.min = e.min
     if (e.speed != null) o.speed = e.speed
+  } else if (mode === 'distance') {
+    // The mode travels like time's, or a distance set arriving on the other end would read
+    // as reps of whatever number of "reps" the metre count spelled.
+    o.mode = 'distance'
+    if (e.sec != null) o.sec = e.sec
+    if (e.m != null) o.m = e.m
   } else if (mode === 'time') {
     // Written out even though 'reps' is the fallback for a non-cardio id: a plan file that
     // dropped the mode would turn a 45-second plank into a 45-rep one at the other end.
@@ -94,8 +100,8 @@ function cleanEx(e) {
   // How the exercise is logged travels too (issues #31/#32) — the bodyweight flag only when
   // it disagrees with the catalogue, since agreeing is what the other end already assumes.
   if (e.bodyweight != null && e.bodyweight !== isBodyweightEq(e.id)) o.bodyweight = e.bodyweight
-  // Reps work and timed holds (a per-side hold is an L and an R hold per set); never cardio.
-  if (e.side && mode !== 'cardio') o.side = true
+  // Reps work and timed holds (a per-side hold is an L and an R hold per set); never cardio or distance.
+  if (e.side && mode !== 'cardio' && mode !== 'distance') o.side = true
   // Progression settings travel with the plan — a shared Greyskull routine that arrives
   // without its rule is just a list of weights.
   if (e.prog) o.prog = e.prog

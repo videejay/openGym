@@ -2322,4 +2322,17 @@ export default {
   "Interval configuration": "Intervallumok beállítása",
   "Rounds": "Körök",
   "Work": "Munka",
+  // --- a sound for each kind of rest (#165) ---
+  'A sound for each kind of rest': 'Saját hang minden pihenőtípushoz',
+  'Hear what comes next without looking. Until you pick one, each plays the sound above, as holds and the switch-sides pause always do.': 'Hallod, mi jön, oda sem kell nézned. Amíg nem választasz, mindegyik a fenti hangot játssza, ahogy a tartások és az oldalcsere szünete mindig.',
+  'Next round': 'Következő kör',
+  'Next exercise': 'Következő gyakorlat',
+  'Same as above': 'Mint fent',
+  'Same as {0}': 'Mint: {0}',
+  // --- what the timer bar says it times (#165) ---
+  'Set': 'Sorozat',
+  'Round': 'Kör',
+  'Hold': 'Tartás',
+  'Hold {0} of {1}': 'Tartás {0}/{1}',
+  'Warm-up hold {0} of {1}': 'Bemelegítő tartás {0}/{1}',
 }

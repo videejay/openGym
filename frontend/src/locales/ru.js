@@ -2323,4 +2323,17 @@ export default {
   "Interval configuration": "Настройка интервалов",
   "Rounds": "Раунды",
   "Work": "Работа",
+  // --- a sound for each kind of rest (#165) ---
+  'A sound for each kind of rest': 'Свой звук для каждого вида отдыха',
+  'Hear what comes next without looking. Until you pick one, each plays the sound above, as holds and the switch-sides pause always do.': 'Слышно, что дальше, без взгляда на экран. Пока вы не выберете звук, каждый вид играет звук выше, как всегда делают удержания и пауза для смены стороны.',
+  'Next round': 'Следующий круг',
+  'Next exercise': 'Следующее упражнение',
+  'Same as above': 'Как выше',
+  'Same as {0}': 'Как {0}',
+  // --- what the timer bar says it times (#165) ---
+  'Set': 'Подход',
+  'Round': 'Круг',
+  'Hold': 'Удержание',
+  'Hold {0} of {1}': 'Удержание {0} из {1}',
+  'Warm-up hold {0} of {1}': 'Разминочное удержание {0} из {1}',
 }

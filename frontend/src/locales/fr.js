@@ -2319,4 +2319,17 @@ export default {
   "Interval configuration": "Configuration des intervalles",
   "Rounds": "Tours",
   "Work": "Effort",
+  // --- a sound for each kind of rest (#165) ---
+  'A sound for each kind of rest': 'Un son pour chaque type de repos',
+  'Hear what comes next without looking. Until you pick one, each plays the sound above, as holds and the switch-sides pause always do.': 'Entends ce qui vient sans regarder. Tant que tu n’en choisis pas, chacun joue le son du dessus, comme le font toujours les maintiens et la pause pour changer de côté.',
+  'Next round': 'Tour suivant',
+  'Next exercise': 'Exercice suivant',
+  'Same as above': 'Comme au-dessus',
+  'Same as {0}': 'Comme {0}',
+  // --- what the timer bar says it times (#165) ---
+  'Set': 'Série',
+  'Round': 'Tour',
+  'Hold': 'Maintien',
+  'Hold {0} of {1}': 'Maintien {0} sur {1}',
+  'Warm-up hold {0} of {1}': 'Maintien d’échauffement {0} sur {1}',
 }

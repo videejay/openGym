@@ -2330,4 +2330,17 @@ export default {
   "Interval configuration": "การตั้งค่าอินเทอร์วัล",
   "Rounds": "รอบ",
   "Work": "ช่วงออกกำลัง",
+  // --- a sound for each kind of rest (#165) ---
+  'A sound for each kind of rest': 'เสียงแยกตามประเภทการพัก',
+  'Hear what comes next without looking. Until you pick one, each plays the sound above, as holds and the switch-sides pause always do.': 'รู้ว่าต่อไปคืออะไรโดยไม่ต้องมอง จนกว่าคุณจะเลือก แต่ละแบบจะเล่นเสียงด้านบน เหมือนที่การค้างท่าและช่วงพักสลับข้างเล่นเสมอ',
+  'Next round': 'รอบถัดไป',
+  'Next exercise': 'ท่าถัดไป',
+  'Same as above': 'เหมือนด้านบน',
+  'Same as {0}': 'เหมือน {0}',
+  // --- what the timer bar says it times (#165) ---
+  'Set': 'เซ็ต',
+  'Round': 'รอบ',
+  'Hold': 'ค้างไว้',
+  'Hold {0} of {1}': 'ค้างไว้ {0}/{1}',
+  'Warm-up hold {0} of {1}': 'ค้างไว้วอร์มอัพ {0}/{1}',
 }

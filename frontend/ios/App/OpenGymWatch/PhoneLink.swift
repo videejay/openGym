@@ -10,7 +10,6 @@ final class PhoneLink: NSObject, ObservableObject, WCSessionDelegate {
     @Published private(set) var snapshot: Snapshot?
     // An action is on its way and no snapshot has answered it yet.
     @Published private(set) var waiting = false
-    private var sentAt: Date?
 
     func start() {
         guard WCSession.isSupported() else { return }
@@ -22,13 +21,6 @@ final class PhoneLink: NSObject, ObservableObject, WCSessionDelegate {
         let s = WCSession.default
         guard s.activationState == .activated else { return }
         waiting = true
-        // A phone that turns the action down (the set was ticked there meanwhile) sends nothing
-        // new: the watch stops waiting on its own.
-        let sent = Date()
-        sentAt = sent
-        DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
-            if self.sentAt == sent { self.waiting = false }
-        }
         if s.isReachable {
             s.sendMessage(["action": action], replyHandler: nil) { _ in
                 s.transferUserInfo(["action": action])

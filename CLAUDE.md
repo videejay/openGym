@@ -14,7 +14,7 @@ License: AGPL-3.0-or-later.
 ```
 frontend/  React 19 + Vite app (src/views, src/components, src/store, src/lib). Builds to static files.
            android/ + ios/ are the Capacitor shells for the standalone mobile app (docs/MOBILE.md);
-           ios/App/OpenGymWatch is the SwiftUI Apple Watch app. scripts/build-ipa.sh builds the
+           ios/App/WatchApp is the SwiftUI Apple Watch app (docs/APPLE_WATCH.md). scripts/build-ipa.sh builds the
            iPhone .ipa + AltStore source (macOS only).
 api/       backend — server.js (Node, no framework), deps: @simplewebauthn/server, web-push.
            coach/ is the optional AI coach; openapi.yaml documents every route.
@@ -97,8 +97,8 @@ directly; the mirror is fast-forward only.
   Local native plugins are registered by hand: `MainActivity.java` on Android,
   `ios/App/App/OpenGymViewController.swift` on iOS (Capacitor only auto-loads npm plugins).
   `health-sync.js` drives Health Connect (Android) and Apple Health (iOS, HealthKit only with
-  `OPENGYM_HEALTHKIT=YES`) through one plugin interface; `watch-model.js`/`watch-sync.js` feed
-  the Apple Watch app over `WatchPlugin.swift`. None of the Swift is built by CI without a Mac
+  `OPENGYM_HEALTHKIT=YES`) through one plugin interface; `apple-watch.js`/`watch-protocol.js` feed
+  the Apple Watch app over `WatchBridgePlugin.swift`. None of the Swift is built by CI without a Mac
   runner, so changes there need a check in Xcode.
 
 ### API (`api/server.js`)

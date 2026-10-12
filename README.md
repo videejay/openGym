@@ -192,7 +192,7 @@ on the phone, with native reminders and a rest countdown in the notification sha
   or the [website](https://opengym.ch). Each build sits next to its `.sha256`, and
   the app checks for updates itself. openGym is deliberately not on the Play Store.
 - **iPhone:** not in the App Store. Install the native app with AltStore, signed with your own
-  Apple ID — with an Apple Watch app for the next set and the rest, and Apple Health with a paid
+  Apple ID — with an Apple Watch app that logs workouts on the wrist, and Apple Health with a paid
   developer account — or self-host and add the PWA to your home screen from Safari.
 
 Details and build instructions: [docs/MOBILE.md](docs/MOBILE.md).

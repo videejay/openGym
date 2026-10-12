@@ -76,7 +76,7 @@ export function altstoreSource({ version, privacy = {}, entitlements = [], previ
       bundleIdentifier: BUNDLE_ID,
       developerName: 'openGym',
       subtitle: 'Gym & body-weight tracker',
-      localizedDescription: 'Log workouts, follow a progression plan and track your body weight — on the phone only, or synced with your own openGym server. Writes workouts to Apple Health where the signing Apple ID allows it, and comes with an Apple Watch app for the next set and the rest.',
+      localizedDescription: 'Log workouts, follow a progression plan and track your body weight — on the phone only, or synced with your own openGym server. Writes workouts to Apple Health where the signing Apple ID allows it, and comes with an Apple Watch app that logs workouts on the wrist, even away from the phone.',
       iconURL: 'https://opengym.ch/icon-512.png',
       tintColor: '#30d158',
       category: 'lifestyle',

@@ -59,8 +59,8 @@ cp -R build/App.xcarchive/Products/Applications/App.app Payload/
 APP=Payload/App.app
 if [ "$WATCH" = 0 ]; then rm -rf "$APP/Watch"; fi
 
-if [ -d "$APP/Watch/OpenGymWatch.app" ]; then
-  codesign --force --sign - --timestamp=none "$APP/Watch/OpenGymWatch.app"
+if [ -d "$APP/Watch/WatchApp.app" ]; then
+  codesign --force --sign - --timestamp=none --entitlements WatchApp/WatchApp.entitlements "$APP/Watch/WatchApp.app"
 fi
 for fw in "$APP"/Frameworks/*; do
   [ -e "$fw" ] && codesign --force --sign - --timestamp=none "$fw"

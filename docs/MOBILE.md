@@ -274,42 +274,17 @@ Activity, which would need a widget extension.
 
 ### Apple Watch
 
-The iOS app comes with a watch app (`ios/App/OpenGymWatch`, SwiftUI, watchOS 9 or later), installed
-on the paired watch with the phone app. It keeps no log of its own; while a workout runs on the
-phone it shows:
+The iOS app comes with a watch app (`ios/App/WatchApp`, SwiftUI, watchOS 10 or later), installed
+on the paired watch with the phone app. It keeps the routines the phone sends it, so a workout can
+start and be logged on the watch, even without the phone in reach, with the rest countdown, live
+heart rate and active energy. [APPLE_WATCH.md](APPLE_WATCH.md) describes it in full: offline
+sessions, the sync with the phone, signing and the checks.
 
-- **the set to do next** — the exercise, "Set 2 / 4", the reps (turn the Digital Crown), the
-  weight (− and +, in steps of 2.5 kg or 5 lb) and **Done**, which ticks the set on the phone
-  exactly as a tap there would: the reps and weight go on the row, the rest starts, a superset
-  moves on, the last set opens the finish sheet. A timed, cardio or per-side set is shown with
-  "Log this set on your iPhone";
-- **the rest** — counting down on the watch, with **+15**, **Pause** / **Resume** and **Skip**, and a
-  tap on the wrist at the end while the watch app is in front.
-
-How it works: the phone sends one small JSON snapshot whenever the workout or the rest changes
-(`src/lib/watch-model.js` builds it, `src/lib/watch-sync.js` sends it through
-`ios/App/App/WatchPlugin.swift` and WatchConnectivity), with every word the watch prints in the
-app's language. The watch answers with an action. A set done is checked again on the phone against
-the workout as it is then: one the phone has moved past meanwhile (ticked there, the exercise
-swapped) is dropped rather than ticking the wrong row. With the workout screen not open on the
-phone, it waits there (at most 10 minutes) until it is.
-
-Things to know:
-
-- The phone app does the work. A tap on the watch wakes it in the background long enough to tick
-  the set and answer; if iOS has closed the app entirely, the action waits until it is opened.
-- watchOS goes back to the watch face after a while (Settings → General → Return to Clock on the
-  watch can keep the app up longer). The end-of-rest notification still arrives either way.
 - The watch app is a second app with a bundle id of its own
   (`ch.duartesantos.opengym.watchkitapp`). With a free Apple ID that is a second App ID out of the
-  ten a week; `scripts/build-ipa.sh --no-watch` builds an `.ipa` without it. Building it yourself
-  under another bundle id, change both targets and `WKCompanionAppBundleIdentifier` (target
-  OpenGymWatch → Build Settings) to match.
-
-Worth checking on a real device after changes here: the watch app installs with the phone app;
-starting a workout on the phone shows its first set on the watch within a second or two; Done on the
-watch ticks the row on the phone and starts the rest on both; Skip on the watch ends it on the
-phone; with the phone locked, Done still ticks the set and the rest notification reaches the watch.
+  ten a week; `scripts/build-ipa.sh --no-watch` builds an `.ipa` without it.
+- Its target asks for HealthKit (`WatchApp/WatchApp.entitlements`) for the live heart rate and
+  active energy, which only a paid Apple Developer account can sign.
 
 ## Apple Health (native iPhone app)
 
@@ -483,7 +458,7 @@ The other ways stay open:
   your server sends Web Push.
 - **Sideloadly:** take `openGym-<version>.ipa` from the package registry
   (`opengym-ios/<version>/`) and sign it with your Apple ID, as AltStore would.
-- **Xcode:** open `ios/App/App.xcworkspace`, set your team on both targets (App and OpenGymWatch),
+- **Xcode:** open `ios/App/App.xcworkspace`, set your team on both targets (App and WatchApp),
   run. Add `OPENGYM_HEALTHKIT=YES` to the App target's build settings only with a paid account.
 
 #### Building the .ipa and the source
@@ -521,7 +496,7 @@ of fixes. A TestFlight or App Store build would additionally need an Apple Devel
 membership, the distribution certificate and profile, and an `-exportArchive` step — none of that is
 set up.
 
-Local plugins of the iOS app (`PrintPlugin`, `AppleHealthPlugin`, `WatchPlugin`) are registered by
+Local plugins of the iOS app (`PrintPlugin`, `AppleHealthPlugin`, `HealthSyncPlugin`, `WatchBridgePlugin`) are registered by
 hand in `ios/App/App/OpenGymViewController.swift`: Capacitor only loads the npm plugins `cap sync`
 lists. A new one goes there, or JS gets "not implemented on ios".
 

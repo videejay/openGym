@@ -51,6 +51,8 @@ const remind = c => !!c.mobile || !!c.pushOK
 const PUSH = 'Push notifications'
 export const SEARCH = [
   // Workout
+  { page: 'workout', title: 'Countdown font', icon: 'timer', tint: 'var(--green)', kw: 'apple watch countdown font segments rounded monospaced', when: c => !!c.healthAvailable },
+  { page: 'workout', title: 'Countdown color', icon: 'palette', tint: 'var(--green)', kw: 'apple watch countdown color lime white', when: c => !!c.healthAvailable },
   { page: 'workout', title: 'Rest timer', icon: 'timer', tint: 'var(--orange)', kw: 'rest pause break seconds minutes timer countdown' },
   { page: 'workout', title: 'Rest-pause rest', icon: 'bolt', tint: 'var(--orange)', kw: 'burst cluster rest pause' },
   { page: 'workout', title: 'Effort per set', icon: 'gauge', tint: 'var(--purple)', kw: 'rir rpe effort reps in reserve difficulty', opts: ['RIR', 'RPE'] },

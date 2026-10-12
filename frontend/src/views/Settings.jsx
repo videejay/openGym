@@ -38,6 +38,8 @@ import { forgetCoach } from '../lib/coach-api.js'
 import { REST_MAX, REST_PAUSE_MIN, REST_PAUSE_MAX, fmtRest, fmtDuration } from '../lib/duration.js'
 import { starterPlanSheet, confirmSheet, importFromApp, importFromHevy, equipmentProfileSheet, plateInventorySheet, dumbbellInventorySheet, menuSheet } from '../sheets.jsx'
 import Icon from '../components/Icon.jsx'
+import WatchTimerPreview from '../components/WatchTimerPreview.jsx'
+import { WATCH_TIMER_FONTS, WATCH_TIMER_COLORS, watchDisplayOf } from '../lib/watch-display.js'
 import { durationSheet } from '../components/DurationWheel.jsx'
 import { showsConnection, showsLocalLine } from '../components/SyncBanner.jsx'
 import BackupFolderRow, { useBackupFolder, autoBackupSubtitle } from '../components/BackupFolderRow.jsx'
@@ -103,6 +105,7 @@ export default function Settings({ page = null, find = null, via = null }) {
   const importRef = useRef(null)
   const body = useRef(null)
   const wakeOK = wakeLockSupported()
+  const watchDisplay = watchDisplayOf(S)
 
   // A planner's own queue (no rotationId, or one that doesn't match the saved rotation here) is
   // not this app's to switch off or overwrite. The Scheduling row goes read-only for it.
@@ -494,6 +497,23 @@ export default function Settings({ page = null, find = null, via = null }) {
             onChange={v => update(s => { s.collapseCompleted = v; if (s.active) delete s.active.collapseCompleted })} />
         </Row>
       </Section>
+    {MOBILE && !android && <Section title="Apple Watch" footer={t('Font and color of the rest countdown on your watch.')}>
+      <SelectRow icon="timer" iconTint="var(--green)" title={t('Countdown font')}
+        value={watchDisplay.timerFont}
+        options={WATCH_TIMER_FONTS.map(f => ({ ...f, label: t(f.label) }))}
+        onChange={v => update(s => { s.watchDisplay = { ...watchDisplayOf(s), timerFont: v } })} />
+      <div className="lrow" style={{ flexDirection: 'column', alignItems: 'stretch', gap: 12 }}>
+        <span className="lrow-t">{t('Countdown color')}</span>
+        <div className="swatches">
+          {WATCH_TIMER_COLORS.map(c => <button key={c.value}
+            className={'swatch' + (watchDisplay.timerColor === c.value ? ' on' : '')}
+            style={{ background: c.value }} aria-label={t(c.label)} aria-pressed={watchDisplay.timerColor === c.value}
+            onClick={() => update(s => { s.watchDisplay = { ...watchDisplayOf(s), timerColor: c.value } })} />)}
+        </div>
+        <WatchTimerPreview font={watchDisplay.timerFont} color={watchDisplay.timerColor} />
+      </div>
+    </Section>}
+
       <Section title={t('Before and during')}>
         {/* The quick weigh-in that opens on Start (sheets.jsx startFlow, issue #137); off skips
             straight to the session. Home and Stats still log weight by hand. */}

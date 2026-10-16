@@ -2315,4 +2315,8 @@ export default {
   'openGym code': 'openGym-Code',
   '{0} no longer has it': '{0} hat ihn dann nicht mehr',
   '“{0}” isn’t in this workout': '„{0}“ ist nicht in diesem Training',
+  'About this workout, or anything else': 'Zu diesem Training oder zu allem anderen',
+  'Ask the Coach': 'Coach fragen',
+  'Thinking about your question…': 'Ich denke über deine Frage nach…',
+  'This is the demo, so there is no AI model behind me. On your own server I answer questions like “{0}” with your plan, your last sessions and the workout you are doing right now.': 'Das ist die Demo, hinter mir steckt also kein KI-Modell. Auf deinem eigenen Server beantworte ich Fragen wie „{0}“ mit deinem Plan, deinen letzten Einheiten und dem Training, das du gerade machst.',
 }

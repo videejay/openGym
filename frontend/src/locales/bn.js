@@ -2374,4 +2374,8 @@ export default {
   'openGym code': 'openGym কোড',
   '{0} no longer has it': '{0}-এ আর এটি থাকবে না',
   '“{0}” isn’t in this workout': '“{0}” এই ওয়ার্কআউটে নেই',
+  'About this workout, or anything else': 'এই ওয়ার্কআউট নিয়ে, বা অন্য যেকোনো বিষয়ে',
+  'Ask the Coach': 'কোচকে জিজ্ঞাসা করুন',
+  'Thinking about your question…': 'আপনার প্রশ্ন নিয়ে ভাবছি…',
+  'This is the demo, so there is no AI model behind me. On your own server I answer questions like “{0}” with your plan, your last sessions and the workout you are doing right now.': 'এটি ডেমো, তাই আমার পেছনে কোনো AI মডেল নেই। আপনার নিজের সার্ভারে আমি “{0}”-এর মতো প্রশ্নের উত্তর দিই আপনার প্ল্যান, সাম্প্রতিক সেশন আর এখন চলা ওয়ার্কআউট দেখে।',
 }

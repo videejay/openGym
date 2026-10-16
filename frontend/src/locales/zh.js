@@ -2295,4 +2295,8 @@ export default {
   'openGym code': 'openGym 代码',
   '{0} no longer has it': '{0} 将不再关联它',
   '“{0}” isn’t in this workout': '“{0}”不在本次训练中',
+  'About this workout, or anything else': '关于这次训练，或任何其他问题',
+  'Ask the Coach': '问教练',
+  'Thinking about your question…': '正在思考你的问题…',
+  'This is the demo, so there is no AI model behind me. On your own server I answer questions like “{0}” with your plan, your last sessions and the workout you are doing right now.': '这是演示版，我背后没有 AI 模型。在你自己的服务器上，我会结合你的计划、最近几次训练和你正在进行的训练，回答像“{0}”这样的问题。',
 }

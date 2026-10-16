@@ -2292,4 +2292,8 @@ export default {
   'openGym code': 'Код openGym',
   '{0} no longer has it': 'У {0} його більше не буде',
   '“{0}” isn’t in this workout': '«{0}» немає в цьому тренуванні',
+  'About this workout, or anything else': 'Про це тренування або про будь-що інше',
+  'Ask the Coach': 'Запитати тренера',
+  'Thinking about your question…': 'Думаю над вашим запитанням…',
+  'This is the demo, so there is no AI model behind me. On your own server I answer questions like “{0}” with your plan, your last sessions and the workout you are doing right now.': 'Це демо, тож за мною немає моделі ШІ. На вашому власному сервері я відповідаю на запитання на кшталт «{0}», враховуючи ваш план, останні тренування і тренування, яке ви робите зараз.',
 }

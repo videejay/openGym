@@ -2295,4 +2295,8 @@ export default {
   'openGym code': 'openGym kodu',
   '{0} no longer has it': '{0} artık buna sahip olmaz',
   '“{0}” isn’t in this workout': '“{0}” bu antrenmanda yok',
+  'About this workout, or anything else': 'Bu antrenman ya da başka herhangi bir şey hakkında',
+  'Ask the Coach': 'Koça sor',
+  'Thinking about your question…': 'Sorunu düşünüyorum…',
+  'This is the demo, so there is no AI model behind me. On your own server I answer questions like “{0}” with your plan, your last sessions and the workout you are doing right now.': 'Bu bir demo, yani arkamda bir yapay zekâ modeli yok. Kendi sunucunda “{0}” gibi sorulara planın, son antrenmanların ve şu anda yaptığın antrenmanla cevap veririm.',
 }

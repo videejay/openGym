@@ -2298,4 +2298,8 @@ export default {
   'openGym code': 'openGym-kód',
   '{0} no longer has it': '{0} már nem fogja tartalmazni',
   '“{0}” isn’t in this workout': '„{0}” nincs ebben az edzésben',
+  'About this workout, or anything else': 'Erről az edzésről vagy bármi másról',
+  'Ask the Coach': 'Kérdezd az Edzőt',
+  'Thinking about your question…': 'Gondolkodom a kérdéseden…',
+  'This is the demo, so there is no AI model behind me. On your own server I answer questions like “{0}” with your plan, your last sessions and the workout you are doing right now.': 'Ez a demó, így nincs mögöttem MI-modell. A saját szervereden az olyan kérdésekre, mint „{0}”, a terved, a legutóbbi edzéseid és az épp folyó edzésed alapján válaszolok.',
 }

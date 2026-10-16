@@ -2306,4 +2306,8 @@ export default {
   'openGym code': 'โค้ด openGym',
   '{0} no longer has it': '{0} จะไม่มีโค้ดนี้อีก',
   '“{0}” isn’t in this workout': '“{0}” ไม่อยู่ในการฝึกนี้',
+  'About this workout, or anything else': 'เกี่ยวกับการออกกำลังกายนี้ หรือเรื่องอื่นใดก็ได้',
+  'Ask the Coach': 'ถามโค้ช',
+  'Thinking about your question…': 'กำลังคิดเรื่องคำถามของคุณ…',
+  'This is the demo, so there is no AI model behind me. On your own server I answer questions like “{0}” with your plan, your last sessions and the workout you are doing right now.': 'นี่คือเดโม จึงไม่มีโมเดล AI อยู่เบื้องหลัง บนเซิร์ฟเวอร์ของคุณเอง ฉันจะตอบคำถามอย่าง “{0}” โดยใช้แผน เซสชันล่าสุด และการออกกำลังกายที่คุณกำลังทำอยู่',
 }

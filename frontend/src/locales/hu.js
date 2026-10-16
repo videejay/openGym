@@ -3,6 +3,9 @@ export default {
   "Aliases": "Más elnevezések",
   "Alternative names for search. Separate with commas.": "Alternatív nevek a kereséshez. Vesszővel válaszd el őket.",
   "Save aliases": "Elnevezések mentése",
+  'Rest between sides': 'Pihenő az oldalak között',
+  'Between-side duration': 'Oldalak közötti pihenő hossza',
+
   // --- generic ---
   'Confirm': 'Megerősítés',
   'Cancel': 'Mégse',

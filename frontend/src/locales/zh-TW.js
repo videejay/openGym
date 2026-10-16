@@ -2,6 +2,9 @@ export default {
   "Aliases": "別名",
   "Alternative names for search. Separate with commas.": "用於搜尋的其他名稱，請以逗號分隔。",
   "Save aliases": "儲存別名",
+  'Rest between sides': '左右側之間休息',
+  'Between-side duration': '左右側間休息時間',
+
   'Confirm': '確認',
   'Cancel': '取消',
   'Press back again to exit': '再按一次返回以退出',

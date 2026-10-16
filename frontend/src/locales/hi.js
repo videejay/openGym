@@ -3,6 +3,9 @@ export default {
   "Aliases": "वैकल्पिक नाम",
   "Alternative names for search. Separate with commas.": "खोज के लिए वैकल्पिक नाम। कॉमा से अलग करें।",
   "Save aliases": "वैकल्पिक नाम सहेजें",
+  'Rest between sides': 'दोनों तरफ़ के बीच आराम',
+  'Between-side duration': 'दोनों तरफ़ के बीच आराम की अवधि',
+
   'Confirm': 'पुष्टि करें',
   'Cancel': 'रद्द करें',
   'Press back again to exit': 'बाहर निकलने के लिए फिर से बैक दबाएँ',

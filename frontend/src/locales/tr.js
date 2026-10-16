@@ -3,6 +3,9 @@ export default {
   "Aliases": "Alternatif adlar",
   "Alternative names for search. Separate with commas.": "Arama için alternatif adlar. Virgülle ayırın.",
   "Save aliases": "Alternatif adları kaydet",
+  'Rest between sides': 'Taraflar arasında dinlenme',
+  'Between-side duration': 'Taraflar arası dinlenme süresi',
+
   'Confirm': 'Onayla',
   'Cancel': 'İptal',
   'Press back again to exit': 'Çıkmak için geri tuşuna tekrar basın',

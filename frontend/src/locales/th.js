@@ -3,6 +3,9 @@ export default {
   "Aliases": "ชื่ออื่น",
   "Alternative names for search. Separate with commas.": "ชื่ออื่นสำหรับการค้นหา คั่นด้วยเครื่องหมายจุลภาค",
   "Save aliases": "บันทึกชื่ออื่น",
+  'Rest between sides': 'พักระหว่างข้าง',
+  'Between-side duration': 'เวลาพักระหว่างข้าง',
+
   // --- generic ---
   'Confirm': 'ยืนยัน',
   'Cancel': 'ยกเลิก',

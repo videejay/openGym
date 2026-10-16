@@ -3,6 +3,9 @@ export default {
   "Aliases": "Nomi alternativi",
   "Alternative names for search. Separate with commas.": "Nomi alternativi per la ricerca. Separali con virgole.",
   "Save aliases": "Salva nomi alternativi",
+  'Rest between sides': 'Riposo tra i lati',
+  'Between-side duration': 'Durata del riposo tra i lati',
+
   'Confirm': 'Conferma',
   'Cancel': 'Annulla',
   'Press back again to exit': 'Premi di nuovo indietro per uscire',

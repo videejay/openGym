@@ -3,6 +3,9 @@ export default {
   "Aliases": "Другие названия",
   "Alternative names for search. Separate with commas.": "Другие названия для поиска. Разделяйте запятыми.",
   "Save aliases": "Сохранить названия",
+  'Rest between sides': 'Отдых между сторонами',
+  'Between-side duration': 'Длительность отдыха между сторонами',
+
   'Confirm': 'Подтвердить',
   'Cancel': 'Отмена',
   'Press back again to exit': 'Нажмите «Назад» ещё раз, чтобы выйти',

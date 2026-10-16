@@ -2298,4 +2298,12 @@ export default {
   'Ask the Coach': '問教練',
   'Thinking about your question…': '正在思考你的問題…',
   'This is the demo, so there is no AI model behind me. On your own server I answer questions like “{0}” with your plan, your last sessions and the workout you are doing right now.': '這是展示版，我背後沒有 AI 模型。在你自己的伺服器上，我會根據你的計畫、最近幾次訓練和你正在進行的訓練，回答像「{0}」這樣的問題。',
+  // --- import: overwrite days already here ---
+  'Overwrite days already here': '覆寫已有的日期',
+  '{0} entry already here will be replaced by the file’s.': '已有的 {0} 筆紀錄將由檔案中的紀錄取代。',
+  '{0} entries already here will be replaced by the file’s.': '已有的 {0} 筆紀錄將由檔案中的紀錄取代。',
+  'Overwrite existing days?': '覆寫已有的日期？',
+  '{0} entry already here will be deleted and replaced by the file’s. This can’t be undone.': '已有的 {0} 筆紀錄將被刪除，並由檔案中的紀錄取代。此操作無法復原。',
+  '{0} entries already here will be deleted and replaced by the file’s. This can’t be undone.': '已有的 {0} 筆紀錄將被刪除，並由檔案中的紀錄取代。此操作無法復原。',
+  '{0} replaced': '已取代 {0} 筆',
 }

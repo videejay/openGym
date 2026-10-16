@@ -2308,4 +2308,12 @@ export default {
   'Ask the Coach': 'Kérdezd az Edzőt',
   'Thinking about your question…': 'Gondolkodom a kérdéseden…',
   'This is the demo, so there is no AI model behind me. On your own server I answer questions like “{0}” with your plan, your last sessions and the workout you are doing right now.': 'Ez a demó, így nincs mögöttem MI-modell. A saját szervereden az olyan kérdésekre, mint „{0}”, a terved, a legutóbbi edzéseid és az épp folyó edzésed alapján válaszolok.',
+  // --- import: overwrite days already here ---
+  'Overwrite days already here': 'Meglévő napok felülírása',
+  '{0} entry already here will be replaced by the file’s.': '{0} meglévő bejegyzést a fájlban lévő vált fel.',
+  '{0} entries already here will be replaced by the file’s.': '{0} meglévő bejegyzést a fájlban lévők váltanak fel.',
+  'Overwrite existing days?': 'Felülírod a meglévő napokat?',
+  '{0} entry already here will be deleted and replaced by the file’s. This can’t be undone.': '{0} meglévő bejegyzés törlődik, és a fájlban lévő váltja fel. Nem vonható vissza.',
+  '{0} entries already here will be deleted and replaced by the file’s. This can’t be undone.': '{0} meglévő bejegyzés törlődik, és a fájlban lévők váltják fel. Nem vonható vissza.',
+  '{0} replaced': '{0} felülírva',
 }

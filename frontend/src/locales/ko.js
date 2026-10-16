@@ -2305,4 +2305,12 @@ export default {
   'Ask the Coach': '코치에게 묻기',
   'Thinking about your question…': '질문을 생각하고 있어요…',
   'This is the demo, so there is no AI model behind me. On your own server I answer questions like “{0}” with your plan, your last sessions and the workout you are doing right now.': '이것은 데모라서 뒤에 AI 모델이 없습니다. 내 서버에서는 “{0}” 같은 질문에 계획, 최근 세션, 지금 하고 있는 운동을 바탕으로 답합니다.',
+  // --- import: overwrite days already here ---
+  'Overwrite days already here': '이미 있는 날짜 덮어쓰기',
+  '{0} entry already here will be replaced by the file’s.': '이미 있는 항목 {0}개가 파일의 항목으로 바뀝니다.',
+  '{0} entries already here will be replaced by the file’s.': '이미 있는 항목 {0}개가 파일의 항목으로 바뀝니다.',
+  'Overwrite existing days?': '기존 날짜를 덮어쓸까요?',
+  '{0} entry already here will be deleted and replaced by the file’s. This can’t be undone.': '이미 있는 항목 {0}개가 삭제되고 파일의 항목으로 바뀝니다. 되돌릴 수 없습니다.',
+  '{0} entries already here will be deleted and replaced by the file’s. This can’t be undone.': '이미 있는 항목 {0}개가 삭제되고 파일의 항목으로 바뀝니다. 되돌릴 수 없습니다.',
+  '{0} replaced': '{0}개 교체됨',
 }

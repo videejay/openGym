@@ -2316,4 +2316,12 @@ export default {
   'Ask the Coach': 'ถามโค้ช',
   'Thinking about your question…': 'กำลังคิดเรื่องคำถามของคุณ…',
   'This is the demo, so there is no AI model behind me. On your own server I answer questions like “{0}” with your plan, your last sessions and the workout you are doing right now.': 'นี่คือเดโม จึงไม่มีโมเดล AI อยู่เบื้องหลัง บนเซิร์ฟเวอร์ของคุณเอง ฉันจะตอบคำถามอย่าง “{0}” โดยใช้แผน เซสชันล่าสุด และการออกกำลังกายที่คุณกำลังทำอยู่',
+  // --- import: overwrite days already here ---
+  'Overwrite days already here': 'เขียนทับวันที่มีอยู่แล้ว',
+  '{0} entry already here will be replaced by the file’s.': 'รายการที่มีอยู่ {0} รายการจะถูกแทนที่ด้วยรายการจากไฟล์',
+  '{0} entries already here will be replaced by the file’s.': 'รายการที่มีอยู่ {0} รายการจะถูกแทนที่ด้วยรายการจากไฟล์',
+  'Overwrite existing days?': 'เขียนทับวันที่มีอยู่?',
+  '{0} entry already here will be deleted and replaced by the file’s. This can’t be undone.': 'รายการที่มีอยู่ {0} รายการจะถูกลบและแทนที่ด้วยรายการจากไฟล์ ไม่สามารถย้อนกลับได้',
+  '{0} entries already here will be deleted and replaced by the file’s. This can’t be undone.': 'รายการที่มีอยู่ {0} รายการจะถูกลบและแทนที่ด้วยรายการจากไฟล์ ไม่สามารถย้อนกลับได้',
+  '{0} replaced': 'แทนที่แล้ว {0} รายการ',
 }

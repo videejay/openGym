@@ -2305,4 +2305,12 @@ export default {
   'Ask the Coach': 'Chiedi al Coach',
   'Thinking about your question…': 'Sto pensando alla tua domanda…',
   'This is the demo, so there is no AI model behind me. On your own server I answer questions like “{0}” with your plan, your last sessions and the workout you are doing right now.': 'Questa è la demo, quindi dietro di me non c’è nessun modello di IA. Sul tuo server rispondo a domande come “{0}” usando il tuo piano, le ultime sessioni e l’allenamento che stai facendo adesso.',
+  // --- import: overwrite days already here ---
+  'Overwrite days already here': 'Sovrascrivi i giorni già presenti',
+  '{0} entry already here will be replaced by the file’s.': '{0} voce già presente sarà sostituita da quella del file.',
+  '{0} entries already here will be replaced by the file’s.': '{0} voci già presenti saranno sostituite da quelle del file.',
+  'Overwrite existing days?': 'Sovrascrivere i giorni esistenti?',
+  '{0} entry already here will be deleted and replaced by the file’s. This can’t be undone.': '{0} voce già presente sarà eliminata e sostituita da quella del file. Non si può annullare.',
+  '{0} entries already here will be deleted and replaced by the file’s. This can’t be undone.': '{0} voci già presenti saranno eliminate e sostituite da quelle del file. Non si può annullare.',
+  '{0} replaced': '{0} sostituite',
 }

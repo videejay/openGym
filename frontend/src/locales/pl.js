@@ -2305,4 +2305,12 @@ export default {
   'Ask the Coach': 'Zapytaj Trenera',
   'Thinking about your question…': 'Myślę nad Twoim pytaniem…',
   'This is the demo, so there is no AI model behind me. On your own server I answer questions like “{0}” with your plan, your last sessions and the workout you are doing right now.': 'To jest demo, więc nie stoi za mną żaden model AI. Na Twoim własnym serwerze odpowiadam na pytania w rodzaju „{0}”, korzystając z Twojego planu, ostatnich sesji i treningu, który właśnie robisz.',
+  // --- import: overwrite days already here ---
+  'Overwrite days already here': 'Nadpisz dni, które już są',
+  '{0} entry already here will be replaced by the file’s.': 'Istniejące wpisy ({0}) zostaną zastąpione wpisami z pliku.',
+  '{0} entries already here will be replaced by the file’s.': { one: '{0} istniejący wpis zostanie zastąpiony wpisem z pliku.', few: '{0} istniejące wpisy zostaną zastąpione wpisami z pliku.', many: '{0} istniejących wpisów zostanie zastąpionych wpisami z pliku.', other: '{0} istniejącego wpisu zostanie zastąpione wpisami z pliku.' },
+  'Overwrite existing days?': 'Nadpisać istniejące dni?',
+  '{0} entry already here will be deleted and replaced by the file’s. This can’t be undone.': 'Istniejące wpisy ({0}) zostaną usunięte i zastąpione wpisami z pliku. Tego nie można cofnąć.',
+  '{0} entries already here will be deleted and replaced by the file’s. This can’t be undone.': { one: '{0} istniejący wpis zostanie usunięty i zastąpiony wpisem z pliku. Tego nie można cofnąć.', few: '{0} istniejące wpisy zostaną usunięte i zastąpione wpisami z pliku. Tego nie można cofnąć.', many: '{0} istniejących wpisów zostanie usuniętych i zastąpionych wpisami z pliku. Tego nie można cofnąć.', other: '{0} istniejącego wpisu zostanie usunięte i zastąpione wpisami z pliku. Tego nie można cofnąć.' },
+  '{0} replaced': 'Zastąpiono: {0}',
 }

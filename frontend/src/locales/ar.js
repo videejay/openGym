@@ -2360,4 +2360,12 @@ export default {
   'Ask the Coach': 'اسأل المدرب',
   'Thinking about your question…': 'أفكر في سؤالك…',
   'This is the demo, so there is no AI model behind me. On your own server I answer questions like “{0}” with your plan, your last sessions and the workout you are doing right now.': 'هذا هو العرض التجريبي، لذا لا يوجد نموذج ذكاء اصطناعي خلفي. على خادمك الخاص أجيب عن أسئلة مثل «{0}» بالاعتماد على خطتك وجلساتك الأخيرة والتمرين الذي تقوم به الآن.',
+  // --- import: overwrite days already here ---
+  'Overwrite days already here': 'استبدال الأيام الموجودة',
+  '{0} entry already here will be replaced by the file’s.': 'سيُستبدل {0} إدخال موجود بما في الملف.',
+  '{0} entries already here will be replaced by the file’s.': 'ستُستبدل {0} إدخالات موجودة بما في الملف.',
+  'Overwrite existing days?': 'استبدال الأيام الموجودة؟',
+  '{0} entry already here will be deleted and replaced by the file’s. This can’t be undone.': 'سيُحذف {0} إدخال موجود ويُستبدل بما في الملف. لا يمكن التراجع عن ذلك.',
+  '{0} entries already here will be deleted and replaced by the file’s. This can’t be undone.': 'ستُحذف {0} إدخالات موجودة وتُستبدل بما في الملف. لا يمكن التراجع عن ذلك.',
+  '{0} replaced': 'تم استبدال {0}',
 }

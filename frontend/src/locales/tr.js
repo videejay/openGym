@@ -2305,4 +2305,12 @@ export default {
   'Ask the Coach': 'Koça sor',
   'Thinking about your question…': 'Sorunu düşünüyorum…',
   'This is the demo, so there is no AI model behind me. On your own server I answer questions like “{0}” with your plan, your last sessions and the workout you are doing right now.': 'Bu bir demo, yani arkamda bir yapay zekâ modeli yok. Kendi sunucunda “{0}” gibi sorulara planın, son antrenmanların ve şu anda yaptığın antrenmanla cevap veririm.',
+  // --- import: overwrite days already here ---
+  'Overwrite days already here': 'Mevcut günlerin üzerine yaz',
+  '{0} entry already here will be replaced by the file’s.': 'Mevcut {0} kayıt dosyadakiyle değiştirilecek.',
+  '{0} entries already here will be replaced by the file’s.': 'Mevcut {0} kayıt dosyadakilerle değiştirilecek.',
+  'Overwrite existing days?': 'Mevcut günlerin üzerine yazılsın mı?',
+  '{0} entry already here will be deleted and replaced by the file’s. This can’t be undone.': 'Mevcut {0} kayıt silinip dosyadakiyle değiştirilecek. Bu geri alınamaz.',
+  '{0} entries already here will be deleted and replaced by the file’s. This can’t be undone.': 'Mevcut {0} kayıt silinip dosyadakilerle değiştirilecek. Bu geri alınamaz.',
+  '{0} replaced': '{0} değiştirildi',
 }

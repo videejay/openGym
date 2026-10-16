@@ -2302,4 +2302,12 @@ export default {
   'Ask the Coach': 'Запитати тренера',
   'Thinking about your question…': 'Думаю над вашим запитанням…',
   'This is the demo, so there is no AI model behind me. On your own server I answer questions like “{0}” with your plan, your last sessions and the workout you are doing right now.': 'Це демо, тож за мною немає моделі ШІ. На вашому власному сервері я відповідаю на запитання на кшталт «{0}», враховуючи ваш план, останні тренування і тренування, яке ви робите зараз.',
+  // --- import: overwrite days already here ---
+  'Overwrite days already here': 'Перезаписати вже наявні дні',
+  '{0} entry already here will be replaced by the file’s.': 'Наявні записи ({0}) буде замінено записами з файлу.',
+  '{0} entries already here will be replaced by the file’s.': { one: 'Буде замінено {0} наявний запис записом із файлу.', few: 'Буде замінено {0} наявні записи записами з файлу.', many: 'Буде замінено {0} наявних записів записами з файлу.', other: 'Буде замінено {0} наявного запису записами з файлу.' },
+  'Overwrite existing days?': 'Перезаписати наявні дні?',
+  '{0} entry already here will be deleted and replaced by the file’s. This can’t be undone.': 'Наявні записи ({0}) буде видалено й замінено записами з файлу. Це не можна скасувати.',
+  '{0} entries already here will be deleted and replaced by the file’s. This can’t be undone.': { one: 'Буде видалено {0} наявний запис і замінено записом із файлу. Це не можна скасувати.', few: 'Буде видалено {0} наявні записи й замінено записами з файлу. Це не можна скасувати.', many: 'Буде видалено {0} наявних записів і замінено записами з файлу. Це не можна скасувати.', other: 'Буде видалено {0} наявного запису й замінено записами з файлу. Це не можна скасувати.' },
+  '{0} replaced': 'Замінено: {0}',
 }

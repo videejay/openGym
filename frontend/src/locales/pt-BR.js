@@ -1433,6 +1433,14 @@ export const PT_BR_OVERRIDES = {
   'Ask the Coach': 'Perguntar ao Coach',
   'Thinking about your question…': 'Pensando na sua pergunta…',
   'This is the demo, so there is no AI model behind me. On your own server I answer questions like “{0}” with your plan, your last sessions and the workout you are doing right now.': 'Esta é a demo, então não há nenhum modelo de IA por trás de mim. No seu próprio servidor eu respondo perguntas como “{0}” com o seu plano, suas últimas sessões e o treino que você está fazendo agora.',
+  // --- import: overwrite days already here ---
+  'Overwrite days already here': 'Substituir os dias que já existem',
+  '{0} entry already here will be replaced by the file’s.': '{0} registro existente será substituído pelo do arquivo.',
+  '{0} entries already here will be replaced by the file’s.': '{0} registros existentes serão substituídos pelos do arquivo.',
+  'Overwrite existing days?': 'Substituir os dias existentes?',
+  '{0} entry already here will be deleted and replaced by the file’s. This can’t be undone.': '{0} registro existente será excluído e substituído pelo do arquivo. Não é possível desfazer.',
+  '{0} entries already here will be deleted and replaced by the file’s. This can’t be undone.': '{0} registros existentes serão excluídos e substituídos pelos do arquivo. Não é possível desfazer.',
+  '{0} replaced': '{0} substituídos',
 }
 
 export default { ...pt, ...PT_BR_OVERRIDES }

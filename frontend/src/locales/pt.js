@@ -2305,4 +2305,12 @@ export default {
   'Ask the Coach': 'Perguntar ao Coach',
   'Thinking about your question…': 'A pensar na tua pergunta…',
   'This is the demo, so there is no AI model behind me. On your own server I answer questions like “{0}” with your plan, your last sessions and the workout you are doing right now.': 'Isto é a demo, por isso não há nenhum modelo de IA por trás de mim. No teu próprio servidor respondo a perguntas como “{0}” com o teu plano, as tuas últimas sessões e o treino que estás a fazer agora.',
+  // --- import: overwrite days already here ---
+  'Overwrite days already here': 'Substituir os dias que já existem',
+  '{0} entry already here will be replaced by the file’s.': '{0} registo existente será substituído pelo do ficheiro.',
+  '{0} entries already here will be replaced by the file’s.': '{0} registos existentes serão substituídos pelos do ficheiro.',
+  'Overwrite existing days?': 'Substituir os dias existentes?',
+  '{0} entry already here will be deleted and replaced by the file’s. This can’t be undone.': '{0} registo existente será apagado e substituído pelo do ficheiro. Não é possível anular.',
+  '{0} entries already here will be deleted and replaced by the file’s. This can’t be undone.': '{0} registos existentes serão apagados e substituídos pelos do ficheiro. Não é possível anular.',
+  '{0} replaced': '{0} substituídos',
 }

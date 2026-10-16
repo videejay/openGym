@@ -2309,4 +2309,12 @@ export default {
   'Ask the Coach': 'Спросить тренера',
   'Thinking about your question…': 'Думаю над вашим вопросом…',
   'This is the demo, so there is no AI model behind me. On your own server I answer questions like “{0}” with your plan, your last sessions and the workout you are doing right now.': 'Это демо, поэтому за мной нет модели ИИ. На вашем собственном сервере я отвечаю на вопросы вроде «{0}», учитывая ваш план, последние тренировки и тренировку, которую вы делаете сейчас.',
+  // --- import: overwrite days already here ---
+  'Overwrite days already here': 'Перезаписать уже имеющиеся дни',
+  '{0} entry already here will be replaced by the file’s.': 'Имеющиеся записи ({0}) будут заменены записями из файла.',
+  '{0} entries already here will be replaced by the file’s.': { one: 'Будет заменена {0} имеющаяся запись записью из файла.', few: 'Будут заменены {0} имеющиеся записи записями из файла.', many: 'Будут заменены {0} имеющихся записей записями из файла.', other: 'Будут заменены {0} имеющейся записи записями из файла.' },
+  'Overwrite existing days?': 'Перезаписать имеющиеся дни?',
+  '{0} entry already here will be deleted and replaced by the file’s. This can’t be undone.': 'Имеющиеся записи ({0}) будут удалены и заменены записями из файла. Это нельзя отменить.',
+  '{0} entries already here will be deleted and replaced by the file’s. This can’t be undone.': { one: 'Будет удалена {0} имеющаяся запись и заменена записью из файла. Это нельзя отменить.', few: 'Будут удалены {0} имеющиеся записи и заменены записями из файла. Это нельзя отменить.', many: 'Будут удалены {0} имеющихся записей и заменены записями из файла. Это нельзя отменить.', other: 'Будут удалены {0} имеющейся записи и заменены записями из файла. Это нельзя отменить.' },
+  '{0} replaced': 'Заменено: {0}',
 }

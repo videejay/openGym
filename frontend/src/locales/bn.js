@@ -2384,4 +2384,12 @@ export default {
   'Ask the Coach': 'কোচকে জিজ্ঞাসা করুন',
   'Thinking about your question…': 'আপনার প্রশ্ন নিয়ে ভাবছি…',
   'This is the demo, so there is no AI model behind me. On your own server I answer questions like “{0}” with your plan, your last sessions and the workout you are doing right now.': 'এটি ডেমো, তাই আমার পেছনে কোনো AI মডেল নেই। আপনার নিজের সার্ভারে আমি “{0}”-এর মতো প্রশ্নের উত্তর দিই আপনার প্ল্যান, সাম্প্রতিক সেশন আর এখন চলা ওয়ার্কআউট দেখে।',
+  // --- import: overwrite days already here ---
+  'Overwrite days already here': 'আগে থেকে থাকা দিনগুলো ওভাররাইট করুন',
+  '{0} entry already here will be replaced by the file’s.': 'আগে থেকে থাকা {0}টি এন্ট্রি ফাইলের এন্ট্রি দিয়ে বদলানো হবে।',
+  '{0} entries already here will be replaced by the file’s.': 'আগে থেকে থাকা {0}টি এন্ট্রি ফাইলের এন্ট্রি দিয়ে বদলানো হবে।',
+  'Overwrite existing days?': 'আগের দিনগুলো ওভাররাইট করবেন?',
+  '{0} entry already here will be deleted and replaced by the file’s. This can’t be undone.': 'আগে থেকে থাকা {0}টি এন্ট্রি মুছে ফাইলের এন্ট্রি দিয়ে বদলানো হবে। এটি ফেরানো যাবে না।',
+  '{0} entries already here will be deleted and replaced by the file’s. This can’t be undone.': 'আগে থেকে থাকা {0}টি এন্ট্রি মুছে ফাইলের এন্ট্রি দিয়ে বদলানো হবে। এটি ফেরানো যাবে না।',
+  '{0} replaced': '{0}টি বদলানো হয়েছে',
 }

@@ -43,8 +43,9 @@ describe('bwSheet date selection for past entries', () => {
     // Change date to past
     const pastDate = '2026-09-15'
     act(() => {
-      dateInput.value = pastDate
-      dateInput.dispatchEvent(new Event('change', { bubbles: true }))
+      // Through the native setter: React's value tracker ignores a plain `.value =` and drops the event.
+      Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(dateInput, pastDate)
+      dateInput.dispatchEvent(new Event('input', { bubbles: true }))
     })
 
     // Click Save

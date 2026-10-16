@@ -2246,4 +2246,12 @@ export default {
   'Your sports watch, calling you back.': 'Ваши спортивные часы зовут вас обратно.',
   'Coach wants you back on the bar.': 'Тренер ждёт вас обратно у штанги.',
   'Gentle, for headphones or a quiet room.': 'Тихий, для наушников или спокойного зала.',
+  // --- import: overwrite days already here ---
+  'Overwrite days already here': 'Перезаписать уже имеющиеся дни',
+  '{0} entry already here will be replaced by the file’s.': 'Имеющиеся записи ({0}) будут заменены записями из файла.',
+  '{0} entries already here will be replaced by the file’s.': { one: 'Будет заменена {0} имеющаяся запись записью из файла.', few: 'Будут заменены {0} имеющиеся записи записями из файла.', many: 'Будут заменены {0} имеющихся записей записями из файла.', other: 'Будут заменены {0} имеющейся записи записями из файла.' },
+  'Overwrite existing days?': 'Перезаписать имеющиеся дни?',
+  '{0} entry already here will be deleted and replaced by the file’s. This can’t be undone.': 'Имеющиеся записи ({0}) будут удалены и заменены записями из файла. Это нельзя отменить.',
+  '{0} entries already here will be deleted and replaced by the file’s. This can’t be undone.': { one: 'Будет удалена {0} имеющаяся запись и заменена записью из файла. Это нельзя отменить.', few: 'Будут удалены {0} имеющиеся записи и заменены записями из файла. Это нельзя отменить.', many: 'Будут удалены {0} имеющихся записей и заменены записями из файла. Это нельзя отменить.', other: 'Будут удалены {0} имеющейся записи и заменены записями из файла. Это нельзя отменить.' },
+  '{0} replaced': 'Заменено: {0}',
 }

@@ -2253,4 +2253,12 @@ export default {
   'Your sports watch, calling you back.': 'นาฬิกาสปอร์ตเรียกคุณกลับมาแล้ว',
   'Coach wants you back on the bar.': 'โค้ชอยากให้คุณกลับมาที่บาร์',
   'Gentle, for headphones or a quiet room.': 'เบา ๆ สำหรับหูฟังหรือห้องที่เงียบ',
+  // --- import: overwrite days already here ---
+  'Overwrite days already here': 'เขียนทับวันที่มีอยู่แล้ว',
+  '{0} entry already here will be replaced by the file’s.': 'รายการที่มีอยู่ {0} รายการจะถูกแทนที่ด้วยรายการจากไฟล์',
+  '{0} entries already here will be replaced by the file’s.': 'รายการที่มีอยู่ {0} รายการจะถูกแทนที่ด้วยรายการจากไฟล์',
+  'Overwrite existing days?': 'เขียนทับวันที่มีอยู่?',
+  '{0} entry already here will be deleted and replaced by the file’s. This can’t be undone.': 'รายการที่มีอยู่ {0} รายการจะถูกลบและแทนที่ด้วยรายการจากไฟล์ ไม่สามารถย้อนกลับได้',
+  '{0} entries already here will be deleted and replaced by the file’s. This can’t be undone.': 'รายการที่มีอยู่ {0} รายการจะถูกลบและแทนที่ด้วยรายการจากไฟล์ ไม่สามารถย้อนกลับได้',
+  '{0} replaced': 'แทนที่แล้ว {0} รายการ',
 }

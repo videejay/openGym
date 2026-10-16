@@ -2235,4 +2235,12 @@ export default {
   'Your sports watch, calling you back.': '你的運動手錶在叫你回來。',
   'Coach wants you back on the bar.': '教練等你回到槓鈴前。',
   'Gentle, for headphones or a quiet room.': '輕柔，適合耳機或安靜的房間。',
+  // --- import: overwrite days already here ---
+  'Overwrite days already here': '覆寫已有的日期',
+  '{0} entry already here will be replaced by the file’s.': '已有的 {0} 筆紀錄將由檔案中的紀錄取代。',
+  '{0} entries already here will be replaced by the file’s.': '已有的 {0} 筆紀錄將由檔案中的紀錄取代。',
+  'Overwrite existing days?': '覆寫已有的日期？',
+  '{0} entry already here will be deleted and replaced by the file’s. This can’t be undone.': '已有的 {0} 筆紀錄將被刪除，並由檔案中的紀錄取代。此操作無法復原。',
+  '{0} entries already here will be deleted and replaced by the file’s. This can’t be undone.': '已有的 {0} 筆紀錄將被刪除，並由檔案中的紀錄取代。此操作無法復原。',
+  '{0} replaced': '已取代 {0} 筆',
 }

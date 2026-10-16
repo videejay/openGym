@@ -2297,4 +2297,12 @@ export default {
   'Your sports watch, calling you back.': 'ساعتك الرياضية تناديك للعودة.',
   'Coach wants you back on the bar.': 'المدرب يريدك أن تعود إلى البار.',
   'Gentle, for headphones or a quiet room.': 'هادئ، للسماعات أو لغرفة هادئة.',
+  // --- import: overwrite days already here ---
+  'Overwrite days already here': 'استبدال الأيام الموجودة',
+  '{0} entry already here will be replaced by the file’s.': 'سيُستبدل {0} إدخال موجود بما في الملف.',
+  '{0} entries already here will be replaced by the file’s.': 'ستُستبدل {0} إدخالات موجودة بما في الملف.',
+  'Overwrite existing days?': 'استبدال الأيام الموجودة؟',
+  '{0} entry already here will be deleted and replaced by the file’s. This can’t be undone.': 'سيُحذف {0} إدخال موجود ويُستبدل بما في الملف. لا يمكن التراجع عن ذلك.',
+  '{0} entries already here will be deleted and replaced by the file’s. This can’t be undone.': 'ستُحذف {0} إدخالات موجودة وتُستبدل بما في الملف. لا يمكن التراجع عن ذلك.',
+  '{0} replaced': 'تم استبدال {0}',
 }

@@ -2262,4 +2262,12 @@ export default {
   'Your sports watch, calling you back.': 'Deine Sportuhr ruft dich zurück.',
   'Coach wants you back on the bar.': 'Der Coach will dich zurück an der Stange.',
   'Gentle, for headphones or a quiet room.': 'Leise, für Kopfhörer oder einen ruhigen Raum.',
+  // --- import: overwrite days already here ---
+  'Overwrite days already here': 'Vorhandene Tage überschreiben',
+  '{0} entry already here will be replaced by the file’s.': '{0} vorhandener Eintrag wird durch den aus der Datei ersetzt.',
+  '{0} entries already here will be replaced by the file’s.': '{0} vorhandene Einträge werden durch die aus der Datei ersetzt.',
+  'Overwrite existing days?': 'Vorhandene Tage überschreiben?',
+  '{0} entry already here will be deleted and replaced by the file’s. This can’t be undone.': '{0} vorhandener Eintrag wird gelöscht und durch den aus der Datei ersetzt. Das lässt sich nicht rückgängig machen.',
+  '{0} entries already here will be deleted and replaced by the file’s. This can’t be undone.': '{0} vorhandene Einträge werden gelöscht und durch die aus der Datei ersetzt. Das lässt sich nicht rückgängig machen.',
+  '{0} replaced': '{0} ersetzt',
 }

@@ -2321,4 +2321,12 @@ export default {
   'Your sports watch, calling you back.': 'আপনার স্পোর্টস ঘড়ি আপনাকে ফিরে ডাকছে।',
   'Coach wants you back on the bar.': 'কোচ আপনাকে আবার বারে চান।',
   'Gentle, for headphones or a quiet room.': 'মৃদু, হেডফোন বা শান্ত ঘরের জন্য।',
+  // --- import: overwrite days already here ---
+  'Overwrite days already here': 'আগে থেকে থাকা দিনগুলো ওভাররাইট করুন',
+  '{0} entry already here will be replaced by the file’s.': 'আগে থেকে থাকা {0}টি এন্ট্রি ফাইলের এন্ট্রি দিয়ে বদলানো হবে।',
+  '{0} entries already here will be replaced by the file’s.': 'আগে থেকে থাকা {0}টি এন্ট্রি ফাইলের এন্ট্রি দিয়ে বদলানো হবে।',
+  'Overwrite existing days?': 'আগের দিনগুলো ওভাররাইট করবেন?',
+  '{0} entry already here will be deleted and replaced by the file’s. This can’t be undone.': 'আগে থেকে থাকা {0}টি এন্ট্রি মুছে ফাইলের এন্ট্রি দিয়ে বদলানো হবে। এটি ফেরানো যাবে না।',
+  '{0} entries already here will be deleted and replaced by the file’s. This can’t be undone.': 'আগে থেকে থাকা {0}টি এন্ট্রি মুছে ফাইলের এন্ট্রি দিয়ে বদলানো হবে। এটি ফেরানো যাবে না।',
+  '{0} replaced': '{0}টি বদলানো হয়েছে',
 }

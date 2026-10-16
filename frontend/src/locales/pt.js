@@ -2242,4 +2242,12 @@ export default {
   'Your sports watch, calling you back.': 'O teu relógio desportivo a chamar-te de volta.',
   'Coach wants you back on the bar.': 'O coach quer-te de volta à barra.',
   'Gentle, for headphones or a quiet room.': 'Suave, para auscultadores ou uma sala sossegada.',
+  // --- import: overwrite days already here ---
+  'Overwrite days already here': 'Substituir os dias que já existem',
+  '{0} entry already here will be replaced by the file’s.': '{0} registo existente será substituído pelo do ficheiro.',
+  '{0} entries already here will be replaced by the file’s.': '{0} registos existentes serão substituídos pelos do ficheiro.',
+  'Overwrite existing days?': 'Substituir os dias existentes?',
+  '{0} entry already here will be deleted and replaced by the file’s. This can’t be undone.': '{0} registo existente será apagado e substituído pelo do ficheiro. Não é possível anular.',
+  '{0} entries already here will be deleted and replaced by the file’s. This can’t be undone.': '{0} registos existentes serão apagados e substituídos pelos do ficheiro. Não é possível anular.',
+  '{0} replaced': '{0} substituídos',
 }

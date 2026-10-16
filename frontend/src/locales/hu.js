@@ -2245,4 +2245,12 @@ export default {
   'Your sports watch, calling you back.': 'A sportórád visszahív.',
   'Coach wants you back on the bar.': 'Az edző visszavár a rúdhoz.',
   'Gentle, for headphones or a quiet room.': 'Halk, fülhallgatóhoz vagy csendes helyre.',
+  // --- import: overwrite days already here ---
+  'Overwrite days already here': 'Meglévő napok felülírása',
+  '{0} entry already here will be replaced by the file’s.': '{0} meglévő bejegyzést a fájlban lévő vált fel.',
+  '{0} entries already here will be replaced by the file’s.': '{0} meglévő bejegyzést a fájlban lévők váltanak fel.',
+  'Overwrite existing days?': 'Felülírod a meglévő napokat?',
+  '{0} entry already here will be deleted and replaced by the file’s. This can’t be undone.': '{0} meglévő bejegyzés törlődik, és a fájlban lévő váltja fel. Nem vonható vissza.',
+  '{0} entries already here will be deleted and replaced by the file’s. This can’t be undone.': '{0} meglévő bejegyzés törlődik, és a fájlban lévők váltják fel. Nem vonható vissza.',
+  '{0} replaced': '{0} felülírva',
 }

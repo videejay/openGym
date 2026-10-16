@@ -1403,6 +1403,14 @@ export const PT_BR_OVERRIDES = {
   'Gentle, for headphones or a quiet room.': 'Suave, para fones de ouvido ou um lugar silencioso.',
   'Fewer than two workouts in this period. Pick a longer one.': 'Menos de dois treinos neste período. Escolha um mais longo.',
   'Releases are checked on GitHub. The download is verified against its checksum before the installer opens.': 'As versões são verificadas no GitHub. O download é conferido pela soma de verificação antes de abrir o instalador.',
+  // --- import: overwrite days already here ---
+  'Overwrite days already here': 'Substituir os dias que já existem',
+  '{0} entry already here will be replaced by the file’s.': '{0} registro existente será substituído pelo do arquivo.',
+  '{0} entries already here will be replaced by the file’s.': '{0} registros existentes serão substituídos pelos do arquivo.',
+  'Overwrite existing days?': 'Substituir os dias existentes?',
+  '{0} entry already here will be deleted and replaced by the file’s. This can’t be undone.': '{0} registro existente será excluído e substituído pelo do arquivo. Não é possível desfazer.',
+  '{0} entries already here will be deleted and replaced by the file’s. This can’t be undone.': '{0} registros existentes serão excluídos e substituídos pelos do arquivo. Não é possível desfazer.',
+  '{0} replaced': '{0} substituídos',
 }
 
 export default { ...pt, ...PT_BR_OVERRIDES }

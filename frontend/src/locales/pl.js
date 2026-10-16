@@ -2242,4 +2242,12 @@ export default {
   'Your sports watch, calling you back.': 'Zegarek sportowy wzywa z powrotem.',
   'Coach wants you back on the bar.': 'Trener czeka przy sztandze.',
   'Gentle, for headphones or a quiet room.': 'Cichy, do słuchawek albo spokojnego pomieszczenia.',
+  // --- import: overwrite days already here ---
+  'Overwrite days already here': 'Nadpisz dni, które już są',
+  '{0} entry already here will be replaced by the file’s.': 'Istniejące wpisy ({0}) zostaną zastąpione wpisami z pliku.',
+  '{0} entries already here will be replaced by the file’s.': { one: '{0} istniejący wpis zostanie zastąpiony wpisem z pliku.', few: '{0} istniejące wpisy zostaną zastąpione wpisami z pliku.', many: '{0} istniejących wpisów zostanie zastąpionych wpisami z pliku.', other: '{0} istniejącego wpisu zostanie zastąpione wpisami z pliku.' },
+  'Overwrite existing days?': 'Nadpisać istniejące dni?',
+  '{0} entry already here will be deleted and replaced by the file’s. This can’t be undone.': 'Istniejące wpisy ({0}) zostaną usunięte i zastąpione wpisami z pliku. Tego nie można cofnąć.',
+  '{0} entries already here will be deleted and replaced by the file’s. This can’t be undone.': { one: '{0} istniejący wpis zostanie usunięty i zastąpiony wpisem z pliku. Tego nie można cofnąć.', few: '{0} istniejące wpisy zostaną usunięte i zastąpione wpisami z pliku. Tego nie można cofnąć.', many: '{0} istniejących wpisów zostanie usuniętych i zastąpionych wpisami z pliku. Tego nie można cofnąć.', other: '{0} istniejącego wpisu zostanie usunięte i zastąpione wpisami z pliku. Tego nie można cofnąć.' },
+  '{0} replaced': 'Zastąpiono: {0}',
 }

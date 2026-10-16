@@ -2239,4 +2239,12 @@ export default {
   'Your sports watch, calling you back.': 'Ваш спортивний годинник кличе вас назад.',
   'Coach wants you back on the bar.': 'Тренер чекає вас назад біля штанги.',
   'Gentle, for headphones or a quiet room.': 'Тихий, для навушників або спокійної кімнати.',
+  // --- import: overwrite days already here ---
+  'Overwrite days already here': 'Перезаписати вже наявні дні',
+  '{0} entry already here will be replaced by the file’s.': 'Наявні записи ({0}) буде замінено записами з файлу.',
+  '{0} entries already here will be replaced by the file’s.': { one: 'Буде замінено {0} наявний запис записом із файлу.', few: 'Буде замінено {0} наявні записи записами з файлу.', many: 'Буде замінено {0} наявних записів записами з файлу.', other: 'Буде замінено {0} наявного запису записами з файлу.' },
+  'Overwrite existing days?': 'Перезаписати наявні дні?',
+  '{0} entry already here will be deleted and replaced by the file’s. This can’t be undone.': 'Наявні записи ({0}) буде видалено й замінено записами з файлу. Це не можна скасувати.',
+  '{0} entries already here will be deleted and replaced by the file’s. This can’t be undone.': { one: 'Буде видалено {0} наявний запис і замінено записом із файлу. Це не можна скасувати.', few: 'Буде видалено {0} наявні записи й замінено записами з файлу. Це не можна скасувати.', many: 'Буде видалено {0} наявних записів і замінено записами з файлу. Це не можна скасувати.', other: 'Буде видалено {0} наявного запису й замінено записами з файлу. Це не можна скасувати.' },
+  '{0} replaced': 'Замінено: {0}',
 }

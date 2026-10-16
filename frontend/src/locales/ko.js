@@ -2242,4 +2242,12 @@ export default {
   'Your sports watch, calling you back.': '스포츠 시계가 다시 부르고 있어요.',
   'Coach wants you back on the bar.': '코치가 바 앞으로 돌아오래요.',
   'Gentle, for headphones or a quiet room.': '이어폰이나 조용한 곳에 어울려요.',
+  // --- import: overwrite days already here ---
+  'Overwrite days already here': '이미 있는 날짜 덮어쓰기',
+  '{0} entry already here will be replaced by the file’s.': '이미 있는 항목 {0}개가 파일의 항목으로 바뀝니다.',
+  '{0} entries already here will be replaced by the file’s.': '이미 있는 항목 {0}개가 파일의 항목으로 바뀝니다.',
+  'Overwrite existing days?': '기존 날짜를 덮어쓸까요?',
+  '{0} entry already here will be deleted and replaced by the file’s. This can’t be undone.': '이미 있는 항목 {0}개가 삭제되고 파일의 항목으로 바뀝니다. 되돌릴 수 없습니다.',
+  '{0} entries already here will be deleted and replaced by the file’s. This can’t be undone.': '이미 있는 항목 {0}개가 삭제되고 파일의 항목으로 바뀝니다. 되돌릴 수 없습니다.',
+  '{0} replaced': '{0}개 교체됨',
 }

@@ -2242,4 +2242,12 @@ export default {
   'Your sports watch, calling you back.': 'Ta montre de sport te rappelle.',
   'Coach wants you back on the bar.': 'Le coach te veut de retour à la barre.',
   'Gentle, for headphones or a quiet room.': 'Tout doux, pour un casque ou une pièce calme.',
+  // --- import: overwrite days already here ---
+  'Overwrite days already here': 'Écraser les jours déjà présents',
+  '{0} entry already here will be replaced by the file’s.': '{0} entrée déjà présente sera remplacée par celle du fichier.',
+  '{0} entries already here will be replaced by the file’s.': '{0} entrées déjà présentes seront remplacées par celles du fichier.',
+  'Overwrite existing days?': 'Écraser les jours existants ?',
+  '{0} entry already here will be deleted and replaced by the file’s. This can’t be undone.': '{0} entrée déjà présente sera supprimée et remplacée par celle du fichier. Action irréversible.',
+  '{0} entries already here will be deleted and replaced by the file’s. This can’t be undone.': '{0} entrées déjà présentes seront supprimées et remplacées par celles du fichier. Action irréversible.',
+  '{0} replaced': '{0} remplacées',
 }

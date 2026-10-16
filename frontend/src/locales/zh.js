@@ -2242,4 +2242,12 @@ export default {
   'Your sports watch, calling you back.': '你的运动手表在叫你回来。',
   'Coach wants you back on the bar.': '教练等你回到杠铃前。',
   'Gentle, for headphones or a quiet room.': '轻柔，适合耳机或安静的房间。',
+  // --- import: overwrite days already here ---
+  'Overwrite days already here': '覆盖已有的日期',
+  '{0} entry already here will be replaced by the file’s.': '已有的 {0} 条记录将被文件中的记录替换。',
+  '{0} entries already here will be replaced by the file’s.': '已有的 {0} 条记录将被文件中的记录替换。',
+  'Overwrite existing days?': '覆盖已有的日期？',
+  '{0} entry already here will be deleted and replaced by the file’s. This can’t be undone.': '已有的 {0} 条记录将被删除，并由文件中的记录替换。此操作无法撤销。',
+  '{0} entries already here will be deleted and replaced by the file’s. This can’t be undone.': '已有的 {0} 条记录将被删除，并由文件中的记录替换。此操作无法撤销。',
+  '{0} replaced': '已替换 {0} 条',
 }

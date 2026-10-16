@@ -30,7 +30,7 @@ import MuscleExplorer from './components/MuscleExplorer.jsx'
 import ExerciseViewToggle from './components/ExerciseViewToggle.jsx'
 import { sameMuscleFirst, swapMuscleOf } from './lib/similar-exercises.js'
 import { exerciseMuscleSnapshot, loadOfWorkouts, MUSCLES, MUSCLE_NAME, muscleWeightsOf, normalizeMuscleGroups, hasExplicitMuscleMetadata, inMuscleOrder } from './lib/muscles.js'
-import { parseImport, mergeImport } from './lib/import-csv.js'
+import { parseImport, mergeImport, importOverlap } from './lib/import-csv.js'
 import { importHevyData, HevyApiError, HEVY_DEV_SETTINGS, mergeHevyRoutines } from './lib/import-hevy.js'
 import { buildPlanBundle, parsePlan, mergePlan, printPlan, planPrintHTML } from './lib/plan-share.js'
 import { estimate1RM, best1RM, is1RMRecord, REP_CAP, formulaOf, FORMULA_NAMES } from './lib/onerm.js'
@@ -408,6 +408,27 @@ function WeighIns() {
 export const weighInsSheet = () => ui().openSheet(close => <WeighIns close={close} />)
 
 /* ============================ import from another app ============================ */
+// Overwriting days already here deletes what they hold, so it is never one tap: the switch says
+// how many entries go, and Import asks once more with the number before anything is written.
+const overwriteLine = n => tn('{0} entry already here will be replaced by the file’s.', '{0} entries already here will be replaced by the file’s.', n)
+function confirmOverwrite(n, onConfirm) {
+  confirmSheet({
+    title: t('Overwrite existing days?'),
+    message: tn('{0} entry already here will be deleted and replaced by the file’s. This can’t be undone.', '{0} entries already here will be deleted and replaced by the file’s. This can’t be undone.', n),
+    confirmText: t('Replace'), danger: true, onConfirm,
+  })
+}
+function OverwriteRow({ checked, onChange, replaced, keepText }) {
+  return <div className="row between" style={{ padding: '10px 2px', gap: 12, marginBottom: 6 }}>
+    <div>
+      <div className="tt" style={{ fontSize: 15 }}>{t('Overwrite days already here')}</div>
+      {checked
+        ? <div className="small" style={{ color: 'var(--yellow)' }}>{overwriteLine(replaced)}</div>
+        : <div className="small dim">{keepText}</div>}
+    </div>
+    <Switch checked={checked} onChange={onChange} />
+  </div>
+}
 // "12 sets bring an RPE with them": the file rated its sets. The column is off by default, so
 // with it off the line says where to switch it on.
 const effortLine = (effort, n, scale) => effort === 'none'
@@ -424,15 +445,21 @@ function ImportSummary({ parsed, close }) {
     ? parsed.bodyweight.filter(b => st.bodyweight.some(x => x.d === b.d)).length
     : parsed.workouts.filter(w => st.workouts.some(x => x.d === w.d)).length
   const fresh = (isBW ? parsed.bodyweight.length : parsed.workouts.length) - have
+  const [overwrite, setOverwrite] = useState(false)
+  const overlap = importOverlap(st, parsed)
+  const replacing = overwrite && overlap.replaced > 0
+  const canImport = fresh > 0 || replacing
 
-  const doImport = () => {
+  const run = () => {
     let res
-    update(s => { res = mergeImport(s, parsed) })
+    update(s => { res = mergeImport(s, parsed, { overwrite: replacing }) })
     close()
-    toast(isBW
+    const added = isBW
       ? tn('{0} weigh-in imported', '{0} weigh-ins imported', res.added)
-      : tn('{0} workout imported', '{0} workouts imported', res.added))
+      : tn('{0} workout imported', '{0} workouts imported', res.added)
+    toast(res.replaced ? added + ' · ' + t('{0} replaced', res.replaced) : added)
   }
+  const doImport = () => (replacing ? confirmOverwrite(overlap.replaced, run) : run())
 
   return <>
     <h3>{parsed.source ? t('Import from {0}', parsed.source) : t('Import history')}</h3>
@@ -460,9 +487,8 @@ function ImportSummary({ parsed, close }) {
     {!isBW && !parsed.fileUnit && !parsed.mixedUnits && <div className="small dim" style={{ marginBottom: 10 }}>
       {t('The file doesn’t say which unit it uses, so numbers are imported as they are.')}
     </div>}
-    {have > 0 && <div className="small dim" style={{ marginBottom: 10 }}>
-      {t('{0} days already have data here and will be left alone.', have)}
-    </div>}
+    {overlap.replaced > 0 && <OverwriteRow checked={overwrite} onChange={setOverwrite} replaced={overlap.replaced}
+      keepText={t('{0} days already have data here and will be left alone.', have)} />}
     {/* The file rated its sets. Say so: the column is off by default, so the ratings would
         otherwise arrive invisibly and look like they had been dropped. */}
     {!isBW && (parsed.rirSets + parsed.rpeSets) > 0 && <div className="small dim" style={{ marginBottom: 10 }}>
@@ -481,8 +507,8 @@ function ImportSummary({ parsed, close }) {
       </div>
     </>}
 
-    <Button variant="primary" onClick={doImport} disabled={!fresh}>
-      {fresh ? t('Import') : t('Nothing new to import')}
+    <Button variant={replacing ? 'danger' : 'primary'} onClick={doImport} disabled={!canImport}>
+      {canImport ? t('Import') : t('Nothing new to import')}
     </Button>
     <div style={{ height: 8 }} />
     <Button variant="ghost" className="dim" onClick={close}>{t('Cancel')}</Button>
@@ -536,6 +562,7 @@ function HevyImportSheet({ close }) {
   const [wantWorkouts, setWantWorkouts] = useState(true)
   const [wantRoutines, setWantRoutines] = useState(true)
   const [wantBody, setWantBody] = useState(true)
+  const [overwrite, setOverwrite] = useState(false)
   const keyRef = useRef(null)
 
   // Drop the key from memory when the sheet goes away (unmount or successful import).
@@ -574,12 +601,17 @@ function HevyImportSheet({ close }) {
 
   const doImport = () => {
     if (!payload) return
+    if (replacing) confirmOverwrite(replaced, runImport)
+    else runImport()
+  }
+  const runImport = () => {
     const parts = []
-    let addedW = 0, addedR = 0, addedB = 0
+    let addedW = 0, addedR = 0, addedB = 0, replacedN = 0
     update(s => {
       if (wantWorkouts && payload.workouts.workouts.length) {
-        const res = mergeImport(s, payload.workouts)
+        const res = mergeImport(s, payload.workouts, { overwrite: replacing })
         addedW = res.added
+        replacedN += res.replaced || 0
         parts.push(tn('{0} workout imported', '{0} workouts imported', res.added))
       }
       if (wantRoutines && payload.routines.routines.length) {
@@ -588,11 +620,13 @@ function HevyImportSheet({ close }) {
         parts.push(tn('{0} routine imported', '{0} routines imported', res.added))
       }
       if (wantBody && payload.bodyweight.bodyweight.length) {
-        const res = mergeImport(s, payload.bodyweight)
+        const res = mergeImport(s, payload.bodyweight, { overwrite: replacing })
         addedB = res.added
+        replacedN += res.replaced || 0
         parts.push(tn('{0} weigh-in imported', '{0} weigh-ins imported', res.added))
       }
     })
+    if (replacedN) parts.push(t('{0} replaced', replacedN))
     close()
     if (!addedW && !addedR && !addedB) toast(t('Nothing new to import'))
     else toast(parts.join(' · '))
@@ -638,7 +672,10 @@ function HevyImportSheet({ close }) {
   const freshB = b.bodyweight.length - haveB
   // Routines are always added as new copies (same as plan import).
   const freshR = r.routines.length
-  const canImport = (wantWorkouts && freshW > 0) || (wantRoutines && freshR > 0) || (wantBody && freshB > 0)
+  // One switch for both: the days the selected parts share with the history.
+  const replaced = (wantWorkouts ? importOverlap(st, w).replaced : 0) + (wantBody ? importOverlap(st, b).replaced : 0)
+  const replacing = overwrite && replaced > 0
+  const canImport = (wantWorkouts && freshW > 0) || (wantRoutines && freshR > 0) || (wantBody && freshB > 0) || replacing
   const unmatched = [...new Set([
     ...(wantWorkouts ? w.unmatchedNames : []),
     ...(wantRoutines ? r.unmatchedNames : []),
@@ -680,6 +717,8 @@ function HevyImportSheet({ close }) {
       <Switch checked={wantBody} onChange={setWantBody} />
     </div>}
     {!b.bodyweight.length && <div style={{ borderBottom: '1px solid var(--sep)', marginBottom: 8 }} />}
+    {(replaced > 0 || overwrite) && <OverwriteRow checked={overwrite} onChange={setOverwrite} replaced={replaced}
+      keepText={t('{0} days already have data here and will be left alone.', (wantWorkouts ? haveW : 0) + (wantBody ? haveB : 0))} />}
 
     {(w.converted || r.converted) && <div className="small" style={{ color: 'var(--yellow)', marginBottom: 10 }}>
       {t('Hevy stores weights in kg, so they’ll be converted to {0}.', st.unit)}
@@ -695,7 +734,7 @@ function HevyImportSheet({ close }) {
       </div>
     </>}
 
-    <Button variant="primary" onClick={doImport} disabled={!canImport}>
+    <Button variant={replacing ? 'danger' : 'primary'} onClick={doImport} disabled={!canImport}>
       {canImport ? t('Import') : t('Nothing new to import')}
     </Button>
     <div style={{ height: 8 }} />

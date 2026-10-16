@@ -2242,4 +2242,12 @@ export default {
   'Your sports watch, calling you back.': 'आपकी स्पोर्ट्स घड़ी आपको वापस बुला रही है।',
   'Coach wants you back on the bar.': 'कोच आपको बार पर वापस चाहते हैं।',
   'Gentle, for headphones or a quiet room.': 'धीमी, हेडफ़ोन या शांत कमरे के लिए।',
+  // --- import: overwrite days already here ---
+  'Overwrite days already here': 'पहले से मौजूद दिनों को ओवरराइट करें',
+  '{0} entry already here will be replaced by the file’s.': 'पहले से मौजूद {0} एंट्री फ़ाइल वाली से बदल दी जाएगी।',
+  '{0} entries already here will be replaced by the file’s.': 'पहले से मौजूद {0} एंट्रियाँ फ़ाइल वाली से बदल दी जाएँगी।',
+  'Overwrite existing days?': 'मौजूदा दिनों को ओवरराइट करें?',
+  '{0} entry already here will be deleted and replaced by the file’s. This can’t be undone.': 'पहले से मौजूद {0} एंट्री हटाकर फ़ाइल वाली से बदल दी जाएगी। इसे पूर्ववत नहीं किया जा सकता।',
+  '{0} entries already here will be deleted and replaced by the file’s. This can’t be undone.': 'पहले से मौजूद {0} एंट्रियाँ हटाकर फ़ाइल वाली से बदल दी जाएँगी। इसे पूर्ववत नहीं किया जा सकता।',
+  '{0} replaced': '{0} बदली गईं',
 }

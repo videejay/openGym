@@ -2242,4 +2242,12 @@ export default {
   'Your sports watch, calling you back.': 'Spor saatin seni geri çağırıyor.',
   'Coach wants you back on the bar.': 'Koç seni bara geri bekliyor.',
   'Gentle, for headphones or a quiet room.': 'Sakin, kulaklık ya da sessiz bir oda için.',
+  // --- import: overwrite days already here ---
+  'Overwrite days already here': 'Mevcut günlerin üzerine yaz',
+  '{0} entry already here will be replaced by the file’s.': 'Mevcut {0} kayıt dosyadakiyle değiştirilecek.',
+  '{0} entries already here will be replaced by the file’s.': 'Mevcut {0} kayıt dosyadakilerle değiştirilecek.',
+  'Overwrite existing days?': 'Mevcut günlerin üzerine yazılsın mı?',
+  '{0} entry already here will be deleted and replaced by the file’s. This can’t be undone.': 'Mevcut {0} kayıt silinip dosyadakiyle değiştirilecek. Bu geri alınamaz.',
+  '{0} entries already here will be deleted and replaced by the file’s. This can’t be undone.': 'Mevcut {0} kayıt silinip dosyadakilerle değiştirilecek. Bu geri alınamaz.',
+  '{0} replaced': '{0} değiştirildi',
 }

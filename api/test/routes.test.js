@@ -167,7 +167,8 @@ test('a debrief is enqueued as its own kind, and the cohort routes gate on the a
   const { writeState, sampleState } = await import('./helpers.mjs');
   const { forcePrivilegeVerdict } = await import('../coach/adapters/spawn.js');
   forcePrivilegeVerdict({ ok: true, dropped: false, why: 'pinned by the test suite' });
-  writeState(process.env.DATA_DIR, 'admin-1', sampleState());
+  const S = sampleState();
+  writeState(process.env.DATA_DIR, 'admin-1', S);
   const { call } = harness();
 
   const off = await call('GET /api/coach/cohort');

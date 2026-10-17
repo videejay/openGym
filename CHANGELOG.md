@@ -24,6 +24,15 @@
   menu (live Bluetooth link) explains that it isn't available here and points at the
   end-of-workout code. Groundwork for the live link: `lib/lfopen/protocol.js`
   (docs/LIFE_FITNESS_CARDIO_CONNECT.md).
+- **Body-composition scales.** The QR code a segmental BIA scale (the eGym/InBody kind found in
+  gyms) shows after a measurement can be scanned from **Body measurements** — or with the
+  workout's QR button. You see what it measured before anything is saved: weight, body fat,
+  skeletal muscle mass, fat and lean mass, water, protein, BMI, basal metabolic rate, biological
+  age, and lean and fat mass per arm, leg and the trunk. Saved, the scan joins the day's
+  check-in, its body fat fills the Body fat measurement, the weight is that day's weigh-in unless
+  you switch it off, and muscle mass, fat mass, water and the rest become lines on the chart. The
+  code holds only numbers, read offline; the 64-value layout is known, a 63- or 95-value scale's
+  scan is kept and shows once its layout is (docs/BODY_SCALE_QR_IMPORT.md).
 
 ## v1.4.1 (2026-10-10)
 

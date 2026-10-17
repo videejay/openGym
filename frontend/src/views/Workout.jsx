@@ -54,6 +54,8 @@ import { parseLfUrl } from '../lib/lfopen/qr.js'
 import { normalizeResult, cardioSetFromResult, findResult } from '../lib/lfopen/result.js'
 import { exerciseForKind } from '../lib/lfopen/devices.js'
 import { placeResult, applyResultSet } from '../lib/lfopen/assign.js'
+import { parseScaleQr } from '../lib/bodyscan.js'
+import { bodyScanImportSheet } from './BodyScan.jsx'
 import { withMeaning, historyAs, dbLoadFor, entryDbLoad, bellsIn, ownedWeightsFor, stepOwned } from '../lib/dumbbells.js'
 
 // How long after a key starts a hold the same key is not yet its "Done" (#133). A USB button
@@ -1468,10 +1470,11 @@ function ActiveWorkout() {
   // it shows that exercise. One the session does not hold is offered for the routine and this
   // workout, or this workout alone; a code no exercise has yet can be given to one on the spot.
   // One scanner for every kind of code (lib/scan-dispatch.js): a Life Fitness console's first,
-  // then the exercise stickers, which take anything else exactly as before.
+  // then a body-composition scale's (it opens the scan import, it is no machine's code), then the
+  // exercise stickers, which take anything else exactly as before.
   const scanExercise = async () => {
     const code = normalizeQr((await scanOnce())?.value)
-    if (code) handleScannedCode(code, [lfScanHandler, { match: c => c, handle: goToScanned }])
+    if (code) handleScannedCode(code, [lfScanHandler, { match: parseScaleQr, handle: values => bodyScanImportSheet(values) }, { match: c => c, handle: goToScanned }])
   }
   // A Life Fitness cardio console (lib/lfopen, docs/LIFE_FITNESS_CARDIO_CONNECT.md). The code it
   // shows at the end of a workout carries the whole summary: it becomes a cardio set on the

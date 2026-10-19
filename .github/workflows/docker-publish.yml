@@ -42,6 +42,12 @@ jobs:
           - image: api
             context: ./api
             file: ./api/Dockerfile
+          # The AI Coach target, published beside the default api image with a -coach suffix.
+          - image: api
+            context: ./api
+            file: ./api/Dockerfile
+            target: coach
+            suffix: -coach
           - image: web
             context: .
             file: ./web/Dockerfile
@@ -79,6 +85,8 @@ jobs:
         id: meta
         with:
           images: ghcr.io/${{ steps.repo.outputs.owner }}/opengym-${{ matrix.image }}
+          flavor: |
+            suffix=${{ matrix.suffix }},onlatest=true
           tags: |
             type=raw,value=edge,enable=${{ github.ref == 'refs/heads/main' }}
             type=ref,event=branch,enable=${{ github.ref != 'refs/heads/main' }}
@@ -91,6 +99,7 @@ jobs:
         with:
           context: ${{ matrix.context }}
           file: ${{ matrix.file }}
+          target: ${{ matrix.target }}
           platforms: linux/amd64,linux/arm64
           build-args: |
             VERSION=${{ steps.version_meta.outputs.VERSION }}
@@ -99,5 +108,5 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha,scope=${{ matrix.image }}
-          cache-to: type=gha,mode=max,scope=${{ matrix.image }}
+          cache-from: type=gha,scope=${{ matrix.image }}${{ matrix.suffix }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.image }}${{ matrix.suffix }}

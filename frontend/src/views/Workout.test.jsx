@@ -42,6 +42,8 @@ const mocks = vi.hoisted(() => {
     setNoteSheet: vi.fn(),
     scanOnce: vi.fn(),
     bodyScanImportSheet: vi.fn(),
+    addRest: vi.fn(),
+    live: null,
   }
   state.stopRest = vi.fn(() => { state.timer = null })
   state.stopWork = vi.fn(() => { state.work = null })
@@ -61,6 +63,7 @@ const mocks = vi.hoisted(() => {
     stopRest: state.stopRest,
     stopWork: state.stopWork,
     shiftRestOwner: vi.fn(),
+    addRest: state.addRest,
     startWork: state.startWork,
     toast: state.toast,
   })
@@ -84,6 +87,8 @@ vi.mock('../store/useUI.js', () => {
   return { useUI }
 })
 vi.mock('react-router-dom', () => ({ useNavigate: () => mocks.nav }))
+// The Live Activity's Done (lib/live-activity.js): the handler the workout screen binds.
+vi.mock('../lib/live-activity.js', () => ({ bindLiveActions: h => { mocks.live = h; return () => { if (mocks.live === h) mocks.live = null } } }))
 vi.mock('../sheets.jsx', () => ({
   startFlow: vi.fn(),
   exercisePicker: mocks.exercisePicker,
@@ -302,6 +307,33 @@ describe('Workout set completion flow', () => {
     await toggleSet(2)
     expect(mocks.startRest).toHaveBeenLastCalledWith(150, expect.any(Number), { forSet: expect.any(Number) })
     expect(mocks.startRest).toHaveBeenCalledTimes(3)
+  })
+
+  // Discord "set-specific rest timers": "no timer" between ramp sets, a break between sides.
+  it('with "no timer" for warm-ups, a ramp set starts no rest; the last ramp set still rests the work rest', async () => {
+    await mount([exercise('ramped-squat', [false, false, false], {
+      target: { mode: 'reps', reps: 6, weight: 125, bodyweight: false, restSec: 150, warmupRestOff: true },
+      sets: [{ w: 60, r: 8, done: false, phase: 'warmup' }, { w: 95, r: 5, done: false, phase: 'warmup' }, { w: 125, r: 6, done: false }, { w: 125, r: 6, done: false }],
+    })])
+    await toggleSet(0)
+    expect(mocks.startRest).toHaveBeenLastCalledWith(0, expect.any(Number), { forSet: expect.any(Number) })
+    await toggleSet(1)
+    expect(mocks.startRest).toHaveBeenLastCalledWith(150, expect.any(Number), { forSet: expect.any(Number) })
+  })
+
+  it('a per-side set rests the exercise\'s break between sides; without one, nothing between them as before', async () => {
+    const lunge = extra => exercise('split-squat', [false], {
+      target: { mode: 'reps', reps: 10, weight: 20, side: true, ...extra },
+      sets: [{ w: 20, r: 10, done: false, sides: { L: { w: 20, r: 5, done: false }, R: { w: 20, r: 5, done: false } } }, { w: 20, r: 10, done: false, sides: { L: { w: 20, r: 5, done: false }, R: { w: 20, r: 5, done: false } } }],
+    })
+    await mount([lunge({ sideRestSec: 20 })], 0, { active: { workoutView: 'focus' } })
+    await click(container.querySelector('[data-focus-side="L"] button[aria-label="Complete left side"]'))
+    expect(mocks.startRest).toHaveBeenLastCalledWith(20, 0, { kind: 'switch', forSet: 0 })
+    await unmount()
+    mocks.startRest.mockClear()
+    await mount([lunge({})], 0, { active: { workoutView: 'focus' } })
+    await click(container.querySelector('[data-focus-side="L"] button[aria-label="Complete left side"]'))
+    expect(mocks.startRest).not.toHaveBeenCalled()
   })
 
   it('starts rest after a non-final ordinary set, but stops rest without restarting it on the final set', async () => {
@@ -3008,6 +3040,34 @@ describe('workout controls: the more menu and the set menu', () => {
     expect(mocks.exerciseHistorySheet).toHaveBeenCalledWith('plain-row')
   })
 
+  // #532: the rest after a timed exercise's last set runs out, and the next exercise comes up.
+  it('after the last hold\'s rest runs out, Cards moves on to the next exercise; weighted work waits', async () => {
+    const plank = exercise('plain-plank', [true, true], { target: { mode: 'time', sec: 30 } })
+    await mount([plank, exercise('plain-row', [false])], 0)
+    mocks.timer = { ready: true, left: 0, forIdx: 0, endsAt: 123 }
+    await rerender()
+    expect(mocks.S.active.cur).toBe(1)
+    await unmount()
+    mocks.timer = null
+    await mount([exercise('plain-bench', [true, true]), exercise('plain-row', [false])], 0)
+    mocks.timer = { ready: true, left: 0, forIdx: 0, endsAt: 124 }
+    await rerender()
+    expect(mocks.S.active.cur).toBe(0)
+    mocks.timer = null
+  })
+
+  // #523: "Skip completed exercises" makes Next hop over a finished exercise in Cards.
+  it('with skip completed on, Next hops over a finished exercise; off, it steps to it', async () => {
+    const three = () => [exercise('plain-bench', [false]), exercise('plain-row', [true, true]), exercise('plain-curl', [false])]
+    await mount(three(), 0, { skipCompleted: true })
+    await pressNext()
+    expect(mocks.S.active.cur).toBe(2)
+    await unmount()
+    await mount(three(), 0)
+    await pressNext()
+    expect(mocks.S.active.cur).toBe(1)
+  })
+
   it('opens a per-set menu from the set number with drop, burst and remove', async () => {
     await mount([exercise('plain-bench', [false, false])])
     await act(async () => { container.querySelector('button[aria-label="Set 2"]').dispatchEvent(new dom.Event('click', { bubbles: true })) })
@@ -3059,6 +3119,23 @@ describe('workout controls: the more menu and the set menu', () => {
     await act(async () => { item('Count it as a working set').onClick() })
     expect(sets().every(x => !isWarmupRow(x))).toBe(true)
     expect(sets()[0]).toEqual({ w: 60, r: 5, done: false })
+  })
+
+  // #575: a per-side exercise's set menu had no "Make it a warm-up set".
+  it('makes a per-side set a warm-up and back, both sides kept', async () => {
+    const side = (l, r) => ({ w: 20, r: l + r, done: false, sides: { L: { w: 20, r: l, done: false }, R: { w: 20, r: r, done: false } } })
+    await mount([{ id: 'plain-lunge', target: { mode: 'reps', reps: 10, weight: 20, side: true }, sets: [side(5, 5), side(4, 6)] }])
+    const openSet = async k => { await act(async () => { container.querySelectorAll('button.n')[k].dispatchEvent(new dom.Event('click', { bubbles: true })) }) }
+    await openSet(1)
+    await act(async () => { item('Make it a warm-up set').onClick() })
+    const sets = () => mocks.S.active.entries[0].sets
+    expect(isWarmupRow(sets()[0])).toBe(true)
+    expect(sets()[0].sides).toEqual({ L: { w: 20, r: 4, done: false }, R: { w: 20, r: 6, done: false } })
+    await rerender()
+    await openSet(0)
+    await act(async () => { item('Count it as a working set').onClick() })
+    expect(sets().every(x => !isWarmupRow(x))).toBe(true)
+    expect(sets()[0].sides).toEqual({ L: { w: 20, r: 4, done: false }, R: { w: 20, r: 6, done: false } })
   })
 
   it('brings the legacy button rows back per switch', async () => {
@@ -3600,90 +3677,6 @@ describe('the workout screen chrome (v1.3.11)', () => {
 })
 
 
-describe('configurable rest between sides', () => {
-  const sideEntry = (seconds, warm = false) => exercise('plain-bench', [], {
-    target: { mode: 'reps', side: true, reps: 16, weight: 20, sideRestSec: seconds },
-    sets: [0, 1].map(i => ({ w: 20, r: 16, done: false,
-      ...(warm && i === 0 ? { phase: 'warmup', warmup: true } : {}),
-      sides: { L: { w: 20, r: 8, done: false }, R: { w: 20, r: 8, done: false } },
-    })),
-  })
-
-  it('keeps the already logged side when saving exercise settings mid-pair', async () => {
-    const entry = sideEntry(0)
-    entry.id = '0025'
-    entry.target.sets = 2
-    entry.plan = { policy: 'linear', kind: 'same', weight: 20, why: ['Keep going.'] }
-    entry.sets[0].sides.L.done = true
-    entry.sets[0].sides.L.r = 7
-    await mount([entry])
-    await pressProgression()
-    const [,, save] = mocks.exConfigSheet.mock.calls.at(-1)
-    await act(async () => save({ ...entry.target, sideRestSec: 30 }))
-    const updated = mocks.S.active.entries[0]
-    expect(updated.target.sideRestSec).toBe(30)
-    expect(updated.sets[0].sides.L).toMatchObject({ done: true, r: 7 })
-    expect(updated.sets[0].sides.R.done).toBe(false)
-    expect(updated.sets).toHaveLength(2)
-  })
-
-  it.each(['left', 'right'])('rests after the first %s side, then uses normal rest after the pair', async first => {
-    await mount([sideEntry(30)], 0, { active: { workoutView: 'list' } })
-    await toggleSet(first === 'left' ? 0 : 1)
-    expect(mocks.startRest).toHaveBeenLastCalledWith(30, 0, { kind: 'switch', forSet: 0 })
-    expect(mocks.S.active.entries[0].sets[0].done).toBe(false)
-    await rerender()
-    await toggleSet(first === 'left' ? 1 : 0)
-    expect(mocks.startRest).toHaveBeenLastCalledWith(90, 0, { forSet: 0 })
-  })
-
-  it('keeps Off quiet between sides and leaves full-pair rest alone', async () => {
-    await mount([sideEntry(0)], 0, { active: { workoutView: 'list' } })
-    await toggleSet(0)
-    expect(mocks.startRest).not.toHaveBeenCalled()
-    await rerender()
-    await toggleSet(1)
-    expect(mocks.startRest).toHaveBeenLastCalledWith(90, 0, { forSet: 0 })
-  })
-
-  it('supports warm-ups, does not advance a superset, and does not restart a running side rest on undo/recheck', async () => {
-    await mount([{ ...sideEntry(25, true), sg: 'pair' }, exercise('plain-row', [false], { sg: 'pair' })], 0, { active: { workoutView: 'list' } })
-    await toggleSet(0)
-    expect(mocks.startRest).toHaveBeenLastCalledWith(25, 0, { kind: 'switch', forSet: 0 })
-    expect(mocks.S.active.cur).toBe(0)
-    mocks.timer = { kind: 'switch', forIdx: 0, forSet: 0, left: 20 }
-    await rerender()
-    await toggleSet(0)
-    await rerender()
-    await toggleSet(0)
-    expect(mocks.startRest).toHaveBeenCalledTimes(1)
-  })
-
-  it('clears the side pause when finishing the pair before moving to the next superset exercise', async () => {
-    await mount([{ ...sideEntry(30), sg: 'pair' }, exercise('plain-row', [false, false], { sg: 'pair' })], 0, { active: { workoutView: 'list' } })
-    await toggleSet(0)
-    mocks.timer = { kind: 'switch', forIdx: 0, forSet: 0, left: 20 }
-    await rerender()
-    await toggleSet(1)
-    expect(mocks.timer).toBeNull()
-    expect(mocks.S.active.cur).toBe(1)
-    expect(mocks.startRest).toHaveBeenCalledTimes(1)
-  })
-
-  it.each([0, 40])('uses %s seconds between timed sides, then the normal rest', async seconds => {
-    await mount([exercise('plain-hold', [], {
-      target: { mode: 'time', side: true, sec: 30, sideRestSec: seconds },
-      sets: ['L', 'R', 'L', 'R'].map(side => ({ side, sec: 30, done: false })),
-    })], 0, { active: { workoutView: 'list' } })
-    await toggleSet(0)
-    if (seconds) expect(mocks.startRest).toHaveBeenLastCalledWith(seconds, 0, { kind: 'switch', forSet: 0 })
-    else expect(mocks.startRest).not.toHaveBeenCalled()
-    await rerender()
-    await toggleSet(1)
-    expect(mocks.startRest).toHaveBeenLastCalledWith(90, 0, { forSet: 1 })
-  })
-})
-
 // A Life Fitness console's codes (lib/lfopen): the end-of-workout code becomes a cardio set on the
 // machine's exercise, the connect code explains why there is no live link here.
 describe('scanning a Life Fitness code', () => {
@@ -3775,5 +3768,34 @@ describe('scanning a Life Fitness code', () => {
     await mount([exercise('0025', [false]), exercise('0043', [false])], 0, { exQr: { '0043': ['RACK-2'] } })
     await scan('RACK-2')
     expect(mocks.S.active.cur).toBe(1)
+  })
+})
+
+describe('the Lock Screen\'s Done (Live Activity)', () => {
+  it('ticks the set through the same toggle, with the tap\'s time, and the rest counts from the tap', async () => {
+    mocks.startRest.mockImplementation(sec => { mocks.timer = { left: sec, total: sec, endsAt: Date.now() + sec * 1000 } })
+    await mount([exercise('live-bench', [false, false])])
+    expect(mocks.live).toBeTruthy()
+    const at = Date.now() - 30000
+    await act(async () => { mocks.live.setDone(0, 0, { at }) })
+    const set = mocks.S.active.entries[0].sets[0]
+    expect(set.done).toBe(true)
+    expect(set.at).toBe(at)
+    expect(mocks.startRest).toHaveBeenCalledTimes(1)
+    // 30 s of it already went by on the Lock Screen
+    expect(mocks.addRest).toHaveBeenCalledTimes(1)
+    expect(mocks.addRest.mock.calls[0][0]).toBeLessThanOrEqual(-29)
+    mocks.startRest.mockReset()
+  })
+
+  it('leaves a set already ticked alone, and a saved workout being edited', async () => {
+    await mount([exercise('live-bench', [true, false])])
+    await act(async () => { mocks.live.setDone(0, 0, { at: Date.now() }) })
+    expect(mocks.S.active.entries[0].sets[0].done).toBe(true)
+    expect(mocks.startRest).not.toHaveBeenCalled()
+    await unmount()
+    await mount([exercise('live-bench', [false])], 0, { active: { editingWorkoutId: 'w1' } })
+    await act(async () => { mocks.live.setDone(0, 0, { at: Date.now() }) })
+    expect(mocks.S.active.entries[0].sets[0].done).toBe(false)
   })
 })

@@ -195,7 +195,7 @@ export default function Measurements() {
 
   return <div className="narrow">
     <div className="hdr">
-      <button className="iconbtn" onClick={() => nav('/home')} aria-label={t('Home')}><Icon name="chevronLeft" /></button>
+      <button className="iconbtn" data-back="/home" onClick={() => nav('/home')} aria-label={t('Home')}><Icon name="chevronLeft" /></button>
       <div style={{ flex: 1, marginLeft: 10 }}><h1>{t('Body measurements')}</h1><div className="sub">{t('Circumference & composition')}</div></div>
       <button className="iconbtn" onClick={scanBodyScale} aria-label={t('Scan body scan code')} title={t('Scan body scan code')}><Icon name="qr" /></button>
       <button className="iconbtn" onClick={manageMeasurementsSheet} aria-label={t('Choose measurements')}><Icon name="gear" /></button>

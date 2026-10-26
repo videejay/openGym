@@ -10,9 +10,15 @@ name: Publish Docker images
 # to follow main here, and a release run overwrote it as well, so thirteen releases
 # published at once left it pointing at whichever finished last.) Re-running the
 # workflow by hand on a `vX.Y.Z` ref republishes exactly that version's tags.
+#
+# Any other branch publishes its own tag, the branch name with `/` turned into `-`
+# (`claude/exercise-qr-codes` → `claude-exercise-qr-codes`), so a branch can be run from
+# docker compose before it is merged. Every build is also tagged `sha-<7 chars>` to pin.
+# All of it goes to ghcr.io/<owner>/opengym-{api,web}, the owner being whoever's repository
+# this is: a fork publishes into its own namespace.
 on:
   push:
-    branches: [main]
+    branches: ['**']
     # A docs, website or workflow-only change ships the same images: 181 edge
     # builds in three months, many of them for a README line. Anything that ends up in an image
     # still builds (api/, web/, frontend/, catalogue media through the web build).
@@ -35,22 +41,33 @@ permissions:
   contents: read
   packages: write
 
-# A newer push to main makes an unfinished `edge` build pointless; a release build is never
-# cancelled (each release has its own group).
+# One build per branch at a time; a newer push to the same branch makes the older one moot.
+# Releases and main are never cancelled.
 concurrency:
-  group: docker-${{ github.event_name == 'release' && github.ref || 'edge' }}
-  cancel-in-progress: ${{ github.event_name == 'push' }}
+  group: docker-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'push' && github.ref != 'refs/heads/main' }}
 
 jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     strategy:
+      # One image failing does not cancel the others.
+      fail-fast: false
       matrix:
         include:
           - image: api
             context: ./api
             file: ./api/Dockerfile
+          # The AI Coach target, published beside the default api image with a -coach suffix.
+          - image: api
+            context: ./api
+            file: ./api/Dockerfile
+            target: coach
+            suffix: -coach
+            # amd64 only: under arm64 emulation the coach target's npm ci dies on an illegal
+            # instruction (a native binary the emulator cannot run).
+            platforms: linux/amd64
           - image: web
             context: .
             file: ./web/Dockerfile
@@ -68,11 +85,12 @@ jobs:
       - name: Set version metadata
         id: version_meta
         run: |
-          # On a release the ref is refs/tags/vX.Y.Z; on a main push it is a branch ref,
+          # On a release the ref is refs/tags/vX.Y.Z; on a push it is a branch ref,
           # which would otherwise label the image "refs/heads/main".
           case "$GITHUB_REF" in
-            refs/tags/*) VERSION="${GITHUB_REF#refs/tags/}" ;;
-            *)           VERSION="main-${GITHUB_SHA::7}" ;;
+            refs/tags/*)  VERSION="${GITHUB_REF#refs/tags/}" ;;
+            refs/heads/*) BRANCH="${GITHUB_REF#refs/heads/}"; VERSION="${BRANCH//\//-}-${GITHUB_SHA::7}" ;;
+            *)            VERSION="main-${GITHUB_SHA::7}" ;;
           esac
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
           echo "VCS_REF=${GITHUB_SHA}" >> $GITHUB_OUTPUT
@@ -91,8 +109,12 @@ jobs:
         id: meta
         with:
           images: ghcr.io/${{ steps.repo.outputs.owner }}/opengym-${{ matrix.image }}
+          flavor: |
+            suffix=${{ matrix.suffix }},onlatest=true
           tags: |
             type=raw,value=edge,enable=${{ github.ref == 'refs/heads/main' }}
+            type=ref,event=branch,enable=${{ github.ref != 'refs/heads/main' }}
+            type=sha,prefix=sha-,enable=${{ !startsWith(github.ref, 'refs/tags/') }}
             type=raw,value=latest,enable=${{ startsWith(github.ref, 'refs/tags/') }}
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
@@ -101,7 +123,8 @@ jobs:
         with:
           context: ${{ matrix.context }}
           file: ${{ matrix.file }}
-          platforms: linux/amd64,linux/arm64
+          target: ${{ matrix.target }}
+          platforms: ${{ matrix.platforms || 'linux/amd64,linux/arm64' }}
           build-args: |
             VERSION=${{ steps.version_meta.outputs.VERSION }}
             VCS_REF=${{ steps.version_meta.outputs.VCS_REF }}
@@ -109,5 +132,5 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha,scope=${{ matrix.image }}
-          cache-to: type=gha,mode=max,scope=${{ matrix.image }}
+          cache-from: type=gha,scope=${{ matrix.image }}${{ matrix.suffix }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.image }}${{ matrix.suffix }}

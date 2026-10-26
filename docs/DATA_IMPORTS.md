@@ -18,6 +18,12 @@ openGym matches exercise names against its library; anything it doesn't recognis
 your own exercises, so nothing in the file is dropped. Days that already have a workout in openGym
 are left alone, so importing the same file twice never duplicates anything.
 
+To have the file win instead, switch on **Overwrite days already here** in the import summary
+(CSV/XML file and Hevy alike). It is all or nothing: every day the file and openGym share loses
+what openGym has on it (workouts and weigh-ins) and gets the file's entries. The switch shows how
+many entries will be replaced, and Import asks once more with that number before anything is
+written. Days only one side has are not affected.
+
 These exports work without any editing:
 
 | App | Where to export |

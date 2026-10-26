@@ -1006,21 +1006,61 @@ export function parseImport(text, opts) {
 /* --------------------------------------------------------------- merge ---- */
 
 /**
+ * What an overwrite would replace: the days the file and the history both have, how many of the
+ * history's entries sit on them (a day can hold two workouts) and how many of the file's take
+ * their place. Nothing on a shared day means an overwrite changes nothing a plain import doesn't.
+ */
+export function importOverlap(S, parsed) {
+  const isBW = parsed.kind === 'bodyweight'
+  const incoming = (isBW ? parsed.bodyweight : parsed.workouts) || []
+  const mine = (isBW ? S.bodyweight : S.workouts) || []
+  const fileDays = new Set(incoming.map(x => x.d))
+  const shared = new Set(mine.filter(x => fileDays.has(x.d)).map(x => x.d))
+  return {
+    days: shared.size,
+    replaced: mine.filter(x => shared.has(x.d)).length,
+    incoming: incoming.filter(x => shared.has(x.d)).length,
+  }
+}
+
+/**
  * Merge into state. Existing days win — importing twice never duplicates a workout. A day the
  * file has two sessions on brings both (they are checked against the state before the merge,
  * not against each other); a day already in the history brings neither.
+ *
+ * With `overwrite`, it is the other way round, for every shared day at once: what the history
+ * has on a day the file covers is removed and the file's entries for that day take its place.
+ * The store records the removals (stampDeletions) and the replacements are stamped `now`, so a
+ * device still holding the old copy does not bring it back on the next sync.
  */
-export function mergeImport(S, parsed) {
+export function mergeImport(S, parsed, { overwrite = false, now = Date.now() } = {}) {
   if (parsed.kind === 'bodyweight') {
-    const have = new Set(S.bodyweight.map(b => b.d))
+    let replaced = 0
+    let mine = S.bodyweight
+    if (overwrite) {
+      const days = new Set(parsed.bodyweight.map(b => b.d))
+      const shared = new Set(mine.filter(b => days.has(b.d)).map(b => b.d))
+      replaced = mine.filter(b => shared.has(b.d)).length
+      mine = mine.filter(b => !shared.has(b.d))
+      parsed = { ...parsed, bodyweight: parsed.bodyweight.map(b => (shared.has(b.d) ? { ...b, t: now } : b)) }
+    }
+    const have = new Set(mine.map(b => b.d))
     // Marked as imported (`src`, as lib/health-read.js marks what it reads): mostly another app's
     // or the health hub's own export, so it is never written back to Apple Health or Health
     // Connect (lib/health-connect.js healthRecords), where it would land a second time.
     const fresh = parsed.bodyweight.filter(b => !have.has(b.d)).map(b => ({ ...b, src: b.src || 'import' }))
-    S.bodyweight = [...S.bodyweight, ...fresh].sort((a, b) => (a.d < b.d ? -1 : 1))
-    const res = { added: fresh.length, skipped: parsed.bodyweight.length - fresh.length }
+    S.bodyweight = [...mine, ...fresh].sort((a, b) => (a.d < b.d ? -1 : 1))
+    const res = { added: fresh.length, skipped: parsed.bodyweight.length - fresh.length, ...(overwrite ? { replaced } : {}) }
     if (parsed.measurements?.length) res.measurements = mergeMeasurements(S, parsed.measurements)
     return res
+  }
+  let replaced = 0
+  let sharedDays = new Set()
+  if (overwrite) {
+    const days = new Set(parsed.workouts.map(w => w.d))
+    sharedDays = new Set(S.workouts.filter(w => days.has(w.d)).map(w => w.d))
+    replaced = S.workouts.filter(w => sharedDays.has(w.d)).length
+    S.workouts = S.workouts.filter(w => !sharedDays.has(w.d))
   }
   const have = new Set(S.workouts.map(w => w.d))
   // Every parse invents fresh ids for the names it cannot match, and a later export of the same
@@ -1035,7 +1075,7 @@ export function mergeImport(S, parsed) {
     if (same) exIdMap[c.id] = same.id
   })
   const fresh = parsed.workouts.filter(w => !have.has(w.d))
-    .map(w => ({ ...w, entries: w.entries.map(e => (exIdMap[e.id] ? { ...e, id: exIdMap[e.id] } : e)) }))
+    .map(w => ({ ...w, ...(sharedDays.has(w.d) ? { _ts: now } : {}), entries: w.entries.map(e => (exIdMap[e.id] ? { ...e, id: exIdMap[e.id] } : e)) }))
   const used = new Set(fresh.flatMap(w => w.entries.map(e => e.id)))
   // (one an earlier import of the same name already made has the same id now: kept once)
   const known = new Set(S.customEx.map(c => c?.id))
@@ -1047,5 +1087,5 @@ export function mergeImport(S, parsed) {
     const mx = Math.max(0, ...e.sets.map(s => s.w || 0), e.topW || 0)
     if (mx > 0) { const cur = S.exWeights[e.id]; if (!cur || w.d >= cur.d) S.exWeights[e.id] = { w: mx, d: w.d } }
   }))
-  return { added: fresh.length, skipped: parsed.workouts.length - fresh.length }
+  return { added: fresh.length, skipped: parsed.workouts.length - fresh.length, ...(overwrite ? { replaced } : {}) }
 }

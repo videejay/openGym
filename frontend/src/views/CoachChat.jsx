@@ -215,7 +215,8 @@ export default function CoachChat() {
 
   return <div className="narrow chat">
     <div className="chat-hdr">
-      <button className="iconbtn" data-back="/plan" onClick={() => nav('/plan')} aria-label={t('Back')}><Icon name="chevronLeft" /></button>
+      {/* Back where the chat was opened from (Home, a workout, Plan); Plan when it was opened directly. */}
+      <button className="iconbtn" data-back="/plan" onClick={() => ((window.history.state?.idx || 0) > 0 ? nav(-1) : nav('/plan'))} aria-label={t('Back')}><Icon name="chevronLeft" /></button>
       <div className="chat-av"><Icon name="sparkles" /></div>
       <div className="grow">
         <h1>{t('Coach')}</h1>

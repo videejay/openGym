@@ -583,6 +583,22 @@ h4.sec{
 /* exercise pictures are decoration inside tappable rows/cards: no save-image callout on
    a long press and no drag ghost when a scroll starts on the picture */
 .thumb,.exmedia img,.exmedia video{-webkit-touch-callout:none;-webkit-user-drag:none;user-select:none;-webkit-user-select:none}
+/* The whole exercise dataset is line art on white, which in dark mode means a floodlight in
+   the middle of the screen — at 320px tall, mid-set, in a dim gym. The browser inverts it for
+   free, so nothing is reprocessed and the images on the server stay as they are.
+   `hue-rotate(180deg)` is what makes it usable rather than clever: invert() flips lightness AND
+   hue, so the red highlight comes out cyan and stops reading as "this is the muscle"; rotating
+   the hue back half a turn returns it to red, and the saturate compensates for the wash-out
+   that inverting a mid-red leaves behind. The card behind it goes black in the same breath, or
+   the picture would sit in a white frame. `.thumb-x` is excluded throughout: it is the
+   no-media placeholder, an app icon on an app surface, with nothing to invert. */
+:root[data-theme="dark"] .exmedia,
+:root[data-theme="dark"] .thumb:not(.thumb-x){background:#000}
+:root[data-theme="dark"] .exmedia img,
+:root[data-theme="dark"] .exmedia video,
+:root[data-theme="dark"] .thumb:not(.thumb-x){
+  filter:invert(1) hue-rotate(180deg) saturate(1.9);
+}
 .thumb-x{
   display:flex;align-items:center;justify-content:center;font-size:21px;
   background:var(--surface-2);color:var(--label-2);
@@ -710,6 +726,28 @@ body.chips-dragging *{cursor:inherit}
 .measure-select{margin-bottom:10px;background:var(--surface-2)}
 .measure-preview{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:11px;padding-top:10px;border-top:1px solid var(--sep);font-size:12px;color:var(--label-2)}
 .measure-preview b{color:var(--label);font-weight:500}
+.bodyscan-tiles .tile .v{font-size:20px}
+.bodyscan-delta{font-size:12px;color:var(--label-2);margin-top:3px;font-variant-numeric:tabular-nums}
+.bodyseg{display:grid;grid-template-columns:1fr minmax(0,1.15fr) 1fr;gap:10px;margin-top:12px;padding:14px 12px;border-radius:var(--r-card);background:var(--surface-2);background:linear-gradient(160deg,color-mix(in srgb,var(--red) 34%,var(--surface)),color-mix(in srgb,var(--orange) 28%,var(--surface)))}
+.bodyseg .bodyseg-trunk{grid-column:1/-1;justify-self:center;min-width:min(60%,240px)}
+.bodyseg-side{display:flex;flex-direction:column;justify-content:space-around;gap:16px;min-width:0}
+.bodyseg-fig{display:flex;align-items:center;min-width:0}
+.bodyseg-fig .bodymap{width:100%}
+.bodyseg-fig .bm-v{max-height:300px}
+.bodyseg-box{background:var(--surface);background:color-mix(in srgb,var(--surface) 62%,transparent);border-radius:12px;padding:10px}
+.bodyseg-n{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bodyseg-v{font-size:17px;font-weight:600;margin-top:4px;font-variant-numeric:tabular-nums}
+.bodyseg-v span{font-size:12px;font-weight:400;color:var(--label-2)}
+.bodyscan-seg{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:4px}
+.bodyscan-seg th,.bodyscan-seg td{padding:6px 4px;border-top:1px solid var(--sep);text-align:right;font-weight:400}
+.bodyscan-seg thead th{border-top:0;color:var(--label-2);font-size:12px}
+.bodyscan-seg tbody th{text-align:left;color:var(--label-2)}
+.measure-home-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.measure-home-grid button{background:var(--surface-2);border-radius:10px;padding:10px;text-align:left;min-width:0}
+.measure-home-grid span,.measure-home-grid i{display:block;font-size:11px;color:var(--label-2);font-style:normal;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.measure-home-grid b{display:block;font-size:16px;margin:3px 0;white-space:nowrap}
+.measure-empty{width:100%;display:flex;align-items:center;justify-content:space-between;text-align:left;color:var(--label-2);font-size:13px;gap:10px}
+.measure-empty .icn{flex:none}
 .exnote{
   background:var(--surface);border-radius:var(--r);padding:13px 15px;
   line-height:1.45;white-space:pre-wrap;font-size:15px;margin-bottom:10px;color:var(--label-2);
@@ -2313,6 +2351,11 @@ button.wl-summary{width:100%;padding:0 0 10px;text-align:start;border-radius:var
 [dir="rtl"] *{letter-spacing:0}
 .exfix-link{display:inline-flex;align-items:center;gap:5px;margin:14px 0 4px;color:var(--label-3);text-decoration:none}
 .list .similar-label{margin:16px 2px 6px;grid-column:1/-1}
+.youtube-video{width:100%;min-width:0;margin:8px 0}
+.youtube-video iframe{display:block;width:100%;min-height:200px;aspect-ratio:16/9;border:0;border-radius:12px;background:#000}
+.youtube-actions{display:flex;justify-content:space-between;gap:8px;margin-top:8px}
+.youtube-actions .btn{min-height:44px}
+.stats-tabs{margin:0 0 14px}
 
 /* The edge swipe back (lib/edge-swipe-back.js): the page follows the finger, the one it goes
    back to slides in underneath with a shade over it. The sliding page's own ground reaches the

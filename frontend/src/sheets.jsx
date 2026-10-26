@@ -1,7 +1,7 @@
 import { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react'
 import { useStore } from './store/useStore.js'
 import { useUI } from './store/useUI.js'
-import { EXDB, EXIDX, BODYPARTS, isCardio, isBodyweightEq, allExercises, equipmentOf, byCategory, smOf, searchExercises, similarExercises, exOr, isAssisted, betterWeight, beatsWeight, isCustomEx } from './lib/exercises.js'
+import { EXDB, EXIDX, BODYPARTS, isCardio, isBodyweightEq, allExercises, equipmentOf, byCategory, smOf, searchExercises, similarExercises, exOr, isAssisted, betterWeight, beatsWeight, isCustomEx, imgSrc, figureOf } from './lib/exercises.js'
 import { activeProfile, exAvailable, ALL_EQUIPMENT, newProfile, profileEquipment, ACC_V } from './lib/equipment.js'
 import { fmtDate, fmtDateRange, fmtNum, fmtPlate, exerciseNameText, fmtVol, fmtDur, durPart, todayISO, isoOf, uid, exCount, routineCount, setsWorkCount, DAYN, DAYS, weekOrder, weekStartOf, weekDayOffset, MONTHS_LONG, ACCENTS } from './lib/format.js'
 import { lastEntryFor, bestWeightFor, bestWeightForEntry, buildSets, effectiveRoutineIds, workoutDay, workoutVolume, sessionVolume, countsWarmups, setsDone, setsDoneActive, setUnitsTotal, lastBW, sessionSections, setLabel, defaultConfig, pickedExerciseConfig, cleanupSg, modeOf, effortOf, EFFORT, capEffort, stepEffort, isBw, isPerSide, sideReps, workSetsDone, applyIntensifierPlan, MAX_PLANNED_WARMUPS, NOTE_MAX } from './lib/history.js'
@@ -17,6 +17,7 @@ import CustomMediaField from './components/CustomMediaField.jsx'
 import WorkoutMediaSection, { workoutMediaCount } from './components/WorkoutMedia.jsx'
 import { mediaOf, normalizeMediaRef, cleanUrl, workoutMediaOf } from './lib/media-refs.js'
 import { syncMedia } from './lib/media-sync.js'
+import { mediaStore } from './lib/media-store.js'
 import LineChart from './components/LineChart.jsx'
 import Stepper from './components/Stepper.jsx'
 import { durationSheet } from './components/DurationWheel.jsx'
@@ -34,11 +35,15 @@ import MuscleExplorer from './components/MuscleExplorer.jsx'
 import ExerciseViewToggle from './components/ExerciseViewToggle.jsx'
 import { sameMuscleFirst, swapMuscleOf } from './lib/similar-exercises.js'
 import { exerciseMuscleSnapshot, loadOfWorkouts, MUSCLES, MUSCLE_NAME, muscleWeightsOf, muscleGroupsOf, hasExplicitMuscleMetadata, inMuscleOrder } from './lib/muscles.js'
-import { parseImport, mergeImport } from './lib/import-csv.js'
+import { parseImport, mergeImport, importOverlap } from './lib/import-csv.js'
 import { importHevyData, HevyApiError, HEVY_DEV_SETTINGS, mergeHevyRoutines, hevySummaryCounts } from './lib/import-hevy.js'
-import { buildPlanBundle, parsePlan, mergePlan, printPlan, planPrintHTML } from './lib/plan-share.js'
+import { buildPlanBundle, parsePlan, mergePlan, printPlan, planPrintHTML, printHtmlInFrame } from './lib/plan-share.js'
 import { printOptions } from './lib/print-doc.js'
 import { printWorkout } from './lib/report-print.js'
+import { normalizeQr, newExerciseQr, shortQrLabel, qrCodesFor, withExQr, withoutExQr, moveExQr, withoutExercise, othersWithCode, exerciseQrPrintHTML } from './lib/exercise-qr.js'
+import { renderQrToCanvas } from './lib/qr.js'
+import { A4_MM, PX_PER_MM, drawExerciseSheet, iosHomeScreenApp, jpegPdf } from './lib/print-sheet.js'
+import { scanOnce } from './components/CameraScan.jsx'
 import { estimate1RM, best1RM, is1RMRecord, REP_CAP, formulaOf, FORMULA_NAMES } from './lib/onerm.js'
 import { exerciseHistory } from './lib/exercise-history.js'
 import { relativeSeries } from './lib/relative-strength.js'
@@ -73,6 +78,7 @@ import { hrLabel } from './lib/heart-rate.js'
 import { weeklyWeights } from './lib/bodyweight.js'
 import { workoutText } from './lib/workout-text.js'
 import { workoutCardModel, layoutWorkoutCard, drawWorkoutCard, viewAspect, CARD_FONT } from './lib/workout-card.js'
+import { qrScanOn } from './lib/features.js'
 import { copyText } from './lib/clipboard.js'
 import { queueRemaining, pinState } from './lib/queue.js'
 import { DAY_NOTE_TAGS, DAY_NOTE_LABEL, DAY_NOTE_ICON, dayNoteOf, dayNoteLine, canNoteDay, withDayNote } from './lib/day-notes.js'
@@ -440,6 +446,27 @@ function WeighIns() {
 export const weighInsSheet = () => ui().openSheet(close => <WeighIns close={close} />)
 
 /* ============================ import from another app ============================ */
+// Overwriting days already here deletes what they hold, so it is never one tap: the switch says
+// how many entries go, and Import asks once more with the number before anything is written.
+const overwriteLine = n => tn('{0} entry already here will be replaced by the file’s.', '{0} entries already here will be replaced by the file’s.', n)
+function confirmOverwrite(n, onConfirm) {
+  confirmSheet({
+    title: t('Overwrite existing days?'),
+    message: tn('{0} entry already here will be deleted and replaced by the file’s. This can’t be undone.', '{0} entries already here will be deleted and replaced by the file’s. This can’t be undone.', n),
+    confirmText: t('Replace'), danger: true, onConfirm,
+  })
+}
+function OverwriteRow({ checked, onChange, replaced, keepText }) {
+  return <div className="row between" style={{ padding: '10px 2px', gap: 12, marginBottom: 6 }}>
+    <div>
+      <div className="tt" style={{ fontSize: 15 }}>{t('Overwrite days already here')}</div>
+      {checked
+        ? <div className="small" style={{ color: 'var(--yellow)' }}>{overwriteLine(replaced)}</div>
+        : <div className="small dim">{keepText}</div>}
+    </div>
+    <Switch checked={checked} onChange={onChange} />
+  </div>
+}
 // "12 sets bring an RPE with them": the file rated its sets. The column is off by default, so
 // with it off the line says where to switch it on.
 const effortLine = (effort, n, scale) => effort === 'none'
@@ -459,16 +486,22 @@ function ImportSummary({ parsed, close }) {
     ? parsed.bodyweight.filter(b => st.bodyweight.some(x => x.d === b.d)).length
     : parsed.workouts.filter(w => st.workouts.some(x => x.d === w.d)).length) + haveM
   const fresh = (isBW ? parsed.bodyweight.length + checkIns.length : parsed.workouts.length) - have
+  const [overwrite, setOverwrite] = useState(false)
+  const overlap = importOverlap(st, parsed)
+  const replacing = overwrite && overlap.replaced > 0
+  const canImport = fresh > 0 || replacing
 
-  const doImport = () => {
+  const run = () => {
     let res
-    update(s => { res = mergeImport(s, parsed) })
+    update(s => { res = mergeImport(s, parsed, { overwrite: replacing }) })
     close()
     const measured = res.measurements ? tn('{0} measurement check-in imported', '{0} measurement check-ins imported', res.measurements) : ''
-    toast(isBW
+    const added = isBW
       ? (res.added || !measured ? tn('{0} weigh-in imported', '{0} weigh-ins imported', res.added) + (measured ? ' · ' + measured : '') : measured)
-      : tn('{0} workout imported', '{0} workouts imported', res.added))
+      : tn('{0} workout imported', '{0} workouts imported', res.added)
+    toast(res.replaced ? added + ' · ' + t('{0} replaced', res.replaced) : added)
   }
+  const doImport = () => (replacing ? confirmOverwrite(overlap.replaced, run) : run())
 
   return <>
     <h3>{parsed.source ? t('Import from {0}', parsed.source) : t('Import history')}</h3>
@@ -497,9 +530,8 @@ function ImportSummary({ parsed, close }) {
     {!isBW && !parsed.fileUnit && !parsed.mixedUnits && <div className="small dim" style={{ marginBottom: 10 }}>
       {t('The file doesn’t say which unit it uses, so numbers are imported as they are.')}
     </div>}
-    {have > 0 && <div className="small dim" style={{ marginBottom: 10 }}>
-      {t('{0} days already have data here and will be left alone.', have)}
-    </div>}
+    {overlap.replaced > 0 && <OverwriteRow checked={overwrite} onChange={setOverwrite} replaced={overlap.replaced}
+      keepText={t('{0} days already have data here and will be left alone.', have)} />}
     {/* The file rated its sets. Say so: the column is off by default, so the ratings would
         otherwise arrive invisibly and look like they had been dropped. */}
     {!isBW && (parsed.rirSets + parsed.rpeSets) > 0 && <div className="small dim" style={{ marginBottom: 10 }}>
@@ -518,8 +550,8 @@ function ImportSummary({ parsed, close }) {
       </div>
     </>}
 
-    <Button variant="primary" onClick={doImport} disabled={!fresh}>
-      {fresh ? t('Import') : t('Nothing new to import')}
+    <Button variant={replacing ? 'danger' : 'primary'} onClick={doImport} disabled={!canImport}>
+      {canImport ? t('Import') : t('Nothing new to import')}
     </Button>
     <div style={{ height: 8 }} />
     <Button variant="ghost" className="dim" onClick={close}>{t('Cancel')}</Button>
@@ -573,6 +605,7 @@ function HevyImportSheet({ close }) {
   const [wantWorkouts, setWantWorkouts] = useState(true)
   const [wantRoutines, setWantRoutines] = useState(true)
   const [wantBody, setWantBody] = useState(true)
+  const [overwrite, setOverwrite] = useState(false)
   const keyRef = useRef(null)
 
   // Drop the key from memory when the sheet goes away (unmount or successful import).
@@ -611,12 +644,17 @@ function HevyImportSheet({ close }) {
 
   const doImport = () => {
     if (!payload) return
+    if (replacing) confirmOverwrite(replaced, runImport)
+    else runImport()
+  }
+  const runImport = () => {
     const parts = []
-    let addedW = 0, addedR = 0, addedB = 0
+    let addedW = 0, addedR = 0, addedB = 0, replacedN = 0
     update(s => {
       if (wantWorkouts && payload.workouts.workouts.length) {
-        const res = mergeImport(s, payload.workouts)
+        const res = mergeImport(s, payload.workouts, { overwrite: replacing })
         addedW = res.added
+        replacedN += res.replaced || 0
         parts.push(tn('{0} workout imported', '{0} workouts imported', res.added))
       }
       if (wantRoutines && payload.routines.routines.length) {
@@ -625,11 +663,13 @@ function HevyImportSheet({ close }) {
         parts.push(tn('{0} routine imported', '{0} routines imported', res.added))
       }
       if (wantBody && payload.bodyweight.bodyweight.length) {
-        const res = mergeImport(s, payload.bodyweight)
+        const res = mergeImport(s, payload.bodyweight, { overwrite: replacing })
         addedB = res.added
+        replacedN += res.replaced || 0
         parts.push(tn('{0} weigh-in imported', '{0} weigh-ins imported', res.added))
       }
     })
+    if (replacedN) parts.push(t('{0} replaced', replacedN))
     close()
     if (!addedW && !addedR && !addedB) toast(t('Nothing new to import'))
     else toast(parts.join(' · '))
@@ -675,7 +715,10 @@ function HevyImportSheet({ close }) {
   const freshB = b.bodyweight.length - haveB
   // Routines are always added as new copies (same as plan import).
   const freshR = r.routines.length
-  const canImport = (wantWorkouts && freshW > 0) || (wantRoutines && freshR > 0) || (wantBody && freshB > 0)
+  // One switch for both: the days the selected parts share with the history.
+  const replaced = (wantWorkouts ? importOverlap(st, w).replaced : 0) + (wantBody ? importOverlap(st, b).replaced : 0)
+  const replacing = overwrite && replaced > 0
+  const canImport = (wantWorkouts && freshW > 0) || (wantRoutines && freshR > 0) || (wantBody && freshB > 0) || replacing
   const unmatched = [...new Set([
     ...(wantWorkouts ? w.unmatchedNames : []),
     ...(wantRoutines ? r.unmatchedNames : []),
@@ -718,6 +761,8 @@ function HevyImportSheet({ close }) {
       <Switch checked={wantBody} onChange={setWantBody} />
     </div>}
     {!b.bodyweight.length && <div style={{ borderBottom: '1px solid var(--sep)', marginBottom: 8 }} />}
+    {(replaced > 0 || overwrite) && <OverwriteRow checked={overwrite} onChange={setOverwrite} replaced={replaced}
+      keepText={t('{0} days already have data here and will be left alone.', (wantWorkouts ? haveW : 0) + (wantBody ? haveB : 0))} />}
 
     {(w.converted || r.converted) && <div className="small" style={{ color: 'var(--yellow)', marginBottom: 10 }}>
       {t('Hevy stores weights in kg, so they’ll be converted to {0}.', st.unit)}
@@ -733,7 +778,7 @@ function HevyImportSheet({ close }) {
       </div>
     </>}
 
-    <Button variant="primary" onClick={doImport} disabled={!canImport}>
+    <Button variant={replacing ? 'danger' : 'primary'} onClick={doImport} disabled={!canImport}>
       {canImport ? t('Import') : t('Nothing new to import')}
     </Button>
     <div style={{ height: 8 }} />
@@ -1146,6 +1191,7 @@ function ExerciseDetail({ ex, close }) {
       </button>
     </div>
     <Media ex={ex} />
+    <ExerciseAliasesEditor key={ex.id} ex={ex} />
     <div className="row" style={{ gap: 6, flexWrap: 'wrap', margin: '10px 0' }}>
       {detailTags(ex).map(tg => <span key={tg.key} className={'tag' + (tg.acc ? ' acc' : '')}>{tg.icon && <Icon name={tg.icon} />}{tg.label}</span>)}
     </div>
@@ -1173,6 +1219,7 @@ function ExerciseDetail({ ex, close }) {
     {/* No one-rep max on an assistance machine: the load is the help you were given, so the
         calculator would answer "your 1RM is 23 kg" about a number that gets smaller as you get
         stronger (issue #232). Cardio has none for the same kind of reason. */}
+    {qrScanOn(useStore.getState().config) && <ExerciseQrCodes ex={ex} />}
     {!isCardio(ex) && !isAssisted(ex) && <OneRM ex={ex} />}
     {instrFor(ex).length > 0 &&<><h4 className="sec">{t('How to')}{getLang() !== 'en' && !instrTranslated(ex) && <span className="dim" style={{ textTransform: 'none', letterSpacing: 0 }}> · {t('instructions in English')}</span>}</h4><ol className="steps-list">{instrFor(ex).map((s, i) => <li key={i}>{s}</li>)}</ol></>}
     {/* The catalogue is community-edited (catalogue/README.md): a wrong muscle, a clumsy step or a
@@ -1183,6 +1230,189 @@ function ExerciseDetail({ ex, close }) {
   </>
 }
 export const exerciseDetailSheet = ex => ui().openSheet(close => <ExerciseDetail ex={ex} close={close} />)
+
+/* ============================ exercise QR codes ============================ */
+// The codes on the machines that stand for this exercise (S.exQr, lib/exercise-qr.js): scanned
+// in a running workout, one jumps straight to it. A code gets here by scanning what the gym put
+// on the machine, or as a fresh one of our own, printed on a page about the exercise to cut out.
+const nameOfEx = id => exerciseNameText(exOr(id))
+const namesOf = ids => ids.map(nameOfEx).join(', ')
+
+function ExerciseQrCodes({ ex }) {
+  const map = useStore(s => s.S.exQr)
+  const codes = qrCodesFor(map, ex.id)
+  const assign = code => update(s => { s.exQr = withExQr(s.exQr, ex.id, code) })
+  const scan = async () => {
+    const code = normalizeQr((await scanOnce())?.value)
+    if (!code) return
+    if (qrCodesFor(S().exQr, ex.id).includes(code)) { toast(t('This exercise already has this code')); return }
+    const others = othersWithCode(S().exQr, ex.id, code)
+    if (!others.length) { assign(code); toast(t('Code added')); return }
+    // One code on two exercises is a cable tower, or a wrong scan: ask which.
+    menuSheet({
+      title: t('This code is already on {0}', namesOf(others)),
+      items: [
+        { icon: 'swap', label: t('Move it to this exercise'), sub: t('{0} no longer has it', namesOf(others)),
+          onClick: () => { update(s => { s.exQr = moveExQr(s.exQr, ex.id, code) }); toast(t('Code moved')) } },
+        { icon: 'plus', label: t('Use it for both'), sub: t('Scanning it asks which one you mean'),
+          onClick: () => { assign(code); toast(t('Code added')) } },
+      ],
+    })
+  }
+  // A fresh code is the exercise's at once: the page to print is only its copy on paper.
+  const create = () => {
+    const code = newExerciseQr()
+    assign(code)
+    toast(t('Code added'))
+    printExerciseQr(ex, code)
+  }
+  // Only this exercise lets go of the code. Another exercise that has it too keeps it, and a scan
+  // still finds that one; the last one to let go deletes the code.
+  const unassociate = code => {
+    const others = othersWithCode(S().exQr, ex.id, code)
+    confirmSheet({
+      title: t('Unassociate this code?'),
+      message: others.length
+        ? t('It stays on {0} and still finds it when scanned.', namesOf(others))
+        : t('No other exercise has it: the code is deleted, and scanning it no longer finds an exercise.'),
+      confirmText: t('Unassociate'), danger: !others.length,
+      onConfirm: () => {
+        update(s => { s.exQr = withoutExQr(s.exQr, ex.id, code) })
+        toast(others.length ? t('Code unassociated') : t('Code deleted'))
+      },
+    })
+  }
+  const codeMenu = code => menuSheet({
+    title: shortQrLabel(code),
+    items: [
+      { icon: 'note', label: t('Print again'), sub: t('The same code, on a page about this exercise'), onClick: () => printExerciseQr(ex, code) },
+      { icon: 'trash', label: t('Unassociate'), danger: true, onClick: () => unassociate(code) },
+    ],
+  })
+  return <>
+    <h4 className="sec">{t('QR codes')}{codes.length > 0 && <span className="dim"> · {codes.length}</span>}</h4>
+    {codes.length > 0
+      ? <div className="list">
+          {codes.map(code => {
+            const others = othersWithCode(map, ex.id, code)
+            return <div key={code} className="item" {...tappable(() => codeMenu(code))}>
+              <span className="lrow-i"><Icon name="qr" /></span>
+              <div className="grow">
+                <div className="tt nocap" style={{ wordBreak: 'break-all' }}>{shortQrLabel(code)}</div>
+                {others.length > 0 && <div className="ss">{t('Also on {0}', namesOf(others))}</div>}
+              </div>
+              <Icon name="more" className="dim" />
+            </div>
+          })}
+        </div>
+      : <div className="small dim" style={{ lineHeight: 1.5 }}>{t('Put a QR code on the machine: scanning it in a running workout jumps straight to this exercise.')}</div>}
+    {/* More than one is fine: two identical racks each with their own sticker, or the gym's
+        code next to one printed here. The buttons say so once there is a first. */}
+    <div className="row" style={{ gap: 8, marginTop: 8 }}>
+      <Button icon="qr" style={{ flex: 1 }} onClick={scan}>{codes.length ? t('Add another code') : t('Scan code')}</Button>
+      <Button icon="note" style={{ flex: 1 }} onClick={create}>{codes.length ? t('Print another code') : t('Print new code')}</Button>
+    </div>
+    {codes.length > 0 && <div className="small dim" style={{ lineHeight: 1.5, marginTop: 6 }}>{t('An exercise can have several codes, and a code can belong to several exercises.')}</div>}
+  </>
+}
+
+const blobToDataUrl = blob => new Promise((resolve, reject) => {
+  const r = new FileReader()
+  r.onload = () => resolve(String(r.result || ''))
+  r.onerror = () => reject(r.error)
+  r.readAsDataURL(blob)
+})
+
+// The exercise's picture for its printed page, read into the page (lib/exercise-qr.js says why):
+// a custom exercise's own photo or GIF from the media store, a built-in's still frame from the
+// dataset, its web address when the dataset's host will not let us read it. '' for none.
+async function exercisePictureFor(ex) {
+  try {
+    if (isCustomEx(ex)) {
+      const m = mediaOf(ex)
+      if (!m || (m.kind !== 'image' && m.kind !== 'gif')) return ''
+      const rec = await mediaStore.get(m.hash)
+      return rec?.blob ? await blobToDataUrl(rec.blob) : ''
+    }
+    if (!ex.img && !ex.gif) return ''
+    const src = new URL(imgSrc(ex, figureOf(S())), location.href).href
+    try {
+      const res = await fetch(src, { credentials: 'same-origin' })
+      if (res.ok) return await blobToDataUrl(await res.blob())
+    } catch { /* not readable from here: the address will do */ }
+    return src
+  } catch {
+    return ''
+  }
+}
+
+/** One A4 page about the exercise with `code` at 3 × 3 cm, to cut out and stick on the machine. */
+export async function printExerciseQr(ex, code) {
+  const name = exerciseNameText(ex)
+  try {
+    const canvas = document.createElement('canvas')
+    const [, imageUrl] = await Promise.all([renderQrToCanvas(canvas, code), exercisePictureFor(ex)])
+    const sheet = {
+      name, description: descFor(ex), tags: detailTags(ex).map(tg => tg.label), steps: instrFor(ex),
+    }
+    // The app on an iPhone's home screen cannot print a web page at all (lib/print-sheet.js): the
+    // sheet goes out as a PDF through the share sheet instead, whose Print keeps it at size.
+    if (!MOBILE && iosHomeScreenApp()) { await shareExerciseSheet(sheet, canvas, imageUrl); return }
+    const html = exerciseQrPrintHTML({ ...sheet, qrDataUrl: canvas.toDataURL('image/png'), imageUrl })
+    // Android's print manager refuses a job without a name.
+    if (MOBILE) await printHtml(html, name || t('QR code')).catch(() => { /* dismissed */ })
+    else printHtmlInFrame(html)
+  } catch {
+    toast(t('Could not print the code'))
+  }
+}
+
+const loadImage = src => new Promise((resolve, reject) => {
+  const img = new Image()
+  img.onload = () => resolve(img)
+  img.onerror = reject
+  img.src = src
+})
+
+// The sheet drawn at 200 dpi and wrapped as a one-page A4 PDF, then handed to the share sheet.
+// Sharing needs a tap of its own (the one on "Print new code" is spent by the time the picture
+// and the code are ready), so a small sheet asks for it. Without a share sheet the PDF is saved.
+async function shareExerciseSheet(sheet, qrCanvas, imageUrl) {
+  const page = document.createElement('canvas')
+  page.width = Math.round(A4_MM.w * PX_PER_MM)
+  page.height = Math.round(A4_MM.h * PX_PER_MM)
+  // Only a picture read into the page: one drawn from another origin would taint the canvas.
+  const picture = imageUrl && imageUrl.startsWith('data:image/') ? await loadImage(imageUrl).catch(() => null) : null
+  drawExerciseSheet(page.getContext('2d'), {
+    ...sheet, qr: qrCanvas, picture, rtl: document.documentElement.dir === 'rtl',
+    labels: { caption: t('Scan in a running workout to jump to this exercise'), howTo: t('How to') },
+  })
+  const jpeg = await new Promise((resolve, reject) => page.toBlob(b => (b ? resolve(b) : reject(new Error('toBlob'))), 'image/jpeg', 0.95))
+  const pdf = jpegPdf(new Uint8Array(await jpeg.arrayBuffer()), page.width, page.height)
+  const fileName = (sheet.name || 'openGym').replace(/[\\/:*?"<>|]+/g, ' ').trim() + ' – QR.pdf'
+  const file = new File([pdf], fileName, { type: 'application/pdf' })
+  confirmSheet({
+    title: t('Your sheet is ready'),
+    message: t('Choose “Print” in the share sheet. The code prints at 3 × 3 cm.'),
+    confirmText: t('Print or share'),
+    onConfirm: () => {
+      if (navigator.canShare?.({ files: [file] })) {
+        navigator.share({ files: [file], title: sheet.name }).catch(e => { if (e?.name !== 'AbortError') saveFile(file) })
+      } else saveFile(file)
+    },
+  })
+}
+
+function saveFile(file) {
+  const url = URL.createObjectURL(file)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = file.name
+  document.body.appendChild(a)
+  a.click()
+  a.remove()
+  setTimeout(() => URL.revokeObjectURL(url), 60000)
+}
 
 /* ============================ exercise history ============================ */
 // What you did on this exercise before, reachable mid-workout (issue #43): the curve first,
@@ -1444,6 +1674,7 @@ export function deleteCustomEx(ex, afterDelete) {
         s.routines.forEach(r => { r.ex = r.ex.filter(e => e.id !== ex.id); cleanupSg(r.ex) })
         delete s.exWeights[ex.id]
         s.favEx = (s.favEx || []).filter(id => id !== ex.id)
+        if (s.exQr) s.exQr = withoutExercise(s.exQr, ex.id)
       })
       toast(t('Exercise deleted'))
       afterDelete && afterDelete()
@@ -2042,7 +2273,7 @@ function ExConfig({ ex, existing, onSave, onDelete, onReplace, close, routine, i
   }
   return <>
     <h3 className={exerciseNameClass(ex)}>{exerciseNameFor(ex)}</h3>
-    <Media ex={ex} />
+    <Media ex={ex} notes={c.notes} />
     {/* The same tags the exercise detail sheet shows, secondaries included: choosing what goes
         into a plan is exactly when "what else does this hit" matters, and until now that was
         only visible from the Exercises tab, after the fact. Custom exercises and the newer

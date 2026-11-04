@@ -37,16 +37,17 @@ describe('bwSheet date selection for past entries', () => {
   it('renders a date input when not required (manual log), allowing past dates', () => {
     act(() => bwSheet())
     const host = renderTop()
-    const dateInput = host.querySelector('input[type="date"]')
-    expect(dateInput).not.toBeNull()
-
-    // Change date to past
-    const pastDate = '2026-09-15'
-    act(() => {
-      // Through the native setter: React's value tracker ignores a plain `.value =` and drops the event.
-      Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(dateInput, pastDate)
-      dateInput.dispatchEvent(new Event('input', { bubbles: true }))
-    })
+    // The date is openGym's own field (components/DateField.jsx): open it, pick a day before today.
+    const field = host.querySelector('[data-datefield]')
+    expect(field).not.toBeNull()
+    const today = field.value
+    act(() => field.click())
+    // The picker is a sheet of its own, on top of the weigh-in sheet.
+    renderTop()
+    const cell = [...document.querySelectorAll('[data-iso]')].find(b => !b.disabled && b.dataset.iso < today)
+    expect(cell).toBeTruthy()
+    const pastDate = cell.dataset.iso
+    act(() => cell.click())
 
     // Click Save
     const saveBtn = [...host.querySelectorAll('button')].find(b => b.textContent === 'Save')
@@ -62,7 +63,6 @@ describe('bwSheet date selection for past entries', () => {
   it('does not render date input when required for workout start', () => {
     act(() => bwSheet({ required: true }))
     const host = renderTop()
-    const dateInput = host.querySelector('input[type="date"]')
-    expect(dateInput).toBeNull()
+    expect(host.querySelector('[data-datefield]')).toBeNull()
   })
 })

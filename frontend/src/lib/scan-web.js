@@ -48,18 +48,25 @@ export async function decodeImageData(img) {
 // enough to run on every few video frames on a phone. A still photo gets more pixels (PHOTO_MAX):
 // the thin bars of a 1D code on a card that fills only part of the shot need them. Reuses one
 // canvas across calls.
-const MAX = 800, PHOTO_MAX = 1600
+const MAX = 800, PHOTO_MAX = 1600, CROP_MAX = 1200
 let _canvas = null
-export async function decodeSource(source, max = MAX) {
-  const sw = source.videoWidth || source.naturalWidth || source.width || 0
-  const sh = source.videoHeight || source.naturalHeight || source.height || 0
-  if (!sw || !sh) return null
+// `crop` (0 to 1) decodes only the centred square of that share of the shorter side, the area
+// the scanner's on-screen frame marks, at up to `max` px. A dense code (a Life Fitness console's
+// result code is some 80 modules across) held up to a laptop's webcam fills only part of the
+// frame; scaled down whole to 800 px it has too few pixels per module for jsQR.
+export async function decodeSource(source, max = MAX, crop = 0) {
+  const fw = source.videoWidth || source.naturalWidth || source.width || 0
+  const fh = source.videoHeight || source.naturalHeight || source.height || 0
+  if (!fw || !fh) return null
+  const side = crop > 0 && crop < 1 ? Math.round(Math.min(fw, fh) * crop) : 0
+  const sw = side || fw, sh = side || fh
+  const sx = side ? Math.round((fw - side) / 2) : 0, sy = side ? Math.round((fh - side) / 2) : 0
   const k = Math.min(1, max / Math.max(sw, sh))
   const w = Math.max(1, Math.round(sw * k)), h = Math.max(1, Math.round(sh * k))
   if (!_canvas) _canvas = document.createElement('canvas')
   _canvas.width = w; _canvas.height = h
   const ctx = _canvas.getContext('2d', { willReadFrequently: true })
-  ctx.drawImage(source, 0, 0, w, h)
+  ctx.drawImage(source, sx, sy, sw, sh, 0, 0, w, h)
 
   const det = nativeDetector()
   if (det) {
@@ -70,6 +77,12 @@ export async function decodeSource(source, max = MAX) {
     } catch (e) { /* fall through to jsQR */ }
   }
   return decodeImageData(ctx.getImageData(0, 0, w, h))
+}
+
+// One live video frame, `pass` counting the scanner's ticks: the whole frame on even ticks (a
+// code anywhere in view), the centre at more pixels on odd ones (a dense code in the frame).
+export function decodeFrame(video, pass = 0) {
+  return pass % 2 ? decodeSource(video, CROP_MAX, 0.8) : decodeSource(video, MAX)
 }
 
 // A picked File → { value, fmt } | null. createImageBitmap honours EXIF orientation where the

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { t } from '../lib/i18n.js'
-import { decodeSource, steadyBackCamera } from '../lib/scan-web.js'
+import { decodeFrame, steadyBackCamera } from '../lib/scan-web.js'
 import { scanCode } from '../lib/scan.js'
 import { scanErrorMessage } from '../lib/scan-errors.js'
 import { MOBILE } from '../lib/mobile.js'
@@ -30,7 +30,9 @@ export default function CameraScan({ onFound, onCancel, noCamera, hint }) {
     ;(async () => {
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { setError('unavailable'); return }
       try {
-        stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' } }, audio: false })
+        // Full HD where the camera has it: asked for nothing, a laptop's webcam gives 640 × 480,
+        // too few pixels for a dense code such as a Life Fitness console's result code.
+        stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' }, width: { ideal: 1920 }, height: { ideal: 1080 } }, audio: false })
       } catch (e) {
         setError(e && (e.name === 'NotAllowedError' || e.name === 'SecurityError') ? 'denied' : 'unavailable')
         return
@@ -52,11 +54,12 @@ export default function CameraScan({ onFound, onCancel, noCamera, hint }) {
       if (!v) return
       v.srcObject = stream
       try { await v.play() } catch (e) { /* autoplay policies; the loop below waits for frames */ }
+      let pass = 0
       const tick = async () => {
         if (done) return
         if (v.readyState >= 2) {
           let code = null
-          try { code = await decodeSource(v) } catch (e) { /* keep trying */ }
+          try { code = await decodeFrame(v, pass++) } catch (e) { /* keep trying */ }
           if (code && !done) { stop(); onFound(code); return }
         }
         timer = setTimeout(tick, 150)

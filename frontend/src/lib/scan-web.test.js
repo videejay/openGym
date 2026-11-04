@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi, afterEach } from 'vitest'
 import { generate } from 'lean-qr'
-import { decodeImageData, steadyBackCamera } from './scan-web.js'
+import { decodeImageData, decodeFrame, steadyBackCamera } from './scan-web.js'
 import { encodeBars } from './barcode.js'
 
 // Round trip through the two libraries the browser path relies on: lean-qr draws a code (the
@@ -92,5 +92,35 @@ describe('steadyBackCamera', () => {
 
   it('keeps it when the plain one is not unique', () => {
     expect(steadyBackCamera([cam('t', 'Back Triple Camera'), cam('a', 'Back Camera'), cam('b', 'Rear Camera')], 'Back Triple Camera')).toBeNull()
+  })
+})
+
+// The live scanner's ticks (CameraScan): the whole frame, then the centre at more pixels, so a
+// dense code (a Life Fitness console's result code) held up to a webcam is still read. No canvas
+// in this environment: a stand-in records what is drawn where.
+describe('decodeFrame', () => {
+  const draws = []
+  const realDocument = globalThis.document
+  const blank = (w, h) => ({ data: new Uint8ClampedArray(w * h * 4).fill(255), width: w, height: h })
+  function stubCanvas() {
+    globalThis.document = {
+      createElement: () => {
+        const c = { width: 0, height: 0 }
+        c.getContext = () => ({ drawImage: (...a) => draws.push(a), getImageData: (x, y, w, h) => blank(w, h) })
+        return c
+      },
+    }
+  }
+  afterEach(() => { draws.length = 0; globalThis.document = realDocument; vi.restoreAllMocks() })
+
+  it('reads the whole frame at 800 px, then the centre square at up to 1200 px', async () => {
+    stubCanvas()
+    const video = { videoWidth: 1920, videoHeight: 1080 }
+    expect(await decodeFrame(video, 0)).toBeNull()
+    expect(await decodeFrame(video, 1)).toBeNull()
+    const [whole, centre] = draws
+    expect(whole.slice(1)).toEqual([0, 0, 1920, 1080, 0, 0, 800, 450])
+    // 80 % of the shorter side, centred, kept at full resolution (864 px is under 1200)
+    expect(centre.slice(1)).toEqual([528, 108, 864, 864, 0, 0, 864, 864])
   })
 })

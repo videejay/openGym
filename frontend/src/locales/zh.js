@@ -2267,7 +2267,6 @@ export default {
   'Live connection not available': '实时连接不可用',
   'The live connection to the machine isn’t available here. Just keep training: at the end, the machine shows a QR code. Scan it here and your workout data comes across.': '此处无法与器械实时连接。继续训练即可：结束时器械会显示一个二维码。在这里扫描它，训练数据就会传过来。',
   'OK': '好',
-  'This Life Fitness code isn’t one openGym can use.': 'openGym 无法使用此 Life Fitness 代码。',
   'That Life Fitness code could not be read.': '无法读取此 Life Fitness 代码。',
   'Level {0}': '等级 {0}',
   'This result is already in this workout.': '此结果已在本次训练中。',
@@ -2306,11 +2305,11 @@ export default {
   'Right leg': '右腿',
   // --- Body data tab ---
   'Body data': '身体数据',
+  'All data': '全部数据',
   'Changes since {0}': '自 {0} 以来的变化',
   'Muscle mass, fat mass, water and more, each with its own curve.': '肌肉量、脂肪量、水分等，各有自己的曲线。',
   'Scan the QR code your gym’s body-composition scale shows after a measurement. Weight, body fat, muscle mass and the segment analysis then show here.': '扫描健身房体成分秤在测量后显示的二维码。体重、体脂、肌肉量和分段分析将显示在这里。',
   'Segment analysis': '分段分析',
-  'Training': '训练',
   // --- Coach: AI data sharing ---
   'AI data sharing': 'AI 数据共享',
   'Allow': '允许',

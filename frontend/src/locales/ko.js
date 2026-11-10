@@ -2267,7 +2267,6 @@ export default {
   'Live connection not available': '실시간 연결을 사용할 수 없음',
   'The live connection to the machine isn’t available here. Just keep training: at the end, the machine shows a QR code. Scan it here and your workout data comes across.': '여기서는 기구와의 실시간 연결을 사용할 수 없습니다. 그냥 계속 운동하세요. 끝나면 기구에 QR 코드가 표시됩니다. 여기서 스캔하면 운동 데이터가 옮겨집니다.',
   'OK': '확인',
-  'This Life Fitness code isn’t one openGym can use.': 'openGym에서 사용할 수 없는 Life Fitness 코드입니다.',
   'That Life Fitness code could not be read.': 'Life Fitness 코드를 읽을 수 없습니다.',
   'Level {0}': '레벨 {0}',
   'This result is already in this workout.': '이 결과는 이미 이 운동에 있습니다.',
@@ -2306,11 +2305,11 @@ export default {
   'Right leg': '오른다리',
   // --- Body data tab ---
   'Body data': '신체 데이터',
+  'All data': '모든 데이터',
   'Changes since {0}': '{0} 이후 변화',
   'Muscle mass, fat mass, water and more, each with its own curve.': '근육량, 체지방량, 체수분 등 각각의 그래프.',
   'Scan the QR code your gym’s body-composition scale shows after a measurement. Weight, body fat, muscle mass and the segment analysis then show here.': '측정 후 헬스장 체성분 체중계에 표시되는 QR 코드를 스캔하세요. 체중, 체지방, 근육량과 부위별 분석이 여기에 표시됩니다.',
   'Segment analysis': '부위별 분석',
-  'Training': '운동',
   // --- Coach: AI data sharing ---
   'AI data sharing': 'AI 데이터 공유',
   'Allow': '허용',

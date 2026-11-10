@@ -2267,7 +2267,6 @@ export default {
   'Live connection not available': 'Canlı bağlantı kullanılamıyor',
   'The live connection to the machine isn’t available here. Just keep training: at the end, the machine shows a QR code. Scan it here and your workout data comes across.': 'Makineyle canlı bağlantı burada kullanılamıyor. Antrenmana devam et: sonunda makine bir QR kod gösterir. Onu burada tara, antrenman verilerin aktarılır.',
   'OK': 'Tamam',
-  'This Life Fitness code isn’t one openGym can use.': 'openGym bu Life Fitness kodunu kullanamıyor.',
   'That Life Fitness code could not be read.': 'Bu Life Fitness kodu okunamadı.',
   'Level {0}': 'Seviye {0}',
   'This result is already in this workout.': 'Bu sonuç zaten bu antrenmanda.',
@@ -2306,11 +2305,11 @@ export default {
   'Right leg': 'Sağ bacak',
   // --- Body data tab ---
   'Body data': 'Vücut verileri',
+  'All data': 'Tüm veriler',
   'Changes since {0}': '{0} tarihinden beri değişim',
   'Muscle mass, fat mass, water and more, each with its own curve.': 'Kas kütlesi, yağ kütlesi, su ve daha fazlası, her biri kendi eğrisiyle.',
   'Scan the QR code your gym’s body-composition scale shows after a measurement. Weight, body fat, muscle mass and the segment analysis then show here.': 'Spor salonunun vücut analizi tartısının ölçümden sonra gösterdiği QR kodu tara. Kilo, vücut yağı, kas kütlesi ve segment analizi burada görünür.',
   'Segment analysis': 'Segment analizi',
-  'Training': 'Antrenman',
   // --- Coach: AI data sharing ---
   'AI data sharing': 'Yapay zekâ ile veri paylaşımı',
   'Allow': 'İzin ver',

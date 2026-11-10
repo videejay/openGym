@@ -67,7 +67,7 @@ import FocusView from './FocusView.jsx'
 import { scanOnce } from '../components/CameraScan.jsx'
 import { normalizeQr, resolveScan, scanTargetRoutineId, withExQr, currentExerciseFor, qrCodesFor } from '../lib/exercise-qr.js'
 import { handleScannedCode } from '../lib/scan-dispatch.js'
-import { parseLfUrl } from '../lib/lfopen/qr.js'
+import { lfScanMatch } from '../lib/lfopen/qr.js'
 import { normalizeResult, cardioSetFromResult, findResult } from '../lib/lfopen/result.js'
 import { exerciseForKind } from '../lib/lfopen/devices.js'
 import { placeResult, applyResultSet } from '../lib/lfopen/assign.js'
@@ -1734,7 +1734,7 @@ function ActiveWorkout() {
     // than fall through to the next handler, which would take it for an exercise's code.
     const cfg = useStore.getState().config
     const off = () => useUI.getState().toast(t('This kind of code is switched off on this server.'))
-    handleScannedCode(code, [lifeFitnessOn(cfg) ? lfScanHandler : { match: parseLfUrl, handle: off }, { match: parseScaleQr, handle: bodyScaleOn(cfg) ? values => bodyScanImportSheet(values) : off }, { match: c => c, handle: qrScanOn(cfg) ? goToScanned : off }])
+    handleScannedCode(code, [lifeFitnessOn(cfg) ? lfScanHandler : { match: lfScanMatch, handle: off }, { match: parseScaleQr, handle: bodyScaleOn(cfg) ? values => bodyScanImportSheet(values) : off }, { match: c => c, handle: qrScanOn(cfg) ? goToScanned : off }])
   }
   // A Life Fitness cardio console (lib/lfopen, docs/LIFE_FITNESS_CARDIO_CONNECT.md). The code it
   // shows at the end of a workout carries the whole summary: it becomes a cardio set on the
@@ -1742,7 +1742,7 @@ function ActiveWorkout() {
   // from its connect menu wants a live Bluetooth link, which this app does not make (yet): say
   // so, and point at the end-of-workout code instead.
   const lfScanHandler = {
-    match: parseLfUrl,
+    match: lfScanMatch,
     handle: m => {
       const ui = useUI.getState()
       if (m.kind === 'ble') {
@@ -1753,7 +1753,6 @@ function ActiveWorkout() {
         })
         return
       }
-      if (m.kind === 'unsupported') { ui.toast(t('This Life Fitness code isn’t one openGym can use.')); return }
       const res = m.kind === 'result' ? normalizeResult(m.data) : null
       if (!res) { ui.toast(t('That Life Fitness code could not be read.')); return }
       const st = useStore.getState().S

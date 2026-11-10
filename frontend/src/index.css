@@ -3057,7 +3057,6 @@ button.wl-summary{width:100%;padding:0 0 10px;text-align:start;border-radius:var
 .youtube-video iframe{display:block;width:100%;min-height:200px;aspect-ratio:16/9;border:0;border-radius:12px;background:#000}
 .youtube-actions{display:flex;justify-content:space-between;gap:8px;margin-top:8px}
 .youtube-actions .btn{min-height:44px}
-.stats-tabs{margin:0 0 14px}
 
 /* The edge swipe back (lib/edge-swipe-back.js): the page follows the finger, the one it goes
    back to slides in underneath with a shade over it. The sliding page's own ground reaches the

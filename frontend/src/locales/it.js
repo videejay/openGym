@@ -2267,7 +2267,6 @@ export default {
   'Live connection not available': 'Connessione dal vivo non disponibile',
   'The live connection to the machine isn’t available here. Just keep training: at the end, the machine shows a QR code. Scan it here and your workout data comes across.': 'La connessione dal vivo con la macchina qui non è disponibile. Continua ad allenarti: alla fine la macchina mostra un codice QR. Scansionalo qui e i dati dell’allenamento vengono trasferiti.',
   'OK': 'OK',
-  'This Life Fitness code isn’t one openGym can use.': 'openGym non può usare questo codice Life Fitness.',
   'That Life Fitness code could not be read.': 'Impossibile leggere questo codice Life Fitness.',
   'Level {0}': 'Livello {0}',
   'This result is already in this workout.': 'Questo risultato è già in questo allenamento.',
@@ -2306,11 +2305,11 @@ export default {
   'Right leg': 'Gamba destra',
   // --- Body data tab ---
   'Body data': 'Dati corporei',
+  'All data': 'Tutti i dati',
   'Changes since {0}': 'Variazioni dal {0}',
   'Muscle mass, fat mass, water and more, each with its own curve.': 'Massa muscolare, massa grassa, acqua e altro, ognuno con la sua curva.',
   'Scan the QR code your gym’s body-composition scale shows after a measurement. Weight, body fat, muscle mass and the segment analysis then show here.': 'Scansiona il codice QR che la bilancia per l’analisi corporea della tua palestra mostra dopo la misurazione. Peso, grasso corporeo, massa muscolare e analisi segmentale compariranno qui.',
   'Segment analysis': 'Analisi segmentale',
-  'Training': 'Allenamento',
   // --- Coach: AI data sharing ---
   'AI data sharing': 'Condivisione dati con l’IA',
   'Allow': 'Consenti',

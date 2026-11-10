@@ -2278,7 +2278,6 @@ export default {
   'Live connection not available': 'ไม่สามารถเชื่อมต่อแบบสดได้',
   'The live connection to the machine isn’t available here. Just keep training: at the end, the machine shows a QR code. Scan it here and your workout data comes across.': 'ที่นี่ไม่สามารถเชื่อมต่อแบบสดกับเครื่องได้ ออกกำลังกายต่อได้เลย เมื่อจบ เครื่องจะแสดงคิวอาร์โค้ด สแกนที่นี่แล้วข้อมูลการออกกำลังกายจะถูกโอนมา',
   'OK': 'ตกลง',
-  'This Life Fitness code isn’t one openGym can use.': 'openGym ใช้โค้ด Life Fitness นี้ไม่ได้',
   'That Life Fitness code could not be read.': 'อ่านโค้ด Life Fitness นี้ไม่ได้',
   'Level {0}': 'ระดับ {0}',
   'This result is already in this workout.': 'ผลนี้อยู่ในการออกกำลังกายนี้แล้ว',
@@ -2317,11 +2316,11 @@ export default {
   'Right leg': 'ขาขวา',
   // --- Body data tab ---
   'Body data': 'ข้อมูลร่างกาย',
+  'All data': 'ข้อมูลทั้งหมด',
   'Changes since {0}': 'การเปลี่ยนแปลงตั้งแต่ {0}',
   'Muscle mass, fat mass, water and more, each with its own curve.': 'มวลกล้ามเนื้อ มวลไขมัน น้ำ และอื่นๆ แต่ละค่ามีกราฟของตัวเอง',
   'Scan the QR code your gym’s body-composition scale shows after a measurement. Weight, body fat, muscle mass and the segment analysis then show here.': 'สแกนคิวอาร์โค้ดที่เครื่องชั่งวิเคราะห์ร่างกายของยิมแสดงหลังการวัด น้ำหนัก ไขมันในร่างกาย มวลกล้ามเนื้อ และการวิเคราะห์รายส่วนจะแสดงที่นี่',
   'Segment analysis': 'การวิเคราะห์รายส่วน',
-  'Training': 'การฝึก',
   // --- Coach: AI data sharing ---
   'AI data sharing': 'การแชร์ข้อมูลกับ AI',
   'Allow': 'อนุญาต',

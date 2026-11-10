@@ -2346,7 +2346,6 @@ export default {
   'Live connection not available': 'লাইভ সংযোগ পাওয়া যাচ্ছে না',
   'The live connection to the machine isn’t available here. Just keep training: at the end, the machine shows a QR code. Scan it here and your workout data comes across.': 'এখানে মেশিনের সাথে লাইভ সংযোগ পাওয়া যায় না। শুধু ট্রেনিং চালিয়ে যান: শেষে মেশিন একটি QR কোড দেখাবে। এখানে সেটি স্ক্যান করুন, আপনার ওয়ার্কআউটের ডেটা চলে আসবে।',
   'OK': 'ঠিক আছে',
-  'This Life Fitness code isn’t one openGym can use.': 'openGym এই Life Fitness কোডটি ব্যবহার করতে পারে না।',
   'That Life Fitness code could not be read.': 'এই Life Fitness কোডটি পড়া যায়নি।',
   'Level {0}': 'লেভেল {0}',
   'This result is already in this workout.': 'এই ফলাফল ইতিমধ্যে এই ওয়ার্কআউটে আছে।',
@@ -2385,11 +2384,11 @@ export default {
   'Right leg': 'ডান পা',
   // --- Body data tab ---
   'Body data': 'শরীরের তথ্য',
+  'All data': 'সব ডেটা',
   'Changes since {0}': '{0} থেকে পরিবর্তন',
   'Muscle mass, fat mass, water and more, each with its own curve.': 'পেশির ভর, ফ্যাটের ভর, পানি ও আরও কিছু, প্রতিটির নিজস্ব গ্রাফ।',
   'Scan the QR code your gym’s body-composition scale shows after a measurement. Weight, body fat, muscle mass and the segment analysis then show here.': 'মাপার পরে আপনার জিমের বডি-কম্পোজিশন স্কেল যে QR কোড দেখায় সেটি স্ক্যান করুন। ওজন, বডি ফ্যাট, পেশির ভর ও সেগমেন্ট বিশ্লেষণ এখানে দেখাবে।',
   'Segment analysis': 'সেগমেন্ট বিশ্লেষণ',
-  'Training': 'ট্রেনিং',
   // --- Coach: AI data sharing ---
   'AI data sharing': 'AI-এর সাথে ডেটা শেয়ার',
   'Allow': 'অনুমতি দিন',

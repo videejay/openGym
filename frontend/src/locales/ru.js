@@ -2271,7 +2271,6 @@ export default {
   'Live connection not available': 'Живое подключение недоступно',
   'The live connection to the machine isn’t available here. Just keep training: at the end, the machine shows a QR code. Scan it here and your workout data comes across.': 'Живое подключение к тренажёру здесь недоступно. Просто продолжайте тренировку: в конце тренажёр покажет QR-код. Отсканируйте его здесь, и данные тренировки будут перенесены.',
   'OK': 'OK',
-  'This Life Fitness code isn’t one openGym can use.': 'openGym не может использовать этот код Life Fitness.',
   'That Life Fitness code could not be read.': 'Не удалось прочитать этот код Life Fitness.',
   'Level {0}': 'Уровень {0}',
   'This result is already in this workout.': 'Этот результат уже есть в этой тренировке.',
@@ -2310,11 +2309,11 @@ export default {
   'Right leg': 'Правая нога',
   // --- Body data tab ---
   'Body data': 'Данные тела',
+  'All data': 'Все данные',
   'Changes since {0}': 'Изменения с {0}',
   'Muscle mass, fat mass, water and more, each with its own curve.': 'Мышечная масса, жировая масса, вода и другое, у каждого свой график.',
   'Scan the QR code your gym’s body-composition scale shows after a measurement. Weight, body fat, muscle mass and the segment analysis then show here.': 'Отсканируйте QR-код, который весы для анализа состава тела в вашем зале показывают после измерения. Вес, процент жира, мышечная масса и сегментный анализ появятся здесь.',
   'Segment analysis': 'Сегментный анализ',
-  'Training': 'Тренировки',
   // --- Coach: AI data sharing ---
   'AI data sharing': 'Передача данных ИИ',
   'Allow': 'Разрешить',

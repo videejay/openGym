@@ -2295,6 +2295,8 @@ export default {
   'Scanning it asks which one you mean': 'عند المسح يُسأل أيّهما تقصد',
   'The routine has it from now on': 'أصبح الروتين يتضمنه من الآن',
   'The routine stays as it is': 'يبقى الروتين كما هو',
+  'Already in “{0}”': 'موجود بالفعل في “{0}”',
+  'Adds a second slot to the routine': 'يضيف خانة ثانية إلى الروتين',
   'The same code, on a page about this exercise': 'الرمز نفسه، في صفحة عن هذا التمرين',
   'This code is already on {0}': 'هذا الرمز موجود بالفعل في {0}',
   'This code is on several exercises': 'هذا الرمز موجود في عدة تمارين',
@@ -2360,7 +2362,6 @@ export default {
   'Right leg': 'الساق اليمنى',
   // --- Body data tab ---
   'Body data': 'بيانات الجسم',
-  'All data': 'كل البيانات',
   'Changes since {0}': 'التغيّر منذ {0}',
   'Muscle mass, fat mass, water and more, each with its own curve.': 'كتلة العضلات وكتلة الدهون والماء وغيرها، لكل منها منحناه.',
   'Scan the QR code your gym’s body-composition scale shows after a measurement. Weight, body fat, muscle mass and the segment analysis then show here.': 'امسح رمز QR الذي يعرضه ميزان تحليل الجسم في ناديك بعد القياس. سيظهر هنا الوزن ودهون الجسم وكتلة العضلات والتحليل حسب الأجزاء.',

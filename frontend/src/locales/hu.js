@@ -2243,6 +2243,8 @@ export default {
   'Scanning it asks which one you mean': 'Beolvasáskor megkérdezi, melyikre gondolsz',
   'The routine has it from now on': 'Mostantól a rutin is tartalmazza',
   'The routine stays as it is': 'A rutin változatlan marad',
+  'Already in “{0}”': 'Már szerepel itt: „{0}”',
+  'Adds a second slot to the routine': 'Második helyet ad hozzá a rutinhoz',
   'The same code, on a page about this exercise': 'Ugyanaz a kód, egy erről a gyakorlatról szóló oldalon',
   'This code is already on {0}': 'Ez a kód már ehhez tartozik: {0}',
   'This code is on several exercises': 'Ez a kód több gyakorlathoz tartozik',
@@ -2308,7 +2310,6 @@ export default {
   'Right leg': 'Jobb láb',
   // --- Body data tab ---
   'Body data': 'Testadatok',
-  'All data': 'Minden adat',
   'Changes since {0}': 'Változás {0} óta',
   'Muscle mass, fat mass, water and more, each with its own curve.': 'Izomtömeg, zsírtömeg, víz és más, mindegyik saját görbével.',
   'Scan the QR code your gym’s body-composition scale shows after a measurement. Weight, body fat, muscle mass and the segment analysis then show here.': 'Olvasd be a QR-kódot, amelyet az edzőterem testösszetétel-mérlege mutat a mérés után. A testsúly, a testzsír, az izomtömeg és a szegmensanalízis itt jelenik meg.',

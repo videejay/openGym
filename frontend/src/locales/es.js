@@ -2240,6 +2240,8 @@ export default {
   'Scanning it asks which one you mean': 'Al escanearlo se pregunta a cuál te refieres',
   'The routine has it from now on': 'La rutina lo incluye a partir de ahora',
   'The routine stays as it is': 'La rutina se queda como está',
+  'Already in “{0}”': 'Ya está en «{0}»',
+  'Adds a second slot to the routine': 'Añade un segundo hueco a la rutina',
   'The same code, on a page about this exercise': 'El mismo código, en una página sobre este ejercicio',
   'This code is already on {0}': 'Este código ya está en {0}',
   'This code is on several exercises': 'Este código está en varios ejercicios',
@@ -2305,7 +2307,6 @@ export default {
   'Right leg': 'Pierna derecha',
   // --- Body data tab ---
   'Body data': 'Datos corporales',
-  'All data': 'Todos los datos',
   'Changes since {0}': 'Cambios desde el {0}',
   'Muscle mass, fat mass, water and more, each with its own curve.': 'Masa muscular, masa grasa, agua y más, cada uno con su curva.',
   'Scan the QR code your gym’s body-composition scale shows after a measurement. Weight, body fat, muscle mass and the segment analysis then show here.': 'Escanea el código QR que muestra la báscula de análisis corporal de tu gimnasio tras la medición. El peso, la grasa corporal, la masa muscular y el análisis por segmentos aparecerán aquí.',

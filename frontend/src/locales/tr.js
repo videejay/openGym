@@ -2240,6 +2240,8 @@ export default {
   'Scanning it asks which one you mean': 'Tarandığında hangisini kastettiğin sorulur',
   'The routine has it from now on': 'Rutin artık bunu içeriyor',
   'The routine stays as it is': 'Rutin olduğu gibi kalır',
+  'Already in “{0}”': 'Zaten “{0}” içinde',
+  'Adds a second slot to the routine': 'Rutine ikinci bir yer ekler',
   'The same code, on a page about this exercise': 'Aynı kod, bu egzersizle ilgili bir sayfada',
   'This code is already on {0}': 'Bu kod zaten şurada: {0}',
   'This code is on several exercises': 'Bu kod birden fazla egzersizde',
@@ -2305,7 +2307,6 @@ export default {
   'Right leg': 'Sağ bacak',
   // --- Body data tab ---
   'Body data': 'Vücut verileri',
-  'All data': 'Tüm veriler',
   'Changes since {0}': '{0} tarihinden beri değişim',
   'Muscle mass, fat mass, water and more, each with its own curve.': 'Kas kütlesi, yağ kütlesi, su ve daha fazlası, her biri kendi eğrisiyle.',
   'Scan the QR code your gym’s body-composition scale shows after a measurement. Weight, body fat, muscle mass and the segment analysis then show here.': 'Spor salonunun vücut analizi tartısının ölçümden sonra gösterdiği QR kodu tara. Kilo, vücut yağı, kas kütlesi ve segment analizi burada görünür.',

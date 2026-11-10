@@ -2237,6 +2237,8 @@ export default {
   'Scanning it asks which one you mean': 'Під час сканування запитаємо, яку саме',
   'The routine has it from now on': 'Відтепер вона є в програмі',
   'The routine stays as it is': 'Програма лишиться без змін',
+  'Already in “{0}”': 'Уже є в «{0}»',
+  'Adds a second slot to the routine': 'Додає друге місце в програму',
   'The same code, on a page about this exercise': 'Той самий код на сторінці про цю вправу',
   'This code is already on {0}': 'Цей код уже прив’язаний до: {0}',
   'This code is on several exercises': 'Цей код прив’язаний до кількох вправ',
@@ -2302,7 +2304,6 @@ export default {
   'Right leg': 'Права нога',
   // --- Body data tab ---
   'Body data': 'Дані тіла',
-  'All data': 'Усі дані',
   'Changes since {0}': 'Зміни з {0}',
   'Muscle mass, fat mass, water and more, each with its own curve.': 'М’язова маса, жирова маса, вода та інше, кожне зі своїм графіком.',
   'Scan the QR code your gym’s body-composition scale shows after a measurement. Weight, body fat, muscle mass and the segment analysis then show here.': 'Відскануйте QR-код, який ваги для аналізу складу тіла у вашому залі показують після вимірювання. Вага, відсоток жиру, м’язова маса й сегментний аналіз з’являться тут.',

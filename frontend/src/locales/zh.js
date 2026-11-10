@@ -2240,6 +2240,8 @@ export default {
   'Scanning it asks which one you mean': '扫描时会询问你指的是哪个',
   'The routine has it from now on': '训练日从现在起包含它',
   'The routine stays as it is': '训练日保持不变',
+  'Already in “{0}”': '已在“{0}”中',
+  'Adds a second slot to the routine': '在训练日中再加一个位置',
   'The same code, on a page about this exercise': '同一个代码，印在介绍此动作的页面上',
   'This code is already on {0}': '此代码已关联 {0}',
   'This code is on several exercises': '此代码关联了多个动作',
@@ -2305,7 +2307,6 @@ export default {
   'Right leg': '右腿',
   // --- Body data tab ---
   'Body data': '身体数据',
-  'All data': '全部数据',
   'Changes since {0}': '自 {0} 以来的变化',
   'Muscle mass, fat mass, water and more, each with its own curve.': '肌肉量、脂肪量、水分等，各有自己的曲线。',
   'Scan the QR code your gym’s body-composition scale shows after a measurement. Weight, body fat, muscle mass and the segment analysis then show here.': '扫描健身房体成分秤在测量后显示的二维码。体重、体脂、肌肉量和分段分析将显示在这里。',

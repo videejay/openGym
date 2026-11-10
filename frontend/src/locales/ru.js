@@ -2244,6 +2244,8 @@ export default {
   'Scanning it asks which one you mean': 'При сканировании спросим, какое имеется в виду',
   'The routine has it from now on': 'Теперь оно есть в программе',
   'The routine stays as it is': 'Программа останется без изменений',
+  'Already in “{0}”': 'Уже есть в «{0}»',
+  'Adds a second slot to the routine': 'Добавляет второе место в программу',
   'The same code, on a page about this exercise': 'Тот же код на странице об этом упражнении',
   'This code is already on {0}': 'Этот код уже привязан к: {0}',
   'This code is on several exercises': 'Этот код привязан к нескольким упражнениям',
@@ -2309,7 +2311,6 @@ export default {
   'Right leg': 'Правая нога',
   // --- Body data tab ---
   'Body data': 'Данные тела',
-  'All data': 'Все данные',
   'Changes since {0}': 'Изменения с {0}',
   'Muscle mass, fat mass, water and more, each with its own curve.': 'Мышечная масса, жировая масса, вода и другое, у каждого свой график.',
   'Scan the QR code your gym’s body-composition scale shows after a measurement. Weight, body fat, muscle mass and the segment analysis then show here.': 'Отсканируйте QR-код, который весы для анализа состава тела в вашем зале показывают после измерения. Вес, процент жира, мышечная масса и сегментный анализ появятся здесь.',

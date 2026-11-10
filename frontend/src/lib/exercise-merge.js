@@ -34,7 +34,7 @@ const list = v => (Array.isArray(v) ? v : [])
 const clone = v => (v === undefined ? v : JSON.parse(JSON.stringify(v)))
 
 // Per-exercise settings maps: the target keeps its own, the source's moves only where it has none.
-const MOVE_MAPS = ['barWeights', 'loadKind', 'dbLoad', 'stackWeights', 'exUnit']
+const MOVE_MAPS = ['barWeights', 'loadKind', 'dbLoad', 'stackWeights', 'exUnit', 'exSettings']
 // What an Undo puts back whole.
 const RESTORE = ['routines', 'programmes', 'customEx', 'exWeights', 'exNotes', 'exAliases', 'favEx', 'balanceOverrides', ...MOVE_MAPS]
 

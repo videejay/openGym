@@ -984,3 +984,26 @@ describe('body measurements across devices (#82)', () => {
     expect(next.measurements[0].t).toBe(1000)
   })
 })
+
+// An exercise's machine settings (lib/machine-settings.js) are stamped per exercise like its note.
+describe('machine settings merge per exercise (exSettings)', () => {
+  const update = (S, now, mut) => { const n = clone(S); mut(n); stampDeletions(S, n, now); stampEdits(S, n, now); n._ts = now; return n }
+  const seat = v => [{ k: 'Seat', v }]
+  it('two devices on different exercises keep both, and the later edit of one exercise wins', () => {
+    const b0 = { unit: 'kg', exSettings: { a: seat('4') }, _ts: 1 }
+    const phone = update(b0, 300, S => { S.exSettings = { ...S.exSettings, a: seat('5') } })
+    const laptop = update(b0, 200, S => { S.exSettings = { ...S.exSettings, a: seat('6'), b: [{ k: 'Pad', v: '2' }] } })
+    for (const m of [mergeStates(phone, laptop), mergeStates(laptop, phone)]) {
+      expect(m.exSettings).toEqual({ a: seat('5'), b: [{ k: 'Pad', v: '2' }] })
+    }
+  })
+  it('settings cleared on one device stay cleared against an unrelated change on the other', () => {
+    const b0 = { unit: 'kg', restSec: 90, exSettings: { a: seat('4') }, _ts: 1 }
+    const cleared = update(b0, 300, S => { S.exSettings = {} })
+    const other = update(b0, 400, S => { S.restSec = 120 })
+    for (const m of [mergeStates(cleared, other), mergeStates(other, cleared)]) {
+      expect(m.exSettings || {}).toEqual({})
+      expect(m.restSec).toBe(120)
+    }
+  })
+})

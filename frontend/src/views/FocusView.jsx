@@ -27,6 +27,8 @@ import './FocusView.css'
 import { youtubeSearchUrl } from '../lib/youtube.js'
 import { openExternal } from '../components/CustomMedia.jsx'
 import { isOn } from '../lib/modules.js'
+import { settingsFor } from '../lib/machine-settings.js'
+import { MachineSettingTags, machineSettingsSheet } from '../components/MachineSettings.jsx'
 
 const firstIncomplete = entry => {
   const index = entry.sets.findIndex(set => !set.done)
@@ -321,6 +323,7 @@ export default function FocusView({
           {isSideSet(set) && <span className="tag acc">{t('Per side')}</span>}
           {(ex.tg || ex.bp) && <span className="tag">{t(ex.tg || ex.bp)}</span>}
           {ex.eq && <span className="tag">{t(ex.eq)}</span>}
+          <MachineSettingTags pairs={settingsFor(S, entry.id)} onEdit={() => machineSettingsSheet(entry.id)} />
         </div>
         {entry.target?.note && <div className="focus-note">{entry.target.note}</div>}
         {pinnedNote && <div className="focus-note pinned"><Icon name="flag" />{t('From {0}:', fmtDate(pinnedNote.d, true))} {pinnedNote.note}</div>}

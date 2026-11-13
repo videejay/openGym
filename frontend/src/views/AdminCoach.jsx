@@ -343,9 +343,17 @@ export default function AdminCoach() {
             ? 'Each profile signs in with their own account.'
             : d.auth?.type === 'apikey' || meta.http
               ? 'One API key for the whole instance: every profile may use the Coach with it, and the daily limits above are what bound the spend.'
-              : d.boundUid
-                ? 'One personal account, already in use by one profile. Every other profile is refused, so nobody spends somebody else\'s subscription.'
-                : 'One personal account. The first profile to use it becomes the only one allowed to; every other profile is then refused. Paste an API key instead if the whole instance should have the Coach.'}</div>
+              : d.sharePersonal
+                ? 'One personal account, shared by every profile on this instance. Only do this when everyone here may use it.'
+                : d.boundUid
+                  ? 'One personal account, already in use by one profile. Every other profile is refused, so nobody spends somebody else\'s subscription.'
+                  : 'One personal account. The first profile to use it becomes the only one allowed to; every other profile is then refused. Paste an API key instead if the whole instance should have the Coach.'}</div>
+          {d.authMode !== 'profile' && !(d.auth?.type === 'apikey' || meta.http) && <div className="row between" style={{ gap: 12, alignItems: 'flex-start', marginTop: 8 }}>
+            <div className="adm-hint" style={{ margin: 0 }}>
+              <b>Share with every profile.</b> Lets everyone on this instance use the personal account, for example one family on one subscription.
+            </div>
+            <Switch checked={!!d.sharePersonal} disabled={busy} onChange={v => patch({ sharePersonal: v })} />
+          </div>}
 
           <div className="adm-group-t" style={{ marginTop: 14 }}>Isolation</div>
           <div className="adm-hint">{d.unprivileged && !d.unprivileged.ok

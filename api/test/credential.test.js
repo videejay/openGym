@@ -163,3 +163,18 @@ test('jobEnv only ever carries the credential it was handed', () => {
   const none = cfg.jobEnv('/tmp/job', { ok: false });
   assert.equal(Object.values(none).some(v => String(v).includes('tok-for-env')), false);
 });
+
+test('instance mode, shared with every profile: a personal credential binds nobody and refuses nobody', () => {
+  connectInstance();
+  cfg.bindInstanceCredential('alice');
+  cfg.save({ sharePersonal: true });
+  assert.equal(cfg.credentialFor('bob').ok, true, 'an already bound credential is shared once the admin says so');
+  assert.equal(cfg.credentialFor('bob').auth.token, 'tok-instance');
+
+  connectInstance();
+  cfg.save({ sharePersonal: true });
+  cfg.bindInstanceCredential('alice');
+  assert.equal(cfg.boundUidFor(), null, 'nothing binds while it is shared');
+  cfg.save({ sharePersonal: false });
+  assert.equal(cfg.credentialFor('bob').ok, true, 'switching it off again binds on the next spend, not retroactively');
+});

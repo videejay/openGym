@@ -3731,6 +3731,7 @@ paths:
                     Only for a provider with a configurable endpoint; validated before it is stored.
                     Empty means "back to the default", so it is refused for a provider that has none.
                 community: { type: boolean, description: Offer the cohort comparison on this instance. }
+                sharePersonal: { type: boolean, description: Let every profile use the instance's personal credential instead of binding it to the first. }
                 caps:
                   type: object
                   properties:
@@ -4914,6 +4915,7 @@ components:
             instanceDaily: { type: integer }
         maxMessageLen: { type: integer, description: 'How long a chat message, refinement or review note can be (200–4000, default 1000).' }
         community: { type: boolean }
+        sharePersonal: { type: boolean }
         runtime:
           type: object
           description: The live check performed while answering this request.

@@ -86,6 +86,9 @@ const DEFAULTS = {
   // Anonymous medians across profiles that opt in ("compare with others"). Off by default: it
   // is the one feature where one person's numbers feed into what another person sees.
   community: false,
+  // Fork: the admin lets every profile spend the instance's personal credential (a family on one
+  // subscription). Off by default; on, nothing binds and nobody is refused.
+  sharePersonal: false,
   // How long a chat/refine message or review note can be. Was a bare 1000 literal in three
   // different files (routes.js, jobs.js, payload.js) before this was configurable — see issue
   // #267. The admin route clamps a write to [MAX_MESSAGE_LEN_FLOOR, MAX_MESSAGE_LEN_CEILING];
@@ -252,7 +255,7 @@ export function credentialFor(uid) {
 
   // instance mode
   const bound = boundUidFor(cfg);
-  if (bound && bound !== uid) {
+  if (bound && bound !== uid && !cfg.sharePersonal) {
     return { ok: false, reason: 'shared-account', message: SHARED_ACCOUNT_REFUSAL, mode: 'instance' };
   }
   const rec = authFor(cfg);
@@ -280,7 +283,7 @@ export const isPersonalCredential = type => type === 'cli-token' || type === 'oa
 export function bindInstanceCredential(uid) {
   const cfg = load();
   const rec = authFor(cfg);
-  if (cfg.authMode === 'instance' && !boundUidFor(cfg) && cfg.provider !== 'fixture' && rec && isPersonalCredential(rec.type)) {
+  if (cfg.authMode === 'instance' && !cfg.sharePersonal && !boundUidFor(cfg) && cfg.provider !== 'fixture' && rec && isPersonalCredential(rec.type)) {
     save({ boundUid: { ...cfg.boundUid, [cfg.provider]: uid } });
   }
 }

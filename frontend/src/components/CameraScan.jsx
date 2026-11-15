@@ -16,9 +16,23 @@ import { Button } from '../components/ui.jsx'
 // photo import and typing.
 // `noCamera` replaces the message for a browser without a camera, for callers with no photo
 // import or text field to fall back on; `hint` adds a line under the viewfinder.
-export default function CameraScan({ onFound, onCancel, noCamera, hint }) {
+export default function CameraScan({ onFound, onCancel, noCamera, hint, importPhoto = false, onImportError }) {
   const videoRef = useRef(null)
+  const fileRef = useRef(null)
   const [error, setError] = useState(null)
+  // `importPhoto`: with no camera, a screenshot of the code instead (Plan → Scan a QR code has no
+  // form underneath that offers it, as the gym check-in does; night QA 146).
+  const fromPhoto = async e => {
+    const file = e.target.files && e.target.files[0]
+    e.target.value = ''
+    if (!file) return
+    try {
+      const { importCodeFromImage } = await import('../lib/scan.js')
+      const code = await importCodeFromImage(file)
+      if (code) onFound(code)
+      else onImportError?.(t('No code found in that image'))
+    } catch { onImportError?.(t('Could not read that image')) }
+  }
 
   useEffect(() => {
     let stream = null, timer = null, done = false
@@ -85,6 +99,10 @@ export default function CameraScan({ onFound, onCancel, noCamera, hint }) {
           </div>
           <div className="muted small" style={{ textAlign: 'center', margin: '12px 0 16px' }}>{t('Point the camera at the QR code')}{hint && <><br />{hint}</>}</div>
         </>}
+    {error && importPhoto && <>
+      <input ref={fileRef} type="file" accept="image/*" hidden onChange={fromPhoto} />
+      <Button variant="primary" icon="image" onClick={() => fileRef.current?.click()} style={{ marginBottom: 8 }}>{t('Import photo')}</Button>
+    </>}
     <Button variant="tinted" onClick={onCancel}>{t('Cancel')}</Button>
   </>
 }

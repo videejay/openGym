@@ -150,3 +150,19 @@ describe('a merge on one device, a workout on another', () => {
     expect(S).toEqual(state())
   })
 })
+
+describe('machine settings in a merge (exSettings)', () => {
+  test('move to a target without any, a target keeps its own, Undo puts them back', () => {
+    const S = state()
+    S.exSettings = { [CUSTOM]: [{ k: 'Seat', v: '4' }] }
+    const { undo } = mergeExercise(S, CUSTOM, BENCH, { now: 1000 })
+    expect(S.exSettings).toEqual({ [BENCH]: [{ k: 'Seat', v: '4' }] })
+    undoMerge(S, undo, { now: 2000 })
+    expect(S.exSettings).toEqual({ [CUSTOM]: [{ k: 'Seat', v: '4' }] })
+
+    const T = state()
+    T.exSettings = { [CUSTOM]: [{ k: 'Seat', v: '4' }], [BENCH]: [{ k: 'Seat', v: '7' }] }
+    mergeExercise(T, CUSTOM, BENCH, { now: 1000 })
+    expect(T.exSettings).toEqual({ [BENCH]: [{ k: 'Seat', v: '7' }] })
+  })
+})

@@ -168,7 +168,7 @@ export const DEF = {
   // Standing per-exercise notes, keyed by exercise id: the gym-specific facts that are true
   // every time you do the movement ("seat 4, pin 7"). Distinct from a routine's `note`, which
   // belongs to one exercise in one plan, and from a session note, which belongs to one day.
-  exNotes: {}, exAliases: {}, exShownName: {},
+  exNotes: {}, exSettings: {}, exAliases: {}, exShownName: {},
   // QR codes stuck on the machines, keyed by exercise id: { [exId]: [code, …] } (lib/exercise-qr.js).
   // Scanning one in a running workout jumps to that exercise. A code may sit on several exercises
   // (one cable tower, many movements) and an exercise may have several codes (two identical racks).

@@ -129,6 +129,14 @@ describe('settings kept in the old map (this fork)', () => {
     expect(moveLegacySettings(s)).toBe(false)
   })
 
+  it('stay where they are when the note has no room for the line', () => {
+    const full = 'y'.repeat(2000)
+    const s = { exSettings: { a: [{ k: 'Seat', v: '5' }] }, exNotes: { a: full } }
+    expect(moveLegacySettings(s)).toBe(false)
+    expect(s.exNotes).toEqual({ a: full })
+    expect(s.exSettings).toEqual({ a: [{ k: 'Seat', v: '5' }] })
+  })
+
   it('make a note of their own where there was none', () => {
     const s = { exSettings: { a: [{ k: 'Seat', v: '5' }] } }
     moveLegacySettings(s)

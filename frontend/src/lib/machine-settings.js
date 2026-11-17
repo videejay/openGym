@@ -179,15 +179,22 @@ export const hasLegacySettings = S => isMap(S?.exSettings) && Object.values(S.ex
 /**
  * Moves what S.exSettings holds into the exercises' notes (mutates `s`), so every app shows it.
  * An exercise whose note already has a settings line keeps that one; the old entry is emptied
- * either way (an empty list, so the stamped sync carries the removal). True when anything moved.
+ * once moved (an empty list, so the stamped sync carries the removal). When the note has no room
+ * for the line, the old entry stays where it is: nothing is lost. True when anything moved.
  */
 export function moveLegacySettings(s, max = 2000) {
   if (!hasLegacySettings(s)) return false
+  let moved = false
   for (const [id, pairs] of Object.entries(s.exSettings)) {
     if (!hasPairs(pairs)) continue
     const clean = cleanSettings(pairs)
-    if (clean.length && !splitNote(isMap(s.exNotes) ? s.exNotes[id] : '').pairs.length) s.exNotes = withSettings(s.exNotes, id, clean, max)
+    if (clean.length && !splitNote(isMap(s.exNotes) ? s.exNotes[id] : '').pairs.length) {
+      const next = withSettings(s.exNotes, id, clean, max)
+      if (next === s.exNotes) continue
+      s.exNotes = next
+    }
     s.exSettings[id] = []
+    moved = true
   }
-  return true
+  return moved
 }

@@ -29,13 +29,13 @@ const setValue = (el, v) => {
 }
 const buttonOf = (host, label) => [...host.querySelectorAll('button')].find(b => b.textContent === label)
 const rowsOf = host => [...host.querySelectorAll('.mset-row')].map(r => [...r.querySelectorAll('input')].map(i => i.value))
-const saved = () => useStore.getState().S.exSettings
+const saved = () => useStore.getState().S.exNotes
 
 beforeEach(() => {
   globalThis.IS_REACT_ACT_ENVIRONMENT = true
   original = useStore.getState().S
   useUI.setState({ sheets: [] })
-  useStore.setState({ S: { ...original, exSettings: {} } })
+  useStore.setState({ S: { ...original, exNotes: {} } })
 })
 afterEach(() => {
   act(() => { mounted.splice(0).forEach(r => r.unmount()) })
@@ -55,26 +55,27 @@ describe('the machine settings sheet', () => {
     act(() => buttonOf(host, 'Leg position').click())
     setValue(host.querySelectorAll('.mset-row input')[3], 'M')
     act(() => buttonOf(host, 'Save').click())
-    expect(saved()).toEqual({ [BENCH]: [{ k: 'Seat', v: '5' }, { k: 'Leg position', v: 'M' }] })
+    expect(saved()).toEqual({ [BENCH]: 'Seat: 5 · Leg position: M' })
   })
 
   it('opens with what is saved; removing a row and saving keeps the rest, removing all leaves none', () => {
-    useStore.setState({ S: { ...useStore.getState().S, exSettings: { [BENCH]: [{ k: 'Seat', v: '5' }, { k: 'Pad', v: '2' }] } } })
+    useStore.setState({ S: { ...useStore.getState().S, exNotes: { [BENCH]: 'Seat: 5 · Pad: 2\nKeep the bar low' } } })
     let host = openSheet()
     expect(rowsOf(host)).toEqual([['Seat', '5'], ['Pad', '2']])
     act(() => host.querySelector('.mset-row button[aria-label="Remove"]').click())
     act(() => buttonOf(host, 'Save').click())
-    expect(saved()).toEqual({ [BENCH]: [{ k: 'Pad', v: '2' }] })
+    // the note under the line stays
+    expect(saved()).toEqual({ [BENCH]: 'Pad: 2\nKeep the bar low' })
 
     host = openSheet()
     act(() => host.querySelector('.mset-row button[aria-label="Remove"]').click())
     expect(rowsOf(host)).toEqual([['', '']])
     act(() => buttonOf(host, 'Save').click())
-    expect(saved()).toEqual({})
+    expect(saved()).toEqual({ [BENCH]: 'Keep the bar low' })
   })
 
   it('offers the names used on other machines first', () => {
-    useStore.setState({ S: { ...useStore.getState().S, exSettings: { '0043': [{ k: 'Pin', v: '7' }] } } })
+    useStore.setState({ S: { ...useStore.getState().S, exNotes: { '0043': 'Pin: 7' } } })
     const host = openSheet()
     expect([...host.querySelectorAll('.chips .chip')].map(b => b.textContent)[0]).toBe('Pin')
   })

@@ -4351,7 +4351,7 @@ const machineMocks = vi.hoisted(() => ({ sheet: vi.fn() }))
 vi.mock('../components/MachineSettings.jsx', async importOriginal => ({ ...(await importOriginal()), machineSettingsSheet: machineMocks.sheet }))
 
 describe('machine settings on the exercise card', () => {
-  const SET = { exSettings: { 'plain-bench': [{ k: 'Seat', v: '5' }, { k: 'Leg position', v: 'M' }] } }
+  const SET = { exNotes: { 'plain-bench': 'Seat: 5 · Leg position: M' } }
   const tags = () => [...container.querySelectorAll('.tag.mset')].map(tg => tg.textContent)
   const lastMenu = () => mocks.menuSheet.mock.calls.at(-1)[0]
   beforeEach(() => { machineMocks.sheet.mockClear(); mocks.menuSheet.mockReset() })

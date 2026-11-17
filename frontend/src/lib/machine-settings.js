@@ -1,21 +1,28 @@
-// An exercise's machine settings (S.exSettings): short name/value pairs such as "Seat: 5" or
-// "Leg position: M", shown as tags beside the exercise's muscle and equipment so the machine is
-// set in seconds. They belong to the exercise, like its standing note (S.exNotes), and sync per
-// exercise the same way (lib/sync-merge.js PER_KEY, api/sync-stamps.js).
+// An exercise's machine settings: short name/value pairs such as "Seat: 5" or "Leg position: M",
+// shown as tags beside the exercise's muscle and equipment so the machine is set in seconds.
 //
-// Stored as { [exerciseId]: [{ k, v }, …] } in the order they were entered; an exercise with
-// none has no key at all.
+// They live in the exercise's standing note (S.exNotes), as its first line:
+//
+//     Seat: 5 · Leg position: M
+//     and then whatever else the note says
+//
+// So nothing new syncs and every version of the app already carries them: an app that does not
+// know this shows the line as part of the note. The first line is read as settings only when every
+// part of it is "Name: value", parts split by " · "; any other note stays a plain note.
 
 export const SETTINGS_MAX = 8
 export const KEY_MAX = 24
 export const VALUE_MAX = 16
+const SEP = ' · '
 
 // Offered as names to start from, in English; the sheet shows them translated and saves what it
 // shows, so a German profile keeps "Sitz".
 export const SUGGESTED_KEYS = ['Seat', 'Backrest', 'Leg position', 'Pad', 'Handles', 'Foot plate']
 
 const isMap = v => !!v && typeof v === 'object' && !Array.isArray(v)
-const text = (v, max) => String(v == null ? '' : v).replace(/\s+/g, ' ').trim().slice(0, max)
+// No ":" in a name and no "·" anywhere: those two are what the line is read by.
+const text = (v, max) => String(v == null ? '' : v).replace(/·/g, ' ').replace(/\s+/g, ' ').trim().slice(0, max)
+const name = (v) => text(String(v == null ? '' : v).replace(/:/g, ' '), KEY_MAX)
 
 /**
  * The pairs worth keeping, in order: both halves trimmed and cut to length, a pair missing either
@@ -27,7 +34,7 @@ export function cleanSettings(pairs) {
   const at = new Map()
   for (const p of Array.isArray(pairs) ? pairs : []) {
     if (!p || typeof p !== 'object') continue
-    const k = text(p.k, KEY_MAX), v = text(p.v, VALUE_MAX)
+    const k = name(p.k), v = text(p.v, VALUE_MAX)
     if (!k || !v) continue
     const id = k.toLocaleLowerCase()
     if (at.has(id)) { out[at.get(id)] = { k: out[at.get(id)].k, v }; continue }
@@ -38,23 +45,80 @@ export function cleanSettings(pairs) {
   return out
 }
 
-/** An exercise's settings, cleaned; [] when it has none. */
-export function settingsFor(S, exId) {
-  const m = isMap(S?.exSettings) ? S.exSettings : {}
-  return exId == null ? [] : cleanSettings(m[exId])
+/** "Seat: 5", the way a tag and the note's first line show a pair. */
+export const settingLabel = p => `${p.k}: ${p.v}`
+
+/** The pairs as the note's first line; '' for none. */
+export const settingsLine = pairs => cleanSettings(pairs).map(settingLabel).join(SEP)
+
+/** A note's first line read as settings: the pairs, or null when it is not a settings line. */
+function readLine(line) {
+  const parts = String(line).split(SEP)
+  if (parts.length > SETTINGS_MAX) return null
+  const pairs = []
+  for (const part of parts) {
+    const i = part.indexOf(': ')
+    if (i <= 0) return null
+    const k = part.slice(0, i), v = part.slice(i + 2)
+    if (k !== name(k) || v !== text(v, VALUE_MAX) || !v) return null
+    pairs.push({ k, v })
+  }
+  const clean = cleanSettings(pairs)
+  return clean.length === pairs.length ? clean : null
 }
 
-/** The map with the exercise's settings replaced (a new object); no key left when there are none. */
-export function withSettings(map, exId, pairs) {
-  const next = isMap(map) ? { ...map } : {}
-  const clean = cleanSettings(pairs)
-  if (clean.length) next[exId] = clean
+/** A standing note as { pairs, rest }: its settings line, and the note without it. */
+export function splitNote(note) {
+  const s = String(note == null ? '' : note)
+  const nl = s.indexOf('\n')
+  const first = nl < 0 ? s : s.slice(0, nl)
+  const pairs = readLine(first.trim())
+  if (!pairs) return { pairs: [], rest: s.trim() }
+  return { pairs, rest: nl < 0 ? '' : s.slice(nl + 1).trim() }
+}
+
+/** The note put back together: the settings line, then the rest. */
+export const joinNote = (pairs, rest) => [settingsLine(pairs), String(rest == null ? '' : rest).trim()].filter(Boolean).join('\n')
+
+/** An exercise's settings, cleaned; [] when it has none. */
+export function settingsFor(S, exId) {
+  const n = isMap(S?.exNotes) ? S.exNotes[exId] : null
+  return exId == null || typeof n !== 'string' ? [] : splitNote(n).pairs
+}
+
+/** An exercise's standing note without its settings line, '' for none. */
+export function noteWithoutSettings(S, exId) {
+  const n = isMap(S?.exNotes) ? S.exNotes[exId] : null
+  return typeof n === 'string' ? splitNote(n).rest : ''
+}
+
+/**
+ * The exNotes map with the exercise's settings replaced (a new object); the rest of its note is
+ * kept, and no key is left when nothing remains.
+ */
+export function withSettings(notes, exId, pairs, max = Infinity) {
+  const next = isMap(notes) ? { ...notes } : {}
+  const { rest } = splitNote(next[exId])
+  const line = settingsLine(pairs)
+  const joined = joinNote(pairs, rest.slice(0, Math.max(0, max - line.length - 1)))
+  if (joined) next[exId] = joined
   else delete next[exId]
   return next
 }
 
-/** "Seat: 5", the way a tag shows it. */
-export const settingLabel = p => `${p.k}: ${p.v}`
+/**
+ * The exNotes map with the exercise's note (without its settings line) replaced; the settings
+ * line is kept.
+ */
+export function withNoteText(notes, exId, rest, max = Infinity) {
+  const next = isMap(notes) ? { ...notes } : {}
+  const { pairs } = splitNote(next[exId])
+  const line = settingsLine(pairs)
+  const joined = joinNote(pairs, String(rest == null ? '' : rest).trim().slice(0, Math.max(0, max - (line ? line.length + 1 : 0))))
+  if (joined) next[exId] = joined
+  else delete next[exId]
+  return next
+}
 
 /**
  * Names already used on other exercises, most used first (ties by name), without the ones listed
@@ -63,8 +127,9 @@ export const settingLabel = p => `${p.k}: ${p.v}`
 export function knownKeys(S, except = []) {
   const skip = new Set(except.map(k => String(k).toLocaleLowerCase()))
   const count = new Map()
-  for (const pairs of Object.values(isMap(S?.exSettings) ? S.exSettings : {})) {
-    for (const { k } of cleanSettings(pairs)) {
+  for (const n of Object.values(isMap(S?.exNotes) ? S.exNotes : {})) {
+    if (typeof n !== 'string') continue
+    for (const { k } of splitNote(n).pairs) {
       const id = k.toLocaleLowerCase()
       if (skip.has(id)) continue
       const c = count.get(id) || { k, n: 0 }
@@ -73,4 +138,27 @@ export function knownKeys(S, except = []) {
     }
   }
   return [...count.values()].sort((a, b) => b.n - a.n || a.k.localeCompare(b.k)).map(c => c.k)
+}
+
+/* ---------- this fork only: settings kept in S.exSettings before they moved into the note ---------- */
+
+const hasPairs = v => Array.isArray(v) && v.length > 0
+
+/** Whether the profile still holds settings in the old S.exSettings map. */
+export const hasLegacySettings = S => isMap(S?.exSettings) && Object.values(S.exSettings).some(hasPairs)
+
+/**
+ * Moves what S.exSettings holds into the exercises' notes (mutates `s`), so every app shows it.
+ * An exercise whose note already has a settings line keeps that one; the old entry is emptied
+ * either way (an empty list, so the stamped sync carries the removal). True when anything moved.
+ */
+export function moveLegacySettings(s, max = 2000) {
+  if (!hasLegacySettings(s)) return false
+  for (const [id, pairs] of Object.entries(s.exSettings)) {
+    if (!hasPairs(pairs)) continue
+    const clean = cleanSettings(pairs)
+    if (clean.length && !splitNote(isMap(s.exNotes) ? s.exNotes[id] : '').pairs.length) s.exNotes = withSettings(s.exNotes, id, clean, max)
+    s.exSettings[id] = []
+  }
+  return true
 }

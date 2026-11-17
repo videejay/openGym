@@ -142,7 +142,7 @@ import { copyText } from './lib/clipboard.js'
 import { queueRemaining, pinState } from './lib/queue.js'
 import { DAY_NOTE_TAGS, DAY_NOTE_LABEL, DAY_NOTE_ICON, dayNoteOf, dayNoteLine, canNoteDay, withDayNote } from './lib/day-notes.js'
 import { isOn } from './lib/modules.js'
-import { settingsFor } from './lib/machine-settings.js'
+import { settingsFor, noteWithoutSettings, withNoteText } from './lib/machine-settings.js'
 import { MachineSettingTags, MachineSettingsLink, machineSettingsSheet } from './components/MachineSettings.jsx'
 import { checkinMode, withForm, readForm, goLighter, canGoLighter, LIGHTER_KINDS } from './lib/daily-form.js'
 import { sleepHoursOn } from './lib/vitals.js'
@@ -4529,7 +4529,7 @@ function ExerciseNote({ entryIdx, close }) {
   const ex = entry ? exOr(entry.id) : null
   const [note, setNote] = useState(entry?.note || '')
   const [pin, setPin] = useState(!!entry?.notePin)
-  const [standing, setStanding] = useState(entry ? (st.exNotes?.[entry.id] || '') : '')
+  const [standing, setStanding] = useState(entry ? noteWithoutSettings(st, entry.id) : '')
   // Only true at one gym ("seat 4" on that brand of machine): pinned at the active gym (lib/journal.js).
   const gym = !editing ? activeGym(st) : null
   const [atGym, setAtGym] = useState(gym && entry ? gymNoteText(st, gym.id, entry.id) : '')
@@ -4546,9 +4546,8 @@ function ExerciseNote({ entryIdx, close }) {
         else { delete e.note; delete e.notePin }
       }
       if (!editing) {
-        s.exNotes = s.exNotes || {}
-        if (always) s.exNotes[entry.id] = always
-        else delete s.exNotes[entry.id]
+        // The machine-settings line at the top of the note stays; only the text under it is edited here.
+        s.exNotes = withNoteText(s.exNotes, entry.id, always, NOTE_MAX)
       }
       if (gym && atGym.trim() !== gymNoteText(st, gym.id, entry.id)) s.gymNotes = withGymNote(s.gymNotes, gym.id, entry.id, atGym)
     })
